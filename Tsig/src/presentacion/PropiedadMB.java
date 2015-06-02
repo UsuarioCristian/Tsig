@@ -56,12 +56,12 @@ public class PropiedadMB implements Serializable {
 		try {
 			
 			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-			System.out.println("USUARIOOOOOOO: "+usuario);
+			
 			
 			
 			ipc.guardarCasa(usuario,idCasa,titulo, direccion, barrio, tipoProp, cantBanios, cantCuartos, piscina, garage);
 			
-			FacesContext.getCurrentInstance().getExternalContext().redirect("index.html");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
 			
 			
@@ -76,7 +76,7 @@ public class PropiedadMB implements Serializable {
 	public void getInfo(){
 		
 		try{
-			System.out.println("EL ID DE LA CASA"+this.idCasa);
+			
 			Casa c= ipc.getCasa(idCasa);
 			
 			if (c!=null){
@@ -100,33 +100,14 @@ public class PropiedadMB implements Serializable {
 	}
 	public void consultaPropiedad(){
 		 
-		System.out.println("Cantidad de cuartos:" +cantCuartos);
-		
-		System.out.println("Maxi dice que anda bien"+titulo+barrio+tipoProp+cantBanios+cantCuartos+piscina+garage);
-		
-	
-		
-		
+		try{
 	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
-//		idCasa = casas.getIdGeom();
-//		RequestContext context = RequestContext.this.;
-//		context.execute("updateFilter()");
-
-		System.out.println("maxi es comesable");
-		
-		for (Integer casa : casas) {
-			System.out.println("maxi es comesable"+casa);
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		
 	}
 	
 	
-	
-	
-	
-	
-
-
 	public int getIdCasa() {
 		return idCasa;
 	}

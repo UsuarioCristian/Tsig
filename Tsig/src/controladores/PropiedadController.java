@@ -27,6 +27,7 @@ public class PropiedadController implements IPropiedadController{
 			Casa c = new Casa(IdGeom, titulo, direccion, barrio, tipoProp, cantBanios, cantCuartos, piscina, garage,"privada");
 			
 			
+			
 			Usuario u=	UsuarioDAO.getUsuario(usuario);
 			
 			c.setEncargado(u);

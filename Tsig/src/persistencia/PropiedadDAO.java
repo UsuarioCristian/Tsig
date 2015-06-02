@@ -57,15 +57,15 @@ public class PropiedadDAO implements IPropiedadDAO {
 		comb="(c.estado= 'publica' or c.estado='reservada')";
 		if("".compareTo(titulo)!=0)
 		{
-			comb= comb+" and c.titulo="+titulo;
+			comb= comb+" and c.titulo like '"+titulo+"'";
 		}		
 		if("".compareTo(barrio)!=0)
 		{
-			comb=comb+" and c.barrio="+barrio;
+			comb=comb+" and c.barrio= '"+barrio+"'";
 		}		
-		if("".compareTo(tipoProp)!=0)
+		if("Cualquiera".compareTo(tipoProp)!=0)
 		{
-			comb=comb+" and c.tipoProp="+tipoProp;
+			comb=comb+" and c.tipoProp= '"+tipoProp+"'";
 		}
 		if(cantbanios>0){
 			comb= comb + " and c.cantBanios ="+cantbanios;
@@ -82,7 +82,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 		
 		
 		try{
-			System.out.println(comb);
+			
 			
 		List<Integer>ids=em.createQuery("Select c.id from Casa c where "+comb).getResultList();
 		

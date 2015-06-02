@@ -222,22 +222,30 @@
     
 	<b:modal id="amodal" title="Modal Example" >
 		
+    <b:panelGrid colSpans="2,10" rowClasses="rowform">
     
-	    <h:outputLabel value="#{propiedadMB.titulo}" /><br/>
-	         
-	    <h:outputLabel value="#{propiedadMB.barrio}" />	 <br/>   
+	    <h:outputLabel value="Titulo de la casa: " />	    
+	    <h:outputLabel value="#{propiedadMB.titulo}" />
 	    
-	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	<br/>   
+	      <h:outputLabel value="Barrio de la casa: " />   
+	    <h:outputLabel value="#{propiedadMB.barrio}" />	
+	    
+	    <h:outputLabel value="Tipo de propiedad: " />
+	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
         
-        <h:outputLabel value="#{propiedadMB.cantBanios}" />	  <br/>  
+        <h:outputLabel value="Cantidad de baños: " />
+        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
 	   
-        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	<br/>
+	    <h:outputLabel value="Cantidad de cuartos: " />
+        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
         
-	    <h:outputLabel value="#{propiedadMB.piscina}" /><br/>
+        <h:outputLabel value="Piscina:" />
+	    <h:outputLabel value="#{propiedadMB.piscina}" />
 	    
-	    <h:outputLabel value="{propiedadMB.garage}" /><br/>
+	    <h:outputLabel value="Garage: " />
+	    <h:outputLabel value="{propiedadMB.garage}" />
 	   
-	    
+	  </b:panelGrid>  
 		    
 	
 	    <f:facet name="footer">

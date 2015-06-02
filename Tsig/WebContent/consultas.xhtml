@@ -214,10 +214,34 @@
   <div id="map" class="map"></div>
   </div>	
      
-	    <h:outputLabel value="Cantidad de cuartos" />
-	    <b:inputText span="4" value="#{propiedadMB.cantCuartos}" />
- 	
- 	
+ <b:panelGrid colSpans="2,10" rowClasses="rowform">
+	 	<h:outputLabel value="Titulo de la casa" />
+		<b:inputText span="8" value="#{propiedadMB.titulo}"/>
+	         
+	    <h:outputLabel value="Barrio de la casa" />	    
+	    <b:inputText span="8" value="#{propiedadMB.barrio}"/>
+	    
+	    <h:outputLabel value="Tipo de propiedad" />	
+	    
+	    <b:selectOneMenu span="8" value="#{propiedadMB.tipoProp}" >
+	    	<f:selectItem itemLabel="Cualquiera" itemValue="Cualquiera"/>
+            <f:selectItem itemLabel="Comercial" itemValue="Comercial"/>
+            <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
+        </b:selectOneMenu>
+        
+        <h:outputLabel value="Cantidad de baNIos" />	    
+	    <b:inputText span="8" value="#{propiedadMB.cantBanios}"/>
+        
+        <h:outputLabel value="Cantidad de cuartos" />	    
+	    <b:inputText span="8" value="#{propiedadMB.cantCuartos}"/>
+        
+	    
+	    <h:outputLabel value="Piscina: " />
+	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" />
+	    
+	    <h:outputLabel value="Garage: " />
+	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
+ 	</b:panelGrid>
 	
  	
   <h:commandButton id="save" value="Consultar" actionListener="#{propiedadMB.consultaPropiedad}">
