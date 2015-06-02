@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	>
+
+  <h:head>
+   
+    <style>
+      .map {
+        height: 500px;
+        width: 600px;
+        border:solid 1px;
+      }
+    </style>
+     <h:outputStylesheet library="css" name="styles.css" />
+     
+	 <script type="text/javascript" src="/resources/js/jquery-2.1.4.min.js">	 </script>
+	 <script type="text/javascript" src="/resources/js/jquery.bpopup.min.js">	 </script>
+	 
+  </h:head>
+   <h:body class="fondo" >
+   
+   <ui:include src="/navbar.xhtml" />
+   
+   <div id="cont" class="contenedor">
+	    <h2>My Map</h2>
+	    <h:outputText value="#{usuarioMB.log ? 'Yes' : 'No'}" /> 
+	    <div id="map" class="map"></div>
+    </div>
+  </h:body>
+</html>

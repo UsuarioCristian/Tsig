@@ -1,0 +1,240 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	>
+	
+
+  <h:head>
+      <h:outputStylesheet library="css" name="styles.css" />
+     
+ <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
+	
+	<style>
+		   .map {
+        height: 500px;
+        width: 600px;
+        border:solid 1px;
+      }
+     
+  #output-id {
+    margin: 10px 220px;
+}
+  
+		 
+    </style>
+    <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
+
+
+	 
+	 
+    <title>OpenLayers 3 example</title>
+    
+    
+    <script type="text/javascript">
+    
+    
+    var map;
+    var wms;
+
+    var puntos;
+    
+    var saveStrategy = new OpenLayers.Strategy.Save();
+   
+
+    var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
+    
+    var map_controls = [
+                         new OpenLayers.Control.PanZoomBar(), 
+                         new OpenLayers.Control.MouseToolbar(),
+                         
+                         ];
+	var mapoptions = 
+		{ 
+			
+			
+			units: 'm',
+			projection: "EPSG:32721",
+			maxExtent:bounds ,
+			center: new OpenLayers.LonLat(574553.537,6141267.75),
+			maxResolution: 1000
+	    };
+	
+	function init() {
+		
+	
+		     map = new OpenLayers.Map('map', mapoptions);            
+		            // setup tiled layer
+		           var tiled = new OpenLayers.Layer.WMS(
+		        		   
+                "mapabase", "http://localhost:8080/geoserver/sige/wms",
+                {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
+                            
+            );
+		          
+		            puntos = new OpenLayers.Layer.Vector(
+		                    "puntos",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "puntos", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+		                            
+		                        })
+		                    
+		                    });
+		           
+		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
+		                    OpenLayers.Feature.Vector.style["default"]);
+		           
+		           puntos.style.externalGraphic="resources/Images/casa.png";
+		           puntos.style.graphicWidth= 40;
+		           puntos.style.graphicHeight= 32;
+		           puntos.style.fillOpacity=1;
+		           
+		           map.addLayers([tiled,puntos]);
+		           
+		           var panel = new OpenLayers.Control.Panel(
+		                   {displayClass: 'olControlEditingToolbar'}
+		               );
+	               
+		           var selectFeature = new OpenLayers.Control.SelectFeature(puntos, {
+		                	   hover: false,
+		                	   onSelect: clickNotice,
+		                       autoActivate: true
+		                   });
+                   map.addControl(selectFeature);
+
+                   panel.addControls([new OpenLayers.Control.Navigation()]);
+                   map.addControl(panel);
+                   map.addControl(new OpenLayers.Control.LayerSwitcher());
+		           
+ 		           map.zoomTo(7);
+ 		           
+ 		         function clickNotice(event) {
+ 		        	
+	        	        var id = event.attributes.idpunto;
+	        	        
+	        	        
+						
+						
+						var input = document.getElementById('info:idcasa');
+						
+						input.value=id;
+						
+						document.getElementById('info:getinfo').click();
+						
+
+						
+						//show();
+						
+	        	       
+	        	        selectFeature.unselectAll();
+ 		        }      
+  		            
+		            
+		}
+		
+		function show(){
+	
+			document.getElementById('atrigger').click();
+	
+		}
+		
+		function handleAjax(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		           show();
+		            break;
+		    }
+		}
+	
+
+	 </script>
+  </h:head>
+   <h:body class="fondo" onload="init()">
+   
+ 
+  
+  
+   <ui:include src="/navbar.xhtml" />
+   
+   <div id="cont" class="contenedor">
+   <b:panel id="filters" styleClass="panel panel-primary outtab" title="Filtros">
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   
+   </b:panel>
+   
+    <a id="atrigger" class="btn btn-primary btn-lg" href="#amodal" data-toggle="modal">test</a>
+    
+    <div id="map" class="map"></div>
+    <div id="output-id"></div>
+    
+    <h:form id="info" style="display:none;">
+    
+     <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
+     
+    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
+    
+    <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
+    
+    
+    </h:commandButton>
+    
+
+
+   
+   
+    </h:form>
+    
+   
+    
+    
+	<b:modal id="amodal" title="Modal Example" >
+		
+    
+	    <h:outputLabel value="#{propiedadMB.titulo}" /><br/>
+	         
+	    <h:outputLabel value="#{propiedadMB.barrio}" />	 <br/>   
+	    
+	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	<br/>   
+        
+        <h:outputLabel value="#{propiedadMB.cantBanios}" />	  <br/>  
+	   
+        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	<br/>
+        
+	    <h:outputLabel value="#{propiedadMB.piscina}" /><br/>
+	    
+	    <h:outputLabel value="{propiedadMB.garage}" /><br/>
+	   
+	    
+		    
+	
+	    <f:facet name="footer">
+	        <b:button value="close" dismiss="modal" onclick="return false;"/>
+	        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+	    </f:facet>
+	</b:modal>
+  </div>
+  </h:body>
+</html>

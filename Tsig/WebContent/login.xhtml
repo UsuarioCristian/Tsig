@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+     <h:outputStylesheet library="css" name="styles.css" />
+<title>Login</title>
+</h:head>
+   <h:body class="fondo" >
+   
+   <ui:include src="/navbar.xhtml" />
+   
+   <div id="cont" class="contenedor">
+<h:form>
+<b:panel id="Login" styleClass="panel panel-primary outtab" title="Login">
+	<b:panelGrid colSpans="2,10" rowClasses="rowform">
+    <h:outputLabel value="Nick: " />
+    <h:inputText value="#{usuarioMB.nombre}" />
+    <h:outputLabel value="Password: " />
+    <h:inputText value="#{usuarioMB.password}" />
+    <h:commandButton type="submit" value="LogIn" action="#{usuarioMB.Login}" />
+    </b:panelGrid>
+</b:panel>
+</h:form>
+</div>
+</h:body>
+</html>

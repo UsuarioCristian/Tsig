@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<nav>
+	<b:navBar brandImg="resources/Images/logo.png"  brandHref="#" inverse="true" static="true" id="nav" >
+	    <b:navbarLinks >
+	    
+	    	<b:dropMenu value="Inmuebles" rendered="#{usuarioMB.log}" >
+	    	
+	    		<b:navLink header="Casa"></b:navLink>
+			    <b:navLink value="Alta" href="#"></b:navLink>
+			    <b:navLink value="Edicion" href="#"></b:navLink>
+			    <b:navLink value="Baja" href="#"></b:navLink>
+			    
+			    <b:navLink></b:navLink>
+			    <b:navLink header="Apartamento"></b:navLink>
+			    <b:navLink value="Alta" href="#"></b:navLink>
+			    <b:navLink value="Edicion" href="#"></b:navLink>
+			     <b:navLink value="Baja" href="#"></b:navLink>
+			     
+			</b:dropMenu>
+			
+	        
+	        <b:navLink value="Zonas de interés" href="#" rendered="#{usuarioMB.log}"></b:navLink>
+	        <b:navLink value="Reportes" href="#" rendered="#{usuarioMB.log}"></b:navLink>
+	        <b:navLink value="Alta Administradores" href="altaUsuario.xhtml" rendered="#{usuarioMB.log}"></b:navLink>
+	        <b:navLink value="Login" href="login.xhtml" rendered="#{!usuarioMB.log}" ></b:navLink>
+	   
+	        <b:navLink value="Logout" href="login.xhtml" rendered="#{usuarioMB.log}"></b:navLink>
+	        
+	    </b:navbarLinks>
+	    
+	</b:navBar>
+	
+	<div id="NavDecoration" style="background-color:#2b4890; width:100%;height:30px;"></div>
+</nav>
+</ui:composition>

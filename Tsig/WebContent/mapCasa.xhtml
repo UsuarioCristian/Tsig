@@ -1,0 +1,196 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<head>
+<link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css"
+	type="text/css"></link>
+<style>
+.map {
+	height: 500px;
+	width: 600px;
+	border: solid 1px;
+}
+</style>
+<script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
+<title>OpenLayers 3 example</title>
+
+
+<script type="text/javascript">
+    
+    var map;
+    var wms;
+    var puntos;
+    
+    var saveStrategy = new OpenLayers.Strategy.Save();
+    saveStrategy.events.on({
+        'success': function(event) {
+             alert('Changes saved');
+        },
+        'fail': function(event) {
+             alert('Error! Changes not saved');
+        },
+        scope: this
+    });
+    
+	var cantidad= 0;
+    var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
+    
+    var map_controls = [
+                         new OpenLayers.Control.PanZoomBar(), 
+                         new OpenLayers.Control.MouseToolbar(),
+                         
+                         ];
+	var mapoptions = 
+		{ 
+			
+			
+			units: 'm',
+			projection: "EPSG:32721",
+			maxExtent:bounds ,
+			center: new OpenLayers.LonLat(574553.537,6141267.75),
+			maxResolution: 1000
+			
+			
+	    };
+	
+	function init() {
+		
+	
+		     map = new OpenLayers.Map('map', mapoptions);            
+		            // setup tiled layer
+		           var tiled = new OpenLayers.Layer.WMS(
+		        		   
+                "mapabase", "http://localhost:8080/geoserver/sige/wms",
+                {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
+                            
+            );
+		          
+		           var wfs = new OpenLayers.Layer.Vector(
+		                    "ejes",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "ejes", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "geom", // field in Feature Type details with type "Geometry"
+		                            
+		                        })
+		                    
+		                    });
+		           
+		           var wfs2 = new OpenLayers.Layer.Vector(
+		                    "ejes1",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "ejes1", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "geom", // field in Feature Type details with type "Geometry"
+		                            
+		                        })
+		                    
+		                    });
+		           wfs2.style = OpenLayers.Util.applyDefaults({strokeColor: "#ff0000"}, 
+		                    OpenLayers.Feature.Vector.style["default"]);
+
+		           
+		            puntos = new OpenLayers.Layer.Vector(
+		                    "puntos",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "puntos", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+		                           
+		                        })
+		                    
+		                    });
+		           
+		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
+		                    OpenLayers.Feature.Vector.style["default"]);
+		       
+		           map.addLayers([tiled, wfs,wfs2,puntos]);
+		        
+		           
+		           var panel = new OpenLayers.Control.Panel(
+		                   {displayClass: 'olControlEditingToolbar'}
+		               );
+	               
+		               var drawPoint = new OpenLayers.Control.DrawFeature(
+		            		   puntos, OpenLayers.Handler.Point,
+		                       {displayClass: 'olControlDrawFeaturePoint'}
+		                   );
+
+		                	
+							drawPoint.featureAdded = function(feature) {
+								
+								feature.style.strokeColor = "#0000ff";
+
+								feature.attributes.nombre="AIJEEAJIAEJIEAJI";
+
+								feature.state = OpenLayers.State.INSERT;
+
+								var input = document.getElementById('altaInmueble:idcasa');
+								input.value= puntos.features.length;
+								
+								feature.layer.drawFeature(feature);
+								drawPoint.deactivate();
+
+								OpenLayers.Util.removeItem(panel.controls, drawPoint);
+								panel.redraw(); 
+		                   }
+		              	
+		                   panel.addControls(
+		                       [new OpenLayers.Control.Navigation(), drawPoint]
+		                   );
+		                   
+		                   map.addControl(panel);
+		                   map.addControl(new OpenLayers.Control.LayerSwitcher());
+		           
+ 		           map.zoomTo(7);
+ 		           
+// 		           console.log(map.getCenter());
+// 		           console.log(map.getZoom());	
+// 		           map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+ 		      
+					
+			}
+	
+	function save() {
+		var input = document.getElementById('altaInmueble:idcasa');
+		alert(input.value);
+		 saveStrategy.save();
+			
+	}
+    </script>
+	</head>
+	<body onload="init()">
+	
+		
+		
+		<a href="#" onclick="save();return false">Save Puntos</a>
+		<div id="map" class="map"></div>
+		
+		
+
+	</body>
+
+</ui:composition>
