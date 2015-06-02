@@ -17,7 +17,13 @@
 <link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css"
 	type="text/css"></link>
 <style>
-
+.mapWrap{	
+			display: block;
+ 	 		margin-left: auto;
+ 			margin-right: auto;
+ 			width: 80%;
+ 			height: 80%;
+ 	 }
 .map {
 
 
@@ -79,10 +85,13 @@
 		        		   
                 "mapabase", "http://localhost:8080/geoserver/sige/wms",
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
-		           
-					);
+                            
+            );
+		          
+		      
 
-		            puntos = new OpenLayers.Layer.Vector(
+		           
+		           casageom = new OpenLayers.Layer.Vector(
 		                    "casageom",
 		                    {
 		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
@@ -96,54 +105,27 @@
 		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                           
-		                        })
+		                        }),
+		                        filter:""
 		                    
 		                    });
 		           
-		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
-		                    OpenLayers.Feature.Vector.style["default"]);
-		           puntos.style.externalGraphic="resources/Images/casa.png";
-		           puntos.style.graphicWidth= 40;
-		           puntos.style.graphicHeight= 32;
-		           puntos.style.fillOpacity=1;
-
-
-			       
-		           map.addLayers([tiled,puntos]);
+		           casageom.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
+		           OpenLayers.Feature.Vector.style["default"]);
+		           casageom.style.externalGraphic="resources/Images/casa.png";
+		           casageom.style.graphicWidth= 40;
+		           casageom.style.graphicHeight= 32;
+		           casageom.style.fillOpacity=1;
+		           
+		           map.addLayers([tiled,casageom]);
 		        
 		           
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
 		               );
 	               
-		               var drawPoint = new OpenLayers.Control.DrawFeature(
-		            		   puntos, OpenLayers.Handler.Point,
-		                       {displayClass: 'olControlDrawFeaturePoint'}
-		                   );
-
-		                	
-							drawPoint.featureAdded = function(feature) {
-								
-								feature.style.strokeColor = "#0000ff";
-
-								feature.state = OpenLayers.State.INSERT;
-
-								var input = document.getElementById('altaInmueble:idcasa');
-
-								input.value= puntos.features.length;
-								
-								//feature.attributes.numpunto=input.value;
-								
-								//alert(input.value);
-								feature.layer.drawFeature(feature);
-								
-								drawPoint.deactivate();
-								OpenLayers.Util.removeItem(panel.controls, drawPoint);
-								panel.redraw(); 
-		                   }
-		              	
 		                   panel.addControls(
-		                       [new OpenLayers.Control.Navigation(), drawPoint]
+		                       [new OpenLayers.Control.Navigation()]
 		                   );
 		                   
 		                   map.addControl(panel);
@@ -151,14 +133,66 @@
 		           
  		           map.zoomTo(7);
  		           
- 		      
-					
 			}
 	
-	function save() {
-		saveStrategy.save();
+	function updateFilter() {
+
+		
+		var inputs = document.getElementById('consultaInmueble:este');
+		
+		var idFilter = [];
+		var filt =[];
+	
+		for (key in inputs.children) {
 			
+			if(!(isNaN(key))){
+			idFilter.push(inputs.children[key].value);
+			}
+			
+		}
+		//Id filter contiene los ids a filtrar
+		
+		
+		for (key in idFilter){
+			    filt[key] = new OpenLayers.Filter.Comparison({
+			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			    property: "numpunto",
+			    value: idFilter[key]
+			});
+			
+		}
+		
+
+
+		casageom.filter= new OpenLayers.Filter.Logical({
+		    	type: OpenLayers.Filter.Logical.OR,
+		    	filters: filt
+		});
+		
+
+		casageom.refresh({force:true});
+		
 	}
+	
+	function handleAjax(data) {
+	    var status = data.status;
+
+	    switch(status) {
+	        case "begin":
+	            // This is invoked right before ajax request is sent.
+	            break;
+
+	        case "complete":
+	            // This is invoked right after ajax response is returned.
+	            break;
+
+	        case "success":
+	            // This is invoked right after successful processing of ajax response and update of HTML DOM.
+	            updateFilter();
+	            break;
+	    }
+	}
+
     </script>
 </h:head>
 
@@ -168,70 +202,44 @@
 
 <div id="cont" class="contenedor">
 
-<h:form id="altaInmueble">
+<h:form id="consultaInmueble">
 
-<b:panel id="datos" styleClass="panel panel-primary outtab" title="Paso 1">
- <p >Bienvendio/a en este lugar se daran de alta los datos del inmueble.</p>
-      
-    <b:panelGrid colSpans="2,10" rowClasses="rowform">
-    
-	    <h:outputLabel value="Titulo de la casa" />
-	    <b:inputText span="8" value="#{propiedadMB.titulo}"/>
-	         
-	    <h:outputLabel value="Barrio de la casa" />	    
-	    <b:inputText span="8" value="#{propiedadMB.barrio}"/>
-	    
-	    <h:outputLabel value="Tipo de propiedad" />	
-	    
-	    <b:selectOneMenu span="8" value="#{propiedadMB.tipoProp}" >
-            <f:selectItem itemLabel="comercial" itemValue="comercial"/>
-            <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
-        </b:selectOneMenu>
-        
-        <h:outputLabel value="Cantidad de baNIos" />	    
-	    <b:inputText span="8" value="#{propiedadMB.cantBanios}"/>
-        
-        <h:outputLabel value="Cantidad de cuartos" />	    
-	    <b:inputText span="8" value="#{propiedadMB.cantCuartos}"/>
-        
-	    
-	    <h:outputLabel value="Piscina: " />
-	    <b:selectBooleanCheckbox value="# {propiedadMB.piscina}" />
-	    
-	    <h:outputLabel value="Garage: " />
-	    <b:selectBooleanCheckbox value="# {propiedadMB.garage}" />
-	    
-		    
-	</b:panelGrid>
-</b:panel>
 
-  <b:panel id="mapa" styleClass="panel panel-primary " title="Paso 2">
+
+  <b:panel id="mapa" styleClass="panel panel-primary " title="Consultas">
   
-  <p>Marque en el mapa donde se encuentra el inmueble.</p>
+  <p>Consultas por inmueble.</p>
   	
   <div id="mapWrap" class="mapWrap">
   <div id="map" class="map"></div>
   </div>	
      
-	    <h:outputLabel value="Direccion del inmueble" />
-	    <b:inputText span="4" value="#{propiedadMB.direccion}" />
+	    <h:outputLabel value="Cantidad de cuartos" />
+	    <b:inputText span="4" value="#{propiedadMB.cantCuartos}" />
  	
-  <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()" action="#{propiedadMB.guardarPropiedad}"></h:commandButton>	
+ 	
+	
+ 	
+  <h:commandButton id="save" value="Consultar" actionListener="#{propiedadMB.consultaPropiedad}">
+ 		<f:ajax execute="@form" onevent="handleAjax" render="idcasa este" update="este"/>
+  </h:commandButton>	
   </b:panel>
   
-    <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
+  <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
+ 
+<h:panelGroup  id="este">
+    <ui:repeat value="#{propiedadMB.casas}"  var="id">
+		<h:inputHidden value="#{id}" class="ids" /> 
+	</ui:repeat>
+</h:panelGroup>
+
     
-
-
-
 
 </h:form>
 
 	
 
 </div>
-
-
 
 
 </h:body>

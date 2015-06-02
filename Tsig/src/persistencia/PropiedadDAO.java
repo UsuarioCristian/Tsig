@@ -52,52 +52,40 @@ public class PropiedadDAO implements IPropiedadDAO {
 	
 	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage){
 		
-		String 	tituloSTR,barrioSTR,tipoPropSTR,cantbaniosSTR,cantCuartosSTR,garageSTR,piscinaSTR,comb; 
+		String comb; 
 		
+		comb="(c.estado= 'publica' or c.estado='reservada')";
 		if("".compareTo(titulo)!=0)
 		{
-			tituloSTR="c.titulo="+titulo;
-		}else{
-			tituloSTR="";
+			comb= comb+" and c.titulo="+titulo;
 		}		
 		if("".compareTo(barrio)!=0)
 		{
-			barrioSTR="c.barrio="+barrio;
-		}else{
-			barrioSTR="";
+			comb=comb+" and c.barrio="+barrio;
 		}		
 		if("".compareTo(tipoProp)!=0)
 		{
-			tipoPropSTR="c.tipoprop="+tipoProp;
-		}else{
-			tipoPropSTR="";
+			comb=comb+" and c.tipoProp="+tipoProp;
 		}
-		if(cantbanios>-1){
-			cantbaniosSTR="c.cantbanios >="+cantbanios;
-		}
-		else{
-			cantbaniosSTR="";
+		if(cantbanios>0){
+			comb= comb + " and c.cantBanios ="+cantbanios;
+		}				
+		if(cantCuartos>0){
+			comb = comb+" and c.cantCuartos ="+cantCuartos;
 		}		
-		if(cantbanios>-1){
-			cantCuartosSTR="c.cantcuartos >="+cantCuartos;
-		}
-		else{
-			cantCuartosSTR="";
-		}
 		if(garage){
-			garageSTR="c.garage= TRUE";
-		}else{
-			garageSTR= "";
+			comb= comb+" and c.garage= TRUE";
 		}
 		if(piscina){
-			piscinaSTR="c.piscina= TRUE";
-		}else{
-			piscinaSTR= "";
+			comb = comb+" and c.piscina= TRUE";
 		}
-		comb=tituloSTR+" and "+barrioSTR+" and "+tipoPropSTR+" and "+cantbaniosSTR+" and "+cantCuartosSTR+" and "+garageSTR+" and "+piscinaSTR;
+		
 		
 		try{
-		List<Integer>ids=em.createQuery("Select c.id from casa c where "+comb).getResultList();
+			System.out.println(comb);
+			
+		List<Integer>ids=em.createQuery("Select c.id from Casa c where "+comb).getResultList();
+		
 		return ids;
 		}
 		catch(Exception e){
@@ -107,6 +95,22 @@ public class PropiedadDAO implements IPropiedadDAO {
 		
 		
 		
+	}
+
+	@Override
+	public List<Casa> consultaPropiedad(int cantCuartos) {
+try {
+			
+			List<Casa> casas = em.createQuery("Select c FROM Casa c WHERE c.cantCuartos = '"+cantCuartos+"'").getResultList();
+
+			return casas;
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return null;
+			
+		}
 	}
 
 	

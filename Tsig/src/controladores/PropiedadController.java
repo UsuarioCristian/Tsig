@@ -1,6 +1,8 @@
 package controladores;
 
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -51,6 +53,13 @@ public class PropiedadController implements IPropiedadController{
 		}
 		return null;
 		
+	}
+
+
+	@Override
+	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage) {
+		
+		return PropiedadDAO.getFilteredCasa(titulo,barrio,tipoProp,cantbanios,cantCuartos,piscina,garage);
 	}
 
 }

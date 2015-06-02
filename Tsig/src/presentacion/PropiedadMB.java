@@ -12,6 +12,9 @@ import java.io.Serializable;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
@@ -34,16 +37,16 @@ public class PropiedadMB implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	
-	private int idCasa;	
-	private int direccion;	
-	private String barrio;	
-	private String tipoProp;	
-	private int cantBanios;		
-	private int cantCuartos;	
-	private boolean garage;	
-	private boolean piscina;
-	private String titulo;
-	
+	private int idCasa=0;	
+	private int direccion=0;	
+	private String barrio="";	
+	private String tipoProp="";	
+	private int cantBanios=0;		
+	private int cantCuartos=0;	
+	private boolean garage=false;	
+	private boolean piscina=false;
+	private String titulo="";
+	private List<Integer> casas= new ArrayList();
 	@EJB
 	IPropiedadController ipc;
 
@@ -95,6 +98,33 @@ public class PropiedadMB implements Serializable {
 		}
 		
 	}
+	public void consultaPropiedad(){
+		 
+		System.out.println("Cantidad de cuartos:" +cantCuartos);
+		
+		System.out.println("Maxi dice que anda bien"+titulo+barrio+tipoProp+cantBanios+cantCuartos+piscina+garage);
+		
+	
+		
+		
+	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
+//		idCasa = casas.getIdGeom();
+//		RequestContext context = RequestContext.this.;
+//		context.execute("updateFilter()");
+
+		System.out.println("maxi es comesable");
+		
+		for (Integer casa : casas) {
+			System.out.println("maxi es comesable"+casa);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
 
 
 	public int getIdCasa() {
@@ -185,6 +215,12 @@ public class PropiedadMB implements Serializable {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+	public List<Integer> getCasas() {
+		return casas;
+	}
+	public void setCasas(List<Integer> casas) {
+		this.casas = casas;
 	}
 	
 	

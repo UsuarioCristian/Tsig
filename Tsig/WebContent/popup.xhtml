@@ -60,7 +60,9 @@
 			center: new OpenLayers.LonLat(574553.537,6141267.75),
 			maxResolution: 1000
 	    };
-	
+	 var defStyle = {strokeColor: "blue", strokeOpacity: "0.7", strokeWidth: 3, cursor: "pointer"};
+
+	 
 	function init() {
 		
 	
@@ -72,9 +74,17 @@
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
                             
             );
-		          
+		           tiled.style=OpenLayers.Util.applyDefaults(OpenLayers.Feature.Vector.style["default"]);
+
+		          		           
+		           tiled.style.externalGraphic="resources/Images/bus.gif";
+		           tiled.style.graphicWidth= 20;
+		           tiled.style.graphicHeight= 20;
+		           tiled.style.fillOpacity=1;
+
+			          
 		            puntos = new OpenLayers.Layer.Vector(
-		                    "puntos",
+		                    "casageom",
 		                    {
 		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
 		                        , projection: new OpenLayers.Projection("EPSG:32721")
@@ -83,7 +93,7 @@
 		                            srsName: "EPSG:32721",
 		                            url: "http://localhost:8080/geoserver/wfs",
 		                            featurePrefix: 'sige', //geoserver worspace name
-		                            featureType: "puntos", //geoserver Layer Name
+		                            featureType: "casageom", //geoserver Layer Name
 		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                            
