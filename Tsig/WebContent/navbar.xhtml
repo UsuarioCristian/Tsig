@@ -11,7 +11,7 @@
 	    	<b:dropMenu value="Inmuebles" rendered="#{usuarioMB.log}" >
 	    	
 	    		<b:navLink header="Casa"></b:navLink>
-			    <b:navLink value="Alta" href="#"></b:navLink>
+			    <b:navLink value="Alta" href="/views/altaCasa.xhtml"></b:navLink>
 			    <b:navLink value="Edicion" href="#"></b:navLink>
 			    <b:navLink value="Baja" href="#"></b:navLink>
 			    
@@ -24,9 +24,9 @@
 			</b:dropMenu>
 			
 	        
-	        <b:navLink value="Zonas de interés" href="#" rendered="#{usuarioMB.log}"></b:navLink>
+	        <b:navLink value="Zonas de interés" href="/views/poligonos.xhtml" rendered="#{usuarioMB.log}"></b:navLink>
 	        <b:navLink value="Reportes" href="#" rendered="#{usuarioMB.log}"></b:navLink>
-	        <b:navLink value="Alta Administradores" href="altaUsuario.xhtml" rendered="#{usuarioMB.log}"></b:navLink>
+	        <b:navLink value="Alta Administradores" href="/views/altaUsuario.xhtml" rendered="#{usuarioMB.log}"></b:navLink>
 	        <b:navLink value="Login" href="login.xhtml" rendered="#{!usuarioMB.log}" ></b:navLink>
 	   
 	        <b:navLink value="Logout" href="login.xhtml" rendered="#{usuarioMB.log}"></b:navLink>

@@ -21,7 +21,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 	public boolean guardarPropiedad(Casa casa) {
 		
 		try {
-			
+		
 			em.persist(casa);
 			return true;
 
@@ -99,7 +99,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 
 	@Override
 	public List<Casa> consultaPropiedad(int cantCuartos) {
-try {
+		try {
 			
 			List<Casa> casas = em.createQuery("Select c FROM Casa c WHERE c.cantCuartos = '"+cantCuartos+"'").getResultList();
 
@@ -111,6 +111,20 @@ try {
 			return null;
 			
 		}
+	}
+
+	@Override
+	public List<Integer> getDistance(Integer distance) {
+		
+		try{
+		List<Integer> result = em.createNativeQuery("select c.idcasa from casa c, casageom g, serv_comerciales s where c.idgeom=g.idpunto and ST_Intersects(ST_Buffer(g.punto,200),ST_Transform(s.geom,32721) )").getResultList();
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 
 	

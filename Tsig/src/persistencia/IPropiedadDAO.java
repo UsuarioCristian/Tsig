@@ -17,4 +17,6 @@ public interface IPropiedadDAO {
 	public List<Casa> consultaPropiedad(int cantCuartos);
 
 	public List<Integer> getFilteredCasa(String titulo, String barrio,String tipoProp, int cantbanios, int cantCuartos, boolean piscina,boolean garage);
+	
+	public List<Integer> getDistance(Integer distance);
 }

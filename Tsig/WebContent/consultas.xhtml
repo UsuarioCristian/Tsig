@@ -87,9 +87,119 @@
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
                             
             );
-		          
-		      
 
+		            
+		           var style = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 30,
+		        	            graphicHeight: 30,
+		        	           
+		        	           
+		        	        },
+		        	        // the second argument will include all rules
+		        	        {
+		        	            rules: [
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "nbre", // the "foo" feature attribute
+		        	                        value: "MULTI AHORR"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	            graphicWidth: 45,
+		    		        	            graphicHeight: 25,
+		        	                        externalGraphic: "resources/Images/multiahorro.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "nbre",
+		        	                        value: "DEVOTO"
+		        	                    }),
+		        	                    symbolizer: {
+		    		        	  
+		        	                        externalGraphic: "resources/Images/devoto.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "nbre",
+		        	                        value: "DISCO"
+		        	                    }),
+		        	                    symbolizer: {
+		    		        	            graphicWidth: 50,
+		    		        	            graphicHeight: 20,
+		        	                        externalGraphic: "resources/Images/disco.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "nbre",
+		        	                        value: "MACRO MERCA"
+		        	                    }),
+		        	                    symbolizer: {
+		        	                        externalGraphic: "resources/Images/macromercado.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "nbre",
+		        	                        value: "TA TA"
+		        	                    }),
+		        	                    symbolizer: {
+		    		        	            graphicWidth: 40,
+		    		        	            graphicHeight: 20,
+		        	                        externalGraphic: "resources/Images/tata.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "nbre",
+		        	                        value: "TIENDA INGL"
+		        	                    }),
+		        	                    symbolizer: {
+		        	                        externalGraphic: "resources/Images/tiendainglesa.png"
+		        	                    }
+		        	                }),
+		        	            
+		        	              
+		        	            ]
+		        	        }
+		        	    );
+		        	    
+		        	           
+		      
+		             supers = new OpenLayers.Layer.Vector(
+		                    "serv_comerciales",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:31981")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:31981",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "serv_comerciales", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "geom", // field in Feature Type details with type "Geometry"
+		                            
+		                        }),
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(style)
+		                    
+		                    });
+		           
+		    
+		         
 		           
 		           casageom = new OpenLayers.Layer.Vector(
 		                    "casageom",
@@ -110,14 +220,13 @@
 		                    
 		                    });
 		           
-		           casageom.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
-		           OpenLayers.Feature.Vector.style["default"]);
+		           casageom.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"},OpenLayers.Feature.Vector.style["default"]);
 		           casageom.style.externalGraphic="resources/Images/casa.png";
 		           casageom.style.graphicWidth= 40;
 		           casageom.style.graphicHeight= 32;
 		           casageom.style.fillOpacity=1;
 		           
-		           map.addLayers([tiled,casageom]);
+		           map.addLayers([tiled,supers,casageom]);
 		        
 		           
 		           var panel = new OpenLayers.Control.Panel(
