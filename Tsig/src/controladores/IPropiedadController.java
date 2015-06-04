@@ -14,4 +14,5 @@ public interface IPropiedadController {
 	public Casa getCasa(Integer id);
 	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage);
 	public List<Integer> getDistanciaInteres(Integer distanciaInteres);
+	List<Integer> getDistanciaParadas(Integer distanciaParadas);
 }

@@ -90,24 +90,7 @@
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
                             
             );
-		 /*   parcelas = new OpenLayers.Layer.Vector(
-                    "parcelas",
-                    {
-                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
-                        , projection: new OpenLayers.Projection("EPSG:32721")
-                         ,protocol: new OpenLayers.Protocol.WFS({
-                            version: "1.1.0",
-                            srsName: "EPSG:32721",
-                            url: "http://localhost:8080/geoserver/wfs",
-                            featurePrefix: 'sige', //geoserver worspace name
-                            featureType: "parcelas", //geoserver Layer Name
-                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
-                            geometryName: "geom", // field in Feature Type details with type "Geometry"
-                            
-                        }),
-                       
-                    
-                    });*/
+
 
 		            
 		           var styleSuper = new OpenLayers.Style(
@@ -231,25 +214,25 @@
 // 			        	        }
 // 			        	    );
 		             
-// 		             paradas = new OpenLayers.Layer.Vector(
-// 			                    "paradas",
-// 			                    {
-// 			                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
-// 			                        , projection: new OpenLayers.Projection("EPSG:31981")
-// 			                         ,protocol: new OpenLayers.Protocol.WFS({
-// 			                            version: "1.1.0",
-// 			                            srsName: "EPSG:31981",
-// 			                            url: "http://localhost:8080/geoserver/wfs",
-// 			                            featurePrefix: 'sige', //geoserver worspace name
-// 			                            featureType: "paradas", //geoserver Layer Name
-// 			                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
-// 			                            geometryName: "geom", // field in Feature Type details with type "Geometry"
+		             paradas = new OpenLayers.Layer.Vector(
+			                    "paradas",
+			                    {
+			                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+			                        , projection: new OpenLayers.Projection("EPSG:31981")
+			                         ,protocol: new OpenLayers.Protocol.WFS({
+			                            version: "1.1.0",
+			                            srsName: "EPSG:31981",
+			                            url: "http://localhost:8080/geoserver/wfs",
+			                            featurePrefix: 'sige', //geoserver worspace name
+			                            featureType: "paradas", //geoserver Layer Name
+			                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+			                            geometryName: "geom", // field in Feature Type details with type "Geometry"
 			                            
-// 			                        }),
-// 			                        filter:"",
-// 			                        styleMap: new OpenLayers.StyleMap(styleParadas)
+			                        }),
+			                        filter:"",
+			                       // styleMap: new OpenLayers.StyleMap(styleParadas)
 			                    
-// 			                    });
+			                    });
 		           
 		    
 		         
@@ -279,7 +262,7 @@
 		           casageom.style.graphicHeight= 32;
 		           casageom.style.fillOpacity=1;
 		           
-		           map.addLayers([tiled,supers,casageom]);
+		           map.addLayers([tiled,supers,paradas,casageom]);
 		        
 		           
 		           var panel = new OpenLayers.Control.Panel(
@@ -292,9 +275,7 @@
 		                   
 		                   map.addControl(panel);
 		                   map.addControl(new OpenLayers.Control.LayerSwitcher());
-
-
-			                   
+		                   
 		           map.events.register("zoomend", map, zoomChanged);
  		           map.zoomTo(7);
  		           
@@ -306,12 +287,12 @@
 
 			  
 		   if (zoom >=8) {
-			   supers.setVisibility(true);
-				   
+			    supers.setVisibility(true);
+				paradas.setVisibility(true);
 		   }
 		   else  {
 			   supers.setVisibility(false);
-			   
+			   paradas.setVisibility(false);
 		   }
 		   //]]>
 		}

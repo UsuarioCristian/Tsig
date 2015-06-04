@@ -30,6 +30,9 @@ public class UsuarioMB implements Serializable {
 	 
 	 private boolean log ;
 	 
+	 private String logo="resources/Images/logo.png";
+	 
+	
 	public void altaUsuario()
 	{	
 		System.out.println("alta usuario");
@@ -93,7 +96,7 @@ public class UsuarioMB implements Serializable {
 		try {
 			this.log=false;
 			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-			FacesContext.getCurrentInstance().getExternalContext().redirect("index.html");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
@@ -132,6 +135,13 @@ public class UsuarioMB implements Serializable {
 
 	public void setLog(boolean log) {
 		this.log = log;
+	}
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
 

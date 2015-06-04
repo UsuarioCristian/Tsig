@@ -110,16 +110,34 @@ public class PropiedadMB implements Serializable {
 	public void consultaPropiedad(){
 		 
 		try{
-			
+		casas.clear();
+		
 	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
 	    
 	    if(distanciaInteres!=0){
 	    	List<Integer> aux=ipc.getDistanciaInteres(distanciaInteres);
 	    	if (aux != null){
 	    		casas.retainAll(aux);
+	    		aux.clear();
 	    	}else{
-	    		casas.clear();
+	    		casas.clear(); 
 	    	}
+	    }
+	    	
+		if(distanciaParada!=0){
+			
+		    	List<Integer> aux2=ipc.getDistanciaParadas(distanciaParada);
+		    	
+		    	for(Integer i: aux2){
+		    		System.out.println("Ids de parada "+i);
+		    	}
+		    	
+		    	if (aux2 != null){
+		    		casas.retainAll(aux2);
+		    		aux2.clear();
+		    	}else{
+		    		casas.clear();
+		    	}
 	    	
 	    }
 	    

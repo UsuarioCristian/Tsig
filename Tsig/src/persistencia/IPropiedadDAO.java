@@ -20,4 +20,6 @@ public interface IPropiedadDAO {
 	
 
 	public List<Integer> getDistancePuntoInteres(Integer distance);
+
+	List<Integer> getDistanceParadas(Integer distance);
 }

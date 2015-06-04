@@ -78,5 +78,17 @@ public class PropiedadController implements IPropiedadController{
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Integer> getDistanciaParadas(Integer distanciaParadas) {
+		
+		try{
+		return   PropiedadDAO.getDistanceParadas(distanciaParadas);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }
