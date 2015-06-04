@@ -18,5 +18,6 @@ public interface IPropiedadDAO {
 
 	public List<Integer> getFilteredCasa(String titulo, String barrio,String tipoProp, int cantbanios, int cantCuartos, boolean piscina,boolean garage);
 	
-	public List<Integer> getDistance(Integer distance);
+
+	public List<Integer> getDistancePuntoInteres(Integer distance);
 }

@@ -31,8 +31,6 @@ public class PropiedadDAO implements IPropiedadDAO {
 			return false;
 		}
 
-		
-
 	}
 
 	@Override
@@ -82,7 +80,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 		
 		
 		try{
-			
+			System.out.println("La query: "+comb);
 			
 		List<Integer>ids=em.createQuery("Select c.id from Casa c where "+comb).getResultList();
 		
@@ -114,10 +112,11 @@ public class PropiedadDAO implements IPropiedadDAO {
 	}
 
 	@Override
-	public List<Integer> getDistance(Integer distance) {
+	public List<Integer> getDistancePuntoInteres(Integer distance) {
 		
 		try{
-		List<Integer> result = em.createNativeQuery("select c.idcasa from casa c, casageom g, serv_comerciales s where c.idgeom=g.idpunto and ST_Intersects(ST_Buffer(g.punto,200),ST_Transform(s.geom,32721) )").getResultList();
+		List<Integer> result = em.createNativeQuery("select distinct c.idcasa from casa c, casageom g, serv_comerciales s where c.idgeom=g.idpunto and ST_Intersects(ST_Buffer(g.punto,"+distance+"),ST_Transform(s.geom,32721) )").getResultList();
+		System.out.println("LA DISTANCIA" + distance);
 		return result;
 		}
 		catch(Exception e){

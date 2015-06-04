@@ -60,13 +60,23 @@ public class PropiedadController implements IPropiedadController{
 	@Override
 	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage) {
 		
-		List<Integer> test = PropiedadDAO.getDistance(200);
 		
-		for(int i=0;i< test.size();i++){
-			System.out.println("ACAAAAAAA"+test.get(i));
-		}
+
 		
 		return PropiedadDAO.getFilteredCasa(titulo,barrio,tipoProp,cantbanios,cantCuartos,piscina,garage);
+	}
+
+
+	@Override
+	public List<Integer> getDistanciaInteres(Integer distanciaInteres) {
+		
+		try{
+		return   PropiedadDAO.getDistancePuntoInteres(distanciaInteres);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

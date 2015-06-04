@@ -46,6 +46,14 @@ public class PropiedadMB implements Serializable {
 	private boolean garage=false;	
 	private boolean piscina=false;
 	private String titulo="";
+	/* For advanced filters*/
+	private Integer distanciaInteres=0;
+	private Integer distanciaBus=0;
+	private Integer distanciaMar=0;
+	private Integer distanciaParada=0;
+	private String calle1="";
+	private String calle2="";
+	
 	private List<Integer> casas= new ArrayList();
 	@EJB
 	IPropiedadController ipc;
@@ -98,10 +106,26 @@ public class PropiedadMB implements Serializable {
 		}
 		
 	}
+	/* Filters */
 	public void consultaPropiedad(){
 		 
 		try{
+			
 	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
+	    
+	    if(distanciaInteres!=0){
+	    	List<Integer> aux=ipc.getDistanciaInteres(distanciaInteres);
+	    	if (aux != null){
+	    		casas.retainAll(aux);
+	    	}else{
+	    		casas.clear();
+	    	}
+	    	
+	    }
+	    
+	    
+	    
+	    
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -202,6 +226,42 @@ public class PropiedadMB implements Serializable {
 	}
 	public void setCasas(List<Integer> casas) {
 		this.casas = casas;
+	}
+	public Integer getDistanciaInteres() {
+		return distanciaInteres;
+	}
+	public void setDistanciaInteres(Integer distanciaInteres) {
+		this.distanciaInteres = distanciaInteres;
+	}
+	public Integer getDistanciaBus() {
+		return distanciaBus;
+	}
+	public void setDistanciaBus(Integer distanciaBus) {
+		this.distanciaBus = distanciaBus;
+	}
+	public Integer getDistanciaMar() {
+		return distanciaMar;
+	}
+	public void setDistanciaMar(Integer distanciaMar) {
+		this.distanciaMar = distanciaMar;
+	}
+	public Integer getDistanciaParada() {
+		return distanciaParada;
+	}
+	public void setDistanciaParada(Integer distanciaParada) {
+		this.distanciaParada = distanciaParada;
+	}
+	public String getCalle1() {
+		return calle1;
+	}
+	public void setCalle1(String calle1) {
+		this.calle1 = calle1;
+	}
+	public String getCalle2() {
+		return calle2;
+	}
+	public void setCalle2(String calle2) {
+		this.calle2 = calle2;
 	}
 	
 	

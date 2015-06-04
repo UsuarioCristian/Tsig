@@ -43,6 +43,9 @@
     var map;
     var wms;
     var puntos;
+    var paradas;
+    var supers;
+	var parcelas;	
     
     var saveStrategy = new OpenLayers.Strategy.Save();
     saveStrategy.events.on({
@@ -81,15 +84,33 @@
 	
 		     map = new OpenLayers.Map('map', mapoptions);            
 		            // setup tiled layer
-		           var tiled = new OpenLayers.Layer.WMS(
+		    var tiled = new OpenLayers.Layer.WMS(
 		        		   
                 "mapabase", "http://localhost:8080/geoserver/sige/wms",
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
                             
             );
+		 /*   parcelas = new OpenLayers.Layer.Vector(
+                    "parcelas",
+                    {
+                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+                        , projection: new OpenLayers.Projection("EPSG:32721")
+                         ,protocol: new OpenLayers.Protocol.WFS({
+                            version: "1.1.0",
+                            srsName: "EPSG:32721",
+                            url: "http://localhost:8080/geoserver/wfs",
+                            featurePrefix: 'sige', //geoserver worspace name
+                            featureType: "parcelas", //geoserver Layer Name
+                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+                            geometryName: "geom", // field in Feature Type details with type "Geometry"
+                            
+                        }),
+                       
+                    
+                    });*/
 
 		            
-		           var style = new OpenLayers.Style(
+		           var styleSuper = new OpenLayers.Style(
 		        	        // the first argument is a base symbolizer
 		        	        // all other symbolizers in rules will extend this one
 		        	        {
@@ -194,9 +215,41 @@
 		                            
 		                        }),
 		                        filter:"",
-		                        styleMap: new OpenLayers.StyleMap(style)
+		                        styleMap: new OpenLayers.StyleMap(styleSuper)
 		                    
 		                    });
+
+
+// 			           var styleParadas = new OpenLayers.Style(
+// 			        	        // the first argument is a base symbolizer
+// 			        	        // all other symbolizers in rules will extend this one
+// 			        	        {
+// 			        	            graphicWidth: 10,
+// 			        	            graphicHeight: 10,
+// 			        	            externalGraphic: "resources/Images/bus.gif"
+			        	           
+// 			        	        }
+// 			        	    );
+		             
+// 		             paradas = new OpenLayers.Layer.Vector(
+// 			                    "paradas",
+// 			                    {
+// 			                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+// 			                        , projection: new OpenLayers.Projection("EPSG:31981")
+// 			                         ,protocol: new OpenLayers.Protocol.WFS({
+// 			                            version: "1.1.0",
+// 			                            srsName: "EPSG:31981",
+// 			                            url: "http://localhost:8080/geoserver/wfs",
+// 			                            featurePrefix: 'sige', //geoserver worspace name
+// 			                            featureType: "paradas", //geoserver Layer Name
+// 			                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+// 			                            geometryName: "geom", // field in Feature Type details with type "Geometry"
+			                            
+// 			                        }),
+// 			                        filter:"",
+// 			                        styleMap: new OpenLayers.StyleMap(styleParadas)
+			                    
+// 			                    });
 		           
 		    
 		         
@@ -239,10 +292,30 @@
 		                   
 		                   map.addControl(panel);
 		                   map.addControl(new OpenLayers.Control.LayerSwitcher());
-		           
+
+
+			                   
+		           map.events.register("zoomend", map, zoomChanged);
  		           map.zoomTo(7);
  		           
 			}
+	
+	function zoomChanged() {
+		//<![CDATA[
+		   zoom = map.getZoom();
+
+			  
+		   if (zoom >=8) {
+			   supers.setVisibility(true);
+				   
+		   }
+		   else  {
+			   supers.setVisibility(false);
+			   
+		   }
+		   //]]>
+		}
+	
 	
 	function updateFilter() {
 
@@ -312,7 +385,36 @@
 <div id="cont" class="contenedor">
 
 <h:form id="consultaInmueble">
-
+	<b:panel id="Geo" styleClass="panel panel-primary " title="Consultas avanzadas" >
+	
+		<b:panelGrid colSpans="2,10" rowClasses="rowform">
+				<h:outputLabel value="Ingrese a cuantos metros de un supermercado" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaInteres}"/>
+			    
+			    <h:outputLabel value="Distancia a una parada de omnibus" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaParada}"/>
+			    
+			    <h:outputLabel value="Indique a cuantos metros del mar" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaMar}"/>
+			    
+		</b:panelGrid>
+		
+		 <h:outputLabel value="Marque la esquina donde debe dejarlo el omnibus" />	
+		 
+		 <b:panelGrid colSpans="2,10" rowClasses="rowform">
+		 
+			 <h:outputLabel value="Calle" />	
+			 <b:inputText span="8" value="#{propiedadMB.calle1}"/>
+			 
+			 <h:outputLabel value="Esquina" />	
+			 <b:inputText span="8" value="#{propiedadMB.calle2}"/>
+			 
+			 <h:outputLabel value="A cuantos metros le gustaria tomar este omnibus ?" />	
+			 <b:inputText span="8" value="#{propiedadMB.distanciaBus}"/>
+		 </b:panelGrid>    
+		 
+			
+	</b:panel>
 
 
   <b:panel id="mapa" styleClass="panel panel-primary " title="Consultas">
