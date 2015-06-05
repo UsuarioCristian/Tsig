@@ -82,7 +82,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 		try{
 			System.out.println("La query: "+comb);
 			
-		List<Integer>ids=em.createQuery("Select c.id from Casa c where "+comb).getResultList();
+		List<Integer>ids=em.createQuery("Select c.idGeom from Casa c where "+comb).getResultList();
 		
 		return ids;
 		}
@@ -115,7 +115,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 	public List<Integer> getDistancePuntoInteres(Integer distance) {
 		
 		try{
-		List<Integer> result = em.createNativeQuery("select distinct c.idcasa from casa c, casageom g, serv_comerciales s where c.idgeom=g.idpunto and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(s.geom,32721) )").getResultList();
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, serv_comerciales s where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(s.geom,32721) )").getResultList();
 		System.out.println("LA DISTANCIA Intrest" + distance);
 		return result;
 		}
@@ -128,8 +128,20 @@ public class PropiedadDAO implements IPropiedadDAO {
 	@Override
 	public List<Integer> getDistanceParadas(Integer distance){
 		try{
-		List<Integer> result = em.createNativeQuery("select distinct c.idcasa from casa c, casageom g, paradas p where c.idgeom=g.idpunto and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(p.geom,32721) )").getResultList();
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(p.geom,32721) )").getResultList();
 		System.out.println("LA DISTANCIA BUS" + distance);
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Integer> getDistanceRambla(Integer distance){
+		try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, borderambla b where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(b.the_geom,32721) )").getResultList();
+		
 		return result;
 		}
 		catch(Exception e){

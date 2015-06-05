@@ -90,5 +90,16 @@ public class PropiedadController implements IPropiedadController{
 		}
 		return null;
 	}
+	
+    public List<Integer> getDistanceRambla(Integer distanciaRambla) {
+		
+			try{
+			return   PropiedadDAO.getDistanceRambla(distanciaRambla);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
+	}
 
 }

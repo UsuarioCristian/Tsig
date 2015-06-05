@@ -319,7 +319,7 @@
 		for (key in idFilter){
 			    filt[key] = new OpenLayers.Filter.Comparison({
 			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
-			    property: "numpunto",
+			    property: "id",
 			    value: idFilter[key]
 			});
 			
@@ -361,7 +361,7 @@
 
 <h:body class="fondo" onload="init()" >
 	
-<ui:include src="/navbar.xhtml" />
+<!--  <ui:include src="/navbar.xhtml" />-->
 
 <div id="cont" class="contenedor">
 
