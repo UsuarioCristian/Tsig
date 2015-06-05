@@ -11,20 +11,7 @@
      
  <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
 	
-	<style>
-		   .map {
-        height: 500px;
-        width: 600px;
-        border:solid 1px;
-      }
-     
-  #output-id {
-    margin: 10px 220px;
-}
-  
-		 
-    </style>
-    <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
+ <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
 
 
 	 
@@ -82,6 +69,62 @@
 		           tiled.style.graphicHeight= 20;
 		           tiled.style.fillOpacity=1;
 
+
+		           var stylePuntos = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 40,
+		        	            graphicHeight: 32,
+		        	           
+		        	           
+		        	        },
+		        	        // the second argument will include all rules
+		        	        {
+		        	            rules: [
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "privada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	  
+		        	                        externalGraphic: "../resources/Images/casa.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "reservada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	     
+		        	                        externalGraphic: "../resources/Images/casaReservada.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "publica"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	      
+		        	                        externalGraphic: "../resources/Images/casapublica.png"
+		        	                    }
+		        	                }),
+		    
+		        	            ]
+		        	        }
+		        	    );
 			          
 		            puntos = new OpenLayers.Layer.Vector(
 		                    "casageom",
@@ -97,18 +140,13 @@
 		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                            
-		                        })
+		                        }),
+
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(stylePuntos)
 		                    
 		                    });
-		           
-		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
-		                    OpenLayers.Feature.Vector.style["default"]);
-		           
-		           puntos.style.externalGraphic="resources/Images/casa.png";
-		           puntos.style.graphicWidth= 40;
-		           puntos.style.graphicHeight= 32;
-		           puntos.style.fillOpacity=1;
-		           
+	
 		           map.addLayers([tiled,puntos]);
 		           
 		           var panel = new OpenLayers.Control.Panel(
@@ -131,22 +169,10 @@
  		         function clickNotice(event) {
  		        	
 	        	        var id = event.attributes.idpunto;
-	        	        
-	        	        
-						
-						
 						var input = document.getElementById('info:idcasa');
-						
 						input.value=id;
-						
 						document.getElementById('info:getinfo').click();
-						
-
-						
-						//show();
-						
-	        	       
-	        	        selectFeature.unselectAll();
+						selectFeature.unselectAll();
  		        }      
   		            
 		            
@@ -187,18 +213,13 @@
    <ui:include src="/navbar.xhtml" />
    
    <div id="cont" class="contenedor">
-   <b:panel id="filters" styleClass="panel panel-primary outtab" title="Filtros">
-   <br/>
-   <br/>
-   <br/>
-   <br/>
+
    
-   </b:panel>
-   
-    <a id="atrigger" class="btn btn-primary btn-lg" href="#amodal" data-toggle="modal">test</a>
+    <a id="atrigger" class="" href="#amodal" data-toggle="modal" style="visibility: hidden;">test</a>
     
+   <div id="mapWrap" class="mapWrap">
     <div id="map" class="map"></div>
-    <div id="output-id"></div>
+ 	 <br/>
     
     <h:form id="info" style="display:none;">
     
@@ -210,19 +231,13 @@
     
     
     </h:commandButton>
-    
-
-
-   
-   
+  
     </h:form>
-    
+    </div>
    
-    
-    
-	<b:modal id="amodal" title="Modal Example" >
+	<b:modal id="amodal" title="Informacion de propiedad" >
 		
-    <b:panelGrid colSpans="2,10" rowClasses="rowform">
+    <b:panelGrid colSpans="4,8" rowClasses="rowform">
     
 	    <h:outputLabel value="Titulo de la casa: " />	    
 	    <h:outputLabel value="#{propiedadMB.titulo}" />
@@ -243,11 +258,10 @@
 	    <h:outputLabel value="#{propiedadMB.piscina}" />
 	    
 	    <h:outputLabel value="Garage: " />
-	    <h:outputLabel value="{propiedadMB.garage}" />
+	    <h:outputLabel value="#{propiedadMB.garage}" />
 	   
 	  </b:panelGrid>  
 		    
-	
 	    <f:facet name="footer">
 	        <b:button value="close" dismiss="modal" onclick="return false;"/>
 	        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
