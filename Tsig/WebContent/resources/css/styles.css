@@ -20,13 +20,14 @@
 	margin-left: 10%;
 	margin-right: 10%;
 	background: rgba(255,255,255, 0.8);
-	
+	margin-bottom:5%;
 }
 
    .map {
       /*  height: 500px;
         width: 600px;
         border:solid 1px;*/
+       
       }
         
 .intab{
@@ -64,6 +65,8 @@
 .mapWrap{	display: block;
  	 		margin-left: auto;
  			margin-right: auto;
+ 			
+ 			
  	 width: 80%;
  	 height: 80%;
  	 }
