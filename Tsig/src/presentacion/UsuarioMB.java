@@ -46,12 +46,15 @@ public class UsuarioMB implements Serializable {
 				
 			}else{
 				iuc.guardarUsuario(this.nombre, this.password, this.mail);
+				this.nombre="";
+				this.password="";
+						
 			}
 			
 				
 				
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 		
