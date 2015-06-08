@@ -36,16 +36,20 @@ public class PropiedadMB implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	
+	private int idDep=0;
 	private int idCasa=0;	
 	private int direccion=0;	
 	private String barrio="";	
 	private String tipoProp="";	
+	private String tipoNegocio="";
 	private int cantBanios=0;		
 	private int cantCuartos=0;	
 	private boolean garage=false;	
 	private boolean piscina=false;
 	private String titulo="";
+	private int precio;
+	private float tamanio;
+	
 	private List<Integer> casas= new ArrayList();
 	@EJB
 	IPropiedadController ipc;
@@ -57,9 +61,7 @@ public class PropiedadMB implements Serializable {
 			
 			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 			
-			
-			
-			ipc.guardarCasa(usuario,idCasa,titulo, direccion, barrio, tipoProp, cantBanios, cantCuartos, piscina, garage);
+			ipc.guardarCasa(usuario,idCasa,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage, precio, tamanio);
 			
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
@@ -73,6 +75,34 @@ public class PropiedadMB implements Serializable {
 		return null;
 		
 	}
+	
+	
+
+	public String guardarApartamento(){
+		
+
+		try {
+			
+			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+								
+			ipc.guardarApartamento(usuario,idDep,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio);
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+		
+	}
+	
+	
+	
+	
 	public void getInfo(){
 		
 		try{
@@ -101,7 +131,11 @@ public class PropiedadMB implements Serializable {
 	public void consultaPropiedad(){
 		 
 		try{
-	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
+	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp, cantBanios,cantCuartos,piscina,garage);
+	    for(Integer c:casas){
+	    	System.out.println("ID"+c);
+	    }
+	    
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -115,6 +149,16 @@ public class PropiedadMB implements Serializable {
 
 	public void setIdCasa(int idCasa) {
 		this.idCasa = idCasa;
+	}
+	
+	
+	public int getIdApto() {
+		return idDep;
+	}
+
+
+	public void setIdApto(int idDep) {
+		this.idDep = idDep;
 	}
 
 
@@ -146,7 +190,14 @@ public class PropiedadMB implements Serializable {
 	public void setTipoProp(String tipoProp) {
 		this.tipoProp = tipoProp;
 	}
+	
+	public String getTipoNeg(){
+		return tipoNegocio;
+	}
 
+	public void setTipoNeg(String tipoNegocio){
+		this.tipoNegocio = tipoNegocio;
+	}
 
 	public int getCantBanios() {
 		return cantBanios;
@@ -202,6 +253,23 @@ public class PropiedadMB implements Serializable {
 	}
 	public void setCasas(List<Integer> casas) {
 		this.casas = casas;
+	}
+
+	public int getPrecio() {
+		return precio;
+	}
+	
+	public void setPrecio(int precio) {
+		this.precio = precio;
+	}
+
+
+	public float getTamanio() {
+		return tamanio;
+	}
+	
+	public void setTamanio(float tamanio) {
+		this.tamanio = tamanio;
 	}
 	
 	

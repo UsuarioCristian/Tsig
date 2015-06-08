@@ -1,6 +1,8 @@
 package persistencia;
 
 
+import dominio.Apartamento;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -17,6 +19,8 @@ public class PropiedadDAO implements IPropiedadDAO {
 	@javax.persistence.PersistenceContext(unitName = "TsigWeb")
 	
 	private javax.persistence.EntityManager em;
+	
+	
 	
 	public boolean guardarPropiedad(Casa casa) {
 		
@@ -112,6 +116,52 @@ try {
 			
 		}
 	}
+
+	
+public boolean guardarApartamento(Apartamento apart) {
+		
+		try {
+			
+			em.persist(apart);
+			return true;
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return false;
+		}
+
+		
+
+	}
+
+
+public void modificarCasa(Casa c) {
+	
+	try {
+		em.merge(c);			
+
+	} catch (Exception e) {
+
+		e.printStackTrace();
+
+	}
+	
+}	
+
+
+public void modificarApto(Apartamento apart) {
+	
+	try {
+		em.merge(apart);			
+
+	} catch (Exception e) {
+
+		e.printStackTrace();
+
+	}
+	
+}
 
 	
 

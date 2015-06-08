@@ -128,7 +128,7 @@
 
 								feature.state = OpenLayers.State.INSERT;
 
-								var input = document.getElementById('altaInmueble:idcasa');
+								var input = document.getElementById('altaInmueble:iddep');
 
 								input.value= puntos.features.length;
 								
@@ -173,33 +173,44 @@
 <b:panel id="datos" styleClass="panel panel-primary outtab" title="Paso 1">
  <p >Bienvendio/a en este lugar se daran de alta los datos del inmueble.</p>
       
-    <b:panelGrid colSpans="2,10" rowClasses="rowform">
+   <b:panelGrid colSpans="2,10" rowClasses="rowform">
     
-	    <h:outputLabel value="Titulo de la casa" />
+	    <h:outputLabel value="Titulo del apartamento" />
 	    <b:inputText span="8" value="#{propiedadMB.titulo}"/>
 	         
-	    <h:outputLabel value="Barrio de la casa" />	    
+	    <h:outputLabel value="Barrio del apartamento" />	    
 	    <b:inputText span="8" value="#{propiedadMB.barrio}"/>
 	    
 	    <h:outputLabel value="Tipo de propiedad" />	
 	    
 	    <b:selectOneMenu span="8" value="#{propiedadMB.tipoProp}" >
-            <f:selectItem itemLabel="comercial" itemValue="comercial"/>
+            <f:selectItem itemLabel="Comercial" itemValue="Comercial"/>
             <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
         </b:selectOneMenu>
         
-        <h:outputLabel value="Cantidad de baNIos" />	    
+        <h:outputLabel value="Tipo de negocio" />	
+        
+        <b:selectOneMenu span="8" value="#{propiedadMB.tipoNeg}" >
+            <f:selectItem itemLabel="Alquiler" itemValue="Alquiler"/>
+            <f:selectItem itemLabel="Venta" itemValue="Venta"/>
+        </b:selectOneMenu>
+        
+        <h:outputLabel value="Cantidad de baños" />	    
 	    <b:inputText span="8" value="#{propiedadMB.cantBanios}"/>
         
         <h:outputLabel value="Cantidad de cuartos" />	    
 	    <b:inputText span="8" value="#{propiedadMB.cantCuartos}"/>
         
+         <h:outputLabel value="Precio" />	    
+	    <b:inputText span="8" value="#{propiedadMB.precio}"/>
 	    
-	    <h:outputLabel value="Piscina: " />
-	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" />
-	    
+	    <h:outputLabel value="Tamaño" />	    
+	    <b:inputText span="8" value="#{propiedadMB.tamanio}"/>
+	    	    
 	    <h:outputLabel value="Garage: " />
 	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
+	    
+	    
 	    
 		    
 	</b:panelGrid>
@@ -216,10 +227,10 @@
 	    <h:outputLabel value="Direccion del inmueble" />
 	    <b:inputText span="4" value="#{propiedadMB.direccion}" />
  	
-  <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()" action="#{propiedadMB.guardarPropiedad}"></h:commandButton>	
+  <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()" action="#{propiedadMB.guardarApartamento}"></h:commandButton>	
   </b:panel>
   
-    <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
+    <h:inputHidden value="#{propiedadMB.idApto}" id="iddep" />
     
 
 

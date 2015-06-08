@@ -13,18 +13,18 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
-@Table(name = "casa")
+@Table(name = "apartamento")
 @Entity
-public class Casa implements Serializable{
+public class Apartamento implements Serializable{
 
 	private static final long serialVersionUID = 1L; // Mapping JPA
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "casa_idcasa_seq")
-    @SequenceGenerator(name = "casa_idcasa_seq", sequenceName = "casa_idcasa_seq",allocationSize=1)
-	@Column(name = "idcasa", nullable = false)
-	private int idCasa;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departamento_iddep_seq")
+    @SequenceGenerator(name = "departamento_iddep_seq", sequenceName = "departamento_iddep_seq",allocationSize=1)
+	@Column(name = "iddep", nullable = false)
+	private int idDep;
 		
 	@Column(name = "titulo", nullable = false)
 	private String titulo;
@@ -52,10 +52,7 @@ public class Casa implements Serializable{
 	
 	@Column(name = "garage", nullable = false)
 	private boolean garage;
-	
-	@Column(name = "piscina", nullable = false)
-	private boolean piscina;
-	
+		
 	@Column(name = "estado", nullable = false)
 	private String estado;
 	
@@ -69,14 +66,16 @@ public class Casa implements Serializable{
     @JoinColumn(name = "user_id") 
 	private Usuario encargado;
 	
-	public Casa(){
+    
+    
+	public Apartamento(){
 		
 	}
 	
-	public Casa(int idGeom,int idCasa,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos,boolean piscina, boolean garage,String estado, int precio, float tamanio){
+	public Apartamento(int idGeom,int idDep,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos,boolean garage,String estado, int precio, float tamanio){
 			
 			this.idGeom=idGeom;
-			this.idCasa = idCasa;
+			this.idDep = idDep;
 			this.titulo=titulo;
 			this.direccion = direccion;
 			this.barrio = barrio;
@@ -85,13 +84,12 @@ public class Casa implements Serializable{
 			this.cantBanios = cantbanios;
 			this.cantCuartos = cantCuartos;
 			this.garage = garage;
-			this.piscina = piscina;
 			this.estado=estado;
 			this.precio=precio;
 			this.tamanio=tamanio;
 				
 	}
-	public Casa(int idGeom,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos,boolean piscina, boolean garage,String estado, int precio, float tamanio){
+	public Apartamento(int idGeom,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos, boolean garage,String estado, int precio, float tamanio){
 		
 		this.idGeom=idGeom;
 		this.titulo=titulo;
@@ -102,29 +100,27 @@ public class Casa implements Serializable{
 		this.cantBanios = cantbanios;
 		this.cantCuartos = cantCuartos;
 		this.garage = garage;
-		this.piscina = piscina;
 		this.estado=estado;
 		this.precio=precio;
 		this.tamanio=tamanio;
 	
 }
 	
-	public Casa(Casa p){
+	public Apartamento(Apartamento ap){
 		
-			this.idGeom=p.getIdGeom();
-			this.titulo=p.getTitulo();
-			this.idCasa = p.getIdCasa();
-		    this.direccion = p.getDireccion();
-		    this.barrio = p.getBarrio();
-		    this.tipoProp = p.getTipoProp();
-		    this.tipoNegocio = p.getTipoNeg();
-		    this.cantBanios = p.getCantBanios();
-		    this.cantCuartos = p.getCantCuartos();
-		    this.garage = p.isGarage();
-		    this.piscina = p.isPiscina();
-		    this.estado= p.getEstado();
-		    this.precio=p.getPrecio();
-		    this.tamanio=p.getTamanio();
+			this.idGeom=ap.getIdGeom();
+			this.titulo=ap.getTitulo();
+			this.idDep = ap.getIdApartamento();
+		    this.direccion = ap.getDireccion();
+		    this.barrio = ap.getBarrio();
+		    this.tipoProp = ap.getTipoProp();
+		    this.tipoNegocio = ap.getTipoNeg();
+		    this.cantBanios = ap.getCantBanios();
+		    this.cantCuartos = ap.getCantCuartos();
+		    this.garage = ap.isGarage();
+		    this.estado= ap.getEstado();
+		    this.precio=ap.getPrecio();
+		    this.tamanio=ap.getTamanio();
 		    		
 	}
 
@@ -136,12 +132,12 @@ public class Casa implements Serializable{
 		this.idGeom = idGeom;
 	}
 
-	public int getIdCasa() {
-		return idCasa;
+	public int getIdApartamento() {
+		return idDep;
 	}
 
-	public void setIdCasa(int idCasa) {
-		this.idCasa = idCasa;
+	public void setIdApartamento(int idDep) {
+		this.idDep = idDep;
 	}
 
 	public String getTitulo() {
@@ -208,14 +204,7 @@ public class Casa implements Serializable{
 		this.garage = garage;
 	}
 
-	public boolean isPiscina() {
-		return piscina;
-	}
-
-	public void setPiscina(boolean piscina) {
-		this.piscina = piscina;
-	}
-
+	
 	public String getEstado() {
 		return estado;
 	}
@@ -251,3 +240,4 @@ public class Casa implements Serializable{
 	
 			
 }
+

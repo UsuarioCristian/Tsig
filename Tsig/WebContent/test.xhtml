@@ -184,16 +184,28 @@
 	    <h:outputLabel value="Tipo de propiedad" />	
 	    
 	    <b:selectOneMenu span="8" value="#{propiedadMB.tipoProp}" >
-            <f:selectItem itemLabel="comercial" itemValue="comercial"/>
+            <f:selectItem itemLabel="Comercial" itemValue="Comercial"/>
             <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
         </b:selectOneMenu>
         
-        <h:outputLabel value="Cantidad de baNIos" />	    
+        <h:outputLabel value="Tipo de negocio" />	
+        
+        <b:selectOneMenu span="8" value="#{propiedadMB.tipoNeg}" >
+            <f:selectItem itemLabel="Alquiler" itemValue="Alquiler"/>
+            <f:selectItem itemLabel="Venta" itemValue="Venta"/>
+        </b:selectOneMenu>
+        
+        <h:outputLabel value="Cantidad de baños" />	    
 	    <b:inputText span="8" value="#{propiedadMB.cantBanios}"/>
         
         <h:outputLabel value="Cantidad de cuartos" />	    
 	    <b:inputText span="8" value="#{propiedadMB.cantCuartos}"/>
         
+         <h:outputLabel value="Precio" />	    
+	    <b:inputText span="8" value="#{propiedadMB.precio}"/>
+	    
+	    <h:outputLabel value="Tamaño" />	    
+	    <b:inputText span="8" value="#{propiedadMB.tamanio}"/>
 	    
 	    <h:outputLabel value="Piscina: " />
 	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" />
@@ -212,9 +224,10 @@
   <div id="mapWrap" class="mapWrap">
   <div id="map" class="map"></div>
   </div>	
-     
-	    <h:outputLabel value="Direccion del inmueble" />
-	    <b:inputText span="4" value="#{propiedadMB.direccion}" />
+  
+  
+  <h:outputLabel value="Precio" />	    
+	    <b:inputText span="8" value="#{propiedadMB.direccion}"/>
  	
   <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()" action="#{propiedadMB.guardarPropiedad}"></h:commandButton>	
   </b:panel>
