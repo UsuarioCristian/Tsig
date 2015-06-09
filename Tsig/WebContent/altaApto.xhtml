@@ -82,8 +82,8 @@
 		           
 					);
 
-		            puntos = new OpenLayers.Layer.Vector(
-		                    "casageom",
+		           puntos = new OpenLayers.Layer.Vector(
+		                    "aptogeom",
 		                    {
 		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
 		                        , projection: new OpenLayers.Projection("EPSG:32721")
@@ -92,7 +92,7 @@
 		                            srsName: "EPSG:32721",
 		                            url: "http://localhost:8080/geoserver/wfs",
 		                            featurePrefix: 'sige', //geoserver worspace name
-		                            featureType: "casageom", //geoserver Layer Name
+		                            featureType: "aptogeom", //geoserver Layer Name
 		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                           
@@ -102,7 +102,7 @@
 		           
 		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
 		                    OpenLayers.Feature.Vector.style["default"]);
-		           puntos.style.externalGraphic="../resources/Images/casa.png";
+		           puntos.style.externalGraphic="resources/Images/casa.png";
 		           puntos.style.graphicWidth= 40;
 		           puntos.style.graphicHeight= 32;
 		           puntos.style.fillOpacity=1;
@@ -128,11 +128,11 @@
 
 								feature.state = OpenLayers.State.INSERT;
 
-								var input = document.getElementById('altaInmueble:idcasa');
+								var input = document.getElementById('altaInmueble:iddep');
 
 								input.value= puntos.features.length;
 								
-								feature.attributes.estado="privada";
+								//feature.attributes.numpunto=input.value;
 								
 								//alert(input.value);
 								feature.layer.drawFeature(feature);
@@ -173,12 +173,12 @@
 <b:panel id="datos" styleClass="panel panel-primary outtab" title="Paso 1">
  <p >Bienvendio/a en este lugar se daran de alta los datos del inmueble.</p>
       
-    <b:panelGrid colSpans="2,10" rowClasses="rowform">
+   <b:panelGrid colSpans="2,10" rowClasses="rowform">
     
-	    <h:outputLabel value="Titulo de la casa" />
+	    <h:outputLabel value="Titulo del apartamento" />
 	    <b:inputText span="8" value="#{propiedadMB.titulo}"/>
 	         
-	    <h:outputLabel value="Barrio de la casa" />	    
+	    <h:outputLabel value="Barrio del apartamento" />	    
 	    <b:inputText span="8" value="#{propiedadMB.barrio}"/>
 	    
 	    <h:outputLabel value="Tipo de propiedad" />	
@@ -206,15 +206,11 @@
 	    
 	    <h:outputLabel value="Tamaño" />	    
 	    <b:inputText span="8" value="#{propiedadMB.tamanio}"/>
-	    
-	    <h:outputLabel value="Numero de piso" />	    
-	    <b:inputText span="8" value="#{propiedadMB.numeroap}"/>
-	    
-	    <h:outputLabel value="Piscina: " />
-	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" />
-	    
+	    	    
 	    <h:outputLabel value="Garage: " />
 	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
+	    
+	    
 	    
 		    
 	</b:panelGrid>
@@ -231,10 +227,10 @@
 	    <h:outputLabel value="Direccion del inmueble" />
 	    <b:inputText span="4" value="#{propiedadMB.direccion}" />
  	
-  <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()" action="#{propiedadMB.guardarPropiedad}"></h:commandButton>	
+  <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()" action="#{propiedadMB.guardarApartamento}"></h:commandButton>	
   </b:panel>
   
-    <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
+    <h:inputHidden value="#{propiedadMB.idApto}" id="iddep" />
     
 
 
