@@ -62,6 +62,13 @@ public class Apartamento implements Serializable{
 	@Column(name = "tamanio", nullable = false)
 	private float tamanio;
 	
+	@Column(name = "numeroap", nullable = false)
+	private int numeroAp;
+	
+	@Column(name = "visitas", nullable = false)
+	private int visitas;
+	
+	
     @ManyToOne  
     @JoinColumn(name = "user_id") 
 	private Usuario encargado;
@@ -72,7 +79,7 @@ public class Apartamento implements Serializable{
 		
 	}
 	
-	public Apartamento(int idGeom,int idDep,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos,boolean garage,String estado, int precio, float tamanio){
+	public Apartamento(int idGeom,int idDep,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos,boolean garage,String estado, int precio, float tamanio,int numeroAp){
 			
 			this.idGeom=idGeom;
 			this.idDep = idDep;
@@ -87,9 +94,9 @@ public class Apartamento implements Serializable{
 			this.estado=estado;
 			this.precio=precio;
 			this.tamanio=tamanio;
-				
+			this.numeroAp=numeroAp;	
 	}
-	public Apartamento(int idGeom,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos, boolean garage,String estado, int precio, float tamanio){
+	public Apartamento(int idGeom,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantbanios, int cantCuartos, boolean garage,String estado, int precio, float tamanio, int numeroAp){
 		
 		this.idGeom=idGeom;
 		this.titulo=titulo;
@@ -103,6 +110,7 @@ public class Apartamento implements Serializable{
 		this.estado=estado;
 		this.precio=precio;
 		this.tamanio=tamanio;
+		this.numeroAp=numeroAp;
 	
 }
 	
@@ -114,14 +122,15 @@ public class Apartamento implements Serializable{
 		    this.direccion = ap.getDireccion();
 		    this.barrio = ap.getBarrio();
 		    this.tipoProp = ap.getTipoProp();
-		    this.tipoNegocio = ap.getTipoNeg();
+		    this.tipoNegocio = ap.getTipoNegocio();
 		    this.cantBanios = ap.getCantBanios();
 		    this.cantCuartos = ap.getCantCuartos();
 		    this.garage = ap.isGarage();
 		    this.estado= ap.getEstado();
 		    this.precio=ap.getPrecio();
 		    this.tamanio=ap.getTamanio();
-		    		
+		    this.numeroAp=ap.getNumeroAp();
+		  
 	}
 
 	public int getIdGeom() {
@@ -172,13 +181,7 @@ public class Apartamento implements Serializable{
 		this.tipoProp = tipoProp;
 	}
 	
-	public String getTipoNeg(){
-		return tipoNegocio;
-	}
-	
-	public void setTipoNeg(String tipoNegocio){
-		this.tipoNegocio = tipoNegocio;
-	}
+
 
 	public int getCantBanios() {
 		return cantBanios;
@@ -235,6 +238,30 @@ public class Apartamento implements Serializable{
 	
 	public void setTamanio(float tamanio){
 		this.tamanio = tamanio;
+	}
+
+	public String getTipoNegocio() {
+		return tipoNegocio;
+	}
+
+	public void setTipoNegocio(String tipoNegocio) {
+		this.tipoNegocio = tipoNegocio;
+	}
+
+	public int getNumeroAp() {
+		return numeroAp;
+	}
+
+	public void setNumeroAp(int numeroAp) {
+		this.numeroAp = numeroAp;
+	}
+
+	public int getVisitas() {
+		return visitas;
+	}
+
+	public void setVisitas(int visitas) {
+		this.visitas = visitas;
 	}
 	
 	

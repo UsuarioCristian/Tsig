@@ -83,7 +83,7 @@
 					);
 
 		           puntos = new OpenLayers.Layer.Vector(
-		                    "casageom",
+		                    "aptogeom",
 		                    {
 		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
 		                        , projection: new OpenLayers.Projection("EPSG:32721")
@@ -92,7 +92,7 @@
 		                            srsName: "EPSG:32721",
 		                            url: "http://localhost:8080/geoserver/wfs",
 		                            featurePrefix: 'sige', //geoserver worspace name
-		                            featureType: "casageom", //geoserver Layer Name
+		                            featureType: "aptogeom", //geoserver Layer Name
 		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                           
@@ -102,7 +102,7 @@
 		           
 		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
 		                    OpenLayers.Feature.Vector.style["default"]);
-		           puntos.style.externalGraphic="../resources/Images/casa.png";
+		           puntos.style.externalGraphic="resources/Images/casa.png";
 		           puntos.style.graphicWidth= 40;
 		           puntos.style.graphicHeight= 32;
 		           puntos.style.fillOpacity=1;
@@ -190,7 +190,7 @@
         
         <h:outputLabel value="Tipo de negocio" />	
         
-        <b:selectOneMenu span="8" value="#{propiedadMB.tipoNeg}" >
+        <b:selectOneMenu span="8" value="#{propiedadMB.tipoNegocio}" >
             <f:selectItem itemLabel="Alquiler" itemValue="Alquiler"/>
             <f:selectItem itemLabel="Venta" itemValue="Venta"/>
         </b:selectOneMenu>

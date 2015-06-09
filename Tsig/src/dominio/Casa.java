@@ -62,6 +62,9 @@ public class Casa implements Serializable{
 	@Column(name = "precio", nullable = false)
 	private int precio;
 	
+	@Column(name = "visitas", nullable = false)
+	private int visitas;
+	
 	@Column(name = "tamanio", nullable = false)
 	private float tamanio;
 	
@@ -117,7 +120,7 @@ public class Casa implements Serializable{
 		    this.direccion = p.getDireccion();
 		    this.barrio = p.getBarrio();
 		    this.tipoProp = p.getTipoProp();
-		    this.tipoNegocio = p.getTipoNeg();
+		    this.tipoNegocio = p.gettipoNegocio();
 		    this.cantBanios = p.getCantBanios();
 		    this.cantCuartos = p.getCantCuartos();
 		    this.garage = p.isGarage();
@@ -176,11 +179,11 @@ public class Casa implements Serializable{
 		this.tipoProp = tipoProp;
 	}
 	
-	public String getTipoNeg(){
+	public String gettipoNegocio(){
 		return tipoNegocio;
 	}
 	
-	public void setTipoNeg(String tipoNegocio){
+	public void settipoNegocio(String tipoNegocio){
 		this.tipoNegocio = tipoNegocio;
 	}
 
@@ -246,6 +249,14 @@ public class Casa implements Serializable{
 	
 	public void setTamanio(float tamanio){
 		this.tamanio = tamanio;
+	}
+
+	public int getVisitas() {
+		return visitas;
+	}
+
+	public void setVisitas(int visitas) {
+		this.visitas = visitas;
 	}
 	
 	

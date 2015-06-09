@@ -49,6 +49,7 @@ public class PropiedadMB implements Serializable {
 	private String titulo="";
 	private int precio;
 	private float tamanio;
+	private int numeroap;
 	
 	private List<Integer> casas= new ArrayList();
 	@EJB
@@ -85,7 +86,7 @@ public class PropiedadMB implements Serializable {
 			
 			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 								
-			ipc.guardarApartamento(usuario,idDep,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio);
+			ipc.guardarApartamento(usuario,idDep,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio,numeroap);
 			
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
@@ -191,14 +192,7 @@ public class PropiedadMB implements Serializable {
 		this.tipoProp = tipoProp;
 	}
 	
-	public String getTipoNeg(){
-		return tipoNegocio;
-	}
-
-	public void setTipoNeg(String tipoNegocio){
-		this.tipoNegocio = tipoNegocio;
-	}
-
+	
 	public int getCantBanios() {
 		return cantBanios;
 
@@ -270,6 +264,30 @@ public class PropiedadMB implements Serializable {
 	
 	public void setTamanio(float tamanio) {
 		this.tamanio = tamanio;
+	}
+
+
+
+	public String getTipoNegocio() {
+		return tipoNegocio;
+	}
+
+
+
+	public void setTipoNegocio(String tipoNegocio) {
+		this.tipoNegocio = tipoNegocio;
+	}
+
+
+
+	public int getNumeroap() {
+		return numeroap;
+	}
+
+
+
+	public void setNumeroap(int numeroap) {
+		this.numeroap = numeroap;
 	}
 	
 	
