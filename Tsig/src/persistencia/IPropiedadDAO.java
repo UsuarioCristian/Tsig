@@ -24,6 +24,8 @@ public interface IPropiedadDAO {
 	public List<Integer> getDistanceParadas(Integer distance);
 	
 	public List<Integer> getDistanceRambla(Integer distance);
+
+	public Casa getCasaFromGeom(int idCasa);
 	
 	
 }

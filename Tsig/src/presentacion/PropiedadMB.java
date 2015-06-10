@@ -85,7 +85,8 @@ public class PropiedadMB implements Serializable {
 		
 		try{
 			
-			Casa c= ipc.getCasa(idCasa);
+			Casa c= ipc.getCasaFromGeom(idCasa);
+			//Casa c= ipc.getCasa(idCasa);
 			
 			if (c!=null){
 				this.titulo=c.getTitulo();

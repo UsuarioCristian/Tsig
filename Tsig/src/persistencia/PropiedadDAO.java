@@ -151,5 +151,18 @@ public class PropiedadDAO implements IPropiedadDAO {
 	}
 
 	
+	public Casa getCasaFromGeom(int idCasa) {
+		try{
+			Casa casa = (Casa)em.createQuery("Select c FROM Casa c WHERE c.idGeom = '"+idCasa+"'").getSingleResult();
+			return casa;
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
 
 }

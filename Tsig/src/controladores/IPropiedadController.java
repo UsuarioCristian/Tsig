@@ -16,4 +16,5 @@ public interface IPropiedadController {
 	public List<Integer> getDistanciaInteres(Integer distanciaInteres);
 	public List<Integer> getDistanciaParadas(Integer distanciaParadas);
 	public List<Integer> getDistanceRambla(Integer distanciaRambla);
+	public Casa getCasaFromGeom(int idCasa);
 }

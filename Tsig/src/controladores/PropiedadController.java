@@ -102,4 +102,16 @@ public class PropiedadController implements IPropiedadController{
 			return null;
 	}
 
+
+	
+	public Casa getCasaFromGeom(int idCasa) {
+		try{
+			return   PropiedadDAO.getCasaFromGeom(idCasa);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
+	}
+
 }
