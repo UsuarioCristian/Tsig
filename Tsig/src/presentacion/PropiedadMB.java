@@ -26,6 +26,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
 import controladores.IPropiedadController;
+import dominio.Apartamento;
 import dominio.Casa;
 
 
@@ -36,6 +37,7 @@ public class PropiedadMB implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private int idPunto=0;
 	private int idDep=0;
 	private int idCasa=0;	
 	private int direccion=0;	
@@ -62,6 +64,8 @@ public class PropiedadMB implements Serializable {
 
 	
 	private List<Integer> casas= new ArrayList();
+	private List<Integer> aptos= new ArrayList();
+	
 	@EJB
 	IPropiedadController ipc;
 
@@ -118,7 +122,7 @@ public class PropiedadMB implements Serializable {
 		
 		try{
 			
-			Casa c= ipc.getCasa(idCasa);
+			Casa c= ipc.getCasaFromGeom(idPunto);
 			
 			if (c!=null){
 				this.titulo=c.getTitulo();
@@ -139,6 +143,32 @@ public class PropiedadMB implements Serializable {
 		}
 		
 	}
+	public void getInfoApto(){
+			
+			try{
+				
+				Apartamento a= ipc.getAptoFromGeom(idPunto);
+				
+				if (a!=null){
+					this.titulo=a.getTitulo();
+					this.direccion = a.getDireccion();
+				    this.barrio = a.getBarrio();
+				    this.tipoProp = a.getTipoProp();
+				    this.cantBanios = a.getCantBanios();
+				    this.cantCuartos = a.getCantCuartos();
+				    this.garage = a.isGarage();
+				    this.numeroap= a.getIdApartamento();
+				}else
+				{
+					System.out.println("el apto ES NULL");
+				}
+			}
+			catch(Exception e){
+			e.printStackTrace();
+			}
+			
+		}
+	
 	/* Filters */
 	public void consultaPropiedad(){
 		 
@@ -373,6 +403,42 @@ public class PropiedadMB implements Serializable {
 	public void setNumeroap(int numeroap) {
 		this.numeroap = numeroap;
 
+	}
+
+
+
+	public int getIdPunto() {
+		return idPunto;
+	}
+
+
+
+	public void setIdPunto(int idPunto) {
+		this.idPunto = idPunto;
+	}
+
+
+
+	public int getIdDep() {
+		return idDep;
+	}
+
+
+
+	public void setIdDep(int idDep) {
+		this.idDep = idDep;
+	}
+
+
+
+	public List<Integer> getAptos() {
+		return aptos;
+	}
+
+
+
+	public void setAptos(List<Integer> aptos) {
+		this.aptos = aptos;
 	}
 	
 	

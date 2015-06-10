@@ -188,6 +188,33 @@ public void modificarApto(Apartamento apart) {
 	
 }
 
+@Override
+public Casa getCasaFromGeom(int idPunto) {
+
+	try{
+		Casa casa = (Casa)em.createQuery("Select c FROM Casa c WHERE c.idGeom = '"+idPunto+"'").getSingleResult();
+		return casa;
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	return null;
+}
+
+@Override
+public Apartamento AptoFromGeom(int idPunto) {
+	try{
+		Apartamento ap = (Apartamento)em.createQuery("Select a FROM Apartamento a WHERE a.idGeom = '"+idPunto+"'").getSingleResult();
+		return ap;
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	return null;
+}
+
 	
 
 }

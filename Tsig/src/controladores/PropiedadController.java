@@ -136,4 +136,32 @@ public class PropiedadController implements IPropiedadController{
 		return null;
 	}
 
+
+	@Override
+	public Casa getCasaFromGeom(int idPunto) {
+		try{
+			
+			return  PropiedadDAO.getCasaFromGeom(idPunto);
+			
+			}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	@Override
+	public Apartamento getAptoFromGeom(int idPunto) {
+	try{
+			
+			return  PropiedadDAO.AptoFromGeom(idPunto);
+			
+			}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

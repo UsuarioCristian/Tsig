@@ -24,5 +24,7 @@ public interface IPropiedadDAO {
 
 	public void modificarCasa(Casa c);
 	public void modificarApto(Apartamento apart);
+	public Casa getCasaFromGeom(int idPunto);
+	public Apartamento AptoFromGeom(int idPunto);
 
 }
