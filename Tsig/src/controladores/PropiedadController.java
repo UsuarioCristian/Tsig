@@ -135,21 +135,29 @@ public class PropiedadController implements IPropiedadController{
 		}
 		return null;
 	}
-
-
-	@Override
-	public Casa getCasaFromGeom(int idPunto) {
-		try{
-			
-			return  PropiedadDAO.getCasaFromGeom(idPunto);
-			
+	
+    public List<Integer> getDistanceRambla(Integer distanciaRambla) {
+		
+			try{
+			return   PropiedadDAO.getDistanceRambla(distanciaRambla);
 			}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
 	}
 
+
+	
+	public Casa getCasaFromGeom(int idCasa) {
+		try{
+			return   PropiedadDAO.getCasaFromGeom(idCasa);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
+	}
 
 	@Override
 	public Apartamento getAptoFromGeom(int idPunto) {

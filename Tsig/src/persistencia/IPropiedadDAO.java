@@ -20,11 +20,17 @@ public interface IPropiedadDAO {
 
 	public List<Integer> getDistancePuntoInteres(Integer distance);
 
+
 	List<Integer> getDistanceParadas(Integer distance);
 
 	public void modificarCasa(Casa c);
 	public void modificarApto(Apartamento apart);
-	public Casa getCasaFromGeom(int idPunto);
+	public Casa getCasaFromGeom(int idCasa);
 	public Apartamento AptoFromGeom(int idPunto);
+	public List<Integer> getDistanceRambla(Integer distance);
+
+
+	
+	
 
 }

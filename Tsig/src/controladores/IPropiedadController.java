@@ -20,13 +20,14 @@ public interface IPropiedadController {
 	public boolean guardarApartamento(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos, boolean garage, int precio, float tamanio,int numeroap);
 	public void modificarCasa(Casa c);
 	public void modificarApto(Apartamento apart);
-	
-	
 	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage);
 	public List<Integer> getDistanciaInteres(Integer distanciaInteres);
 	List<Integer> getDistanciaParadas(Integer distanciaParadas);
-	public Casa getCasaFromGeom(int idPunto);
+	public Casa getCasaFromGeom(int idCasa);
 	public Apartamento getAptoFromGeom(int idPunto);
+	public List<Integer> getDistanceRambla(Integer distanciaRambla);
+
+
 
 
 

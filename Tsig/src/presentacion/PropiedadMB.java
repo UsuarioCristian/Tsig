@@ -122,7 +122,12 @@ public class PropiedadMB implements Serializable {
 		
 		try{
 			
+
 			Casa c= ipc.getCasaFromGeom(idPunto);
+
+
+			//Casa c= ipc.getCasa(idCasa);
+
 			
 			if (c!=null){
 				this.titulo=c.getTitulo();
@@ -178,6 +183,10 @@ public class PropiedadMB implements Serializable {
 		
 	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
 	    
+	    for(Integer c: casas){
+	    	System.out.println("casas filtro piche"+c);
+    	}
+	    
 	    if(distanciaInteres!=0){
 	    	List<Integer> aux=ipc.getDistanciaInteres(distanciaInteres);
 	    	if (aux != null){
@@ -204,6 +213,23 @@ public class PropiedadMB implements Serializable {
 		    	}
 	    	
 	    }
+		
+		if(distanciaMar!=0){
+			
+	    	List<Integer> aux3=ipc.getDistanceRambla(distanciaMar);
+	    	
+	    	for(Integer i: aux3){
+	    		System.out.println("Ids de casa al mar "+i);
+	    	}
+	    	
+	    	if (aux3 != null){
+	    		casas.retainAll(aux3);
+	    		aux3.clear();
+	    	}else{
+	    		casas.clear();
+	    	}
+    	
+    }
 	    
 	    
 	    
