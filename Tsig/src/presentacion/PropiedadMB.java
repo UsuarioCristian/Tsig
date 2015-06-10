@@ -188,11 +188,15 @@ public class PropiedadMB implements Serializable {
     	}
 	    
 	    if(distanciaInteres!=0){
+	    	
 	    	List<Integer> aux=ipc.getDistanciaInteres(distanciaInteres);
+	    	
+	    	    	
 	    	if (aux != null){
 	    		casas.retainAll(aux);
 	    		aux.clear();
 	    	}else{
+	    		System.out.println("Casas Cleared dist int");
 	    		casas.clear(); 
 	    	}
 	    }
@@ -208,11 +212,13 @@ public class PropiedadMB implements Serializable {
 		    	if (aux2 != null){
 		    		casas.retainAll(aux2);
 		    		aux2.clear();
-		    	}else{
+		    	}
+		    	else{
 		    		casas.clear();
 		    	}
-	    	
-	    }
+		    	
+		}
+	    
 		
 		if(distanciaMar!=0){
 			
@@ -230,15 +236,7 @@ public class PropiedadMB implements Serializable {
 	    	}
     	
     }
-	    
-	    
-	    
-
-	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp, cantBanios,cantCuartos,piscina,garage);
-	    for(Integer c:casas){
-	    	System.out.println("ID"+c);
-	    }
-
+	 
 	    
 		}catch(Exception e){
 			e.printStackTrace();

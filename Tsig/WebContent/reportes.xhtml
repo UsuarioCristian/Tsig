@@ -169,7 +169,7 @@
  		         function clickNotice(event) {
  		        	
 
-	        	        var id = event.attributes.idpunto;
+	        	        var id = event.attributes.id;
 						var input = document.getElementById('info:idcasa');
 						input.value=id;
 						document.getElementById('info:getinfo').click();
@@ -234,7 +234,7 @@
     
     </h:commandButton>
     
-        <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
+        <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
     
    
     <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
@@ -280,107 +280,3 @@
   </div>
   </h:body>
 </html>
-=======
-	        	        var id = event.attributes.id;
-						var input = document.getElementById('info:idcasa');
-						input.value=id;
-						document.getElementById('info:getinfo').click();
-						selectFeature.unselectAll();
- 		        }      
-  		            
-		            
-		}
-		
-		function show(){
-	
-			document.getElementById('atrigger').click();
-	
-		}
-		
-		function handleAjax(data) {
-		    var status = data.status;
-
-		    switch(status) {
-		        case "begin":
-		            // This is invoked right before ajax request is sent.
-		            break;
-
-		        case "complete":
-		            // This is invoked right after ajax response is returned.
-		            break;
-
-		        case "success":
-		           show();
-		            break;
-		    }
-		}
-	
-
-	 </script>
-  </h:head>
-   <h:body class="fondo" onload="init()">
-   
- 
-  
-  
-   
-   <div id="cont" class="contenedor">
-
-   
-    <a id="atrigger" class="" href="#amodal" data-toggle="modal" style="visibility: hidden;">test</a>
-    
-   <div id="mapWrap" class="mapWrap">
-    <div id="map" class="map"></div>
- 	 <br/>
-    
-    <h:form id="info" style="display:none;">
-    
-     <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
-     
-    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
-    
-   
-   	<f:ajax execute="@form" render="amodal" onevent="handleAjax" />
-    
-    
-    </h:commandButton>
-  
-    </h:form>
-    </div>
-   
-	<b:modal id="amodal" title="Informacion de propiedad" >
-		
-    <b:panelGrid colSpans="4,8" rowClasses="rowform">
-    
-	    <h:outputLabel value="Titulo de la casa: " />	    
-	    <h:outputLabel value="#{propiedadMB.titulo}" />
-	    
-	      <h:outputLabel value="Barrio de la casa: " />   
-	    <h:outputLabel value="#{propiedadMB.barrio}" />	
-	    
-	    <h:outputLabel value="Tipo de propiedad: " />
-	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
-        
-        <h:outputLabel value="Cantidad de baños: " />
-        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
-	   
-	    <h:outputLabel value="Cantidad de cuartos: " />
-        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
-        
-        <h:outputLabel value="Piscina:" />
-	    <h:outputLabel value="#{propiedadMB.piscina}" />
-	    
-	    <h:outputLabel value="Garage: " />
-	    <h:outputLabel value="#{propiedadMB.garage}" />
-	   
-	  </b:panelGrid>  
-		    
-	    <f:facet name="footer">
-	        <b:button value="close" dismiss="modal" onclick="return false;"/>
-	        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
-	    </f:facet>
-	</b:modal>
-  </div>
-  </h:body>
-</html>
->>>>>>> branch 'Bruno' of https://github.com/UsuarioCristian/Tsig

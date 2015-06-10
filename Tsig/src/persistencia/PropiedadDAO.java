@@ -120,7 +120,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 		
 		try{
 		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, serv_comerciales s where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(s.geom,32721) )").getResultList();
-		System.out.println("LA DISTANCIA Intrest" + distance);
+		
 		return result;
 		}
 		catch(Exception e){
@@ -132,7 +132,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 	@Override
 	public List<Integer> getDistanceParadas(Integer distance){
 		try{
-		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(p.geom,32721) )").getResultList();
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+distance+"),ST_Transform(p.geom,32721) )").getResultList();
 		System.out.println("LA DISTANCIA BUS" + distance);
 		return result;
 		}
