@@ -39,6 +39,7 @@
     var puntos;
     
     var saveStrategy = new OpenLayers.Strategy.Save();
+    
     saveStrategy.events.on({
         'success': function(event) {
              alert('Changes saved');
@@ -102,7 +103,7 @@
 		           
 		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
 		                    OpenLayers.Feature.Vector.style["default"]);
-		           puntos.style.externalGraphic="../resources/Images/casa.png";
+		           puntos.style.externalGraphic="resources/Images/casa.png";
 		           puntos.style.graphicWidth= 40;
 		           puntos.style.graphicHeight= 32;
 		           puntos.style.fillOpacity=1;
@@ -163,7 +164,9 @@
 </h:head>
 
 <h:body class="fondo" onload="init()" >
+	
 
+<ui:include src="/navbar.xhtml" />
 <div id="cont" class="contenedor">
 
 <h:form id="altaInmueble">

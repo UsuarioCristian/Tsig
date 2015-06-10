@@ -1,6 +1,8 @@
 package persistencia;
 
 
+import dominio.Apartamento;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -17,6 +19,8 @@ public class PropiedadDAO implements IPropiedadDAO {
 	@javax.persistence.PersistenceContext(unitName = "TsigWeb")
 	
 	private javax.persistence.EntityManager em;
+	
+	
 	
 	public boolean guardarPropiedad(Casa casa) {
 		
@@ -116,7 +120,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 		
 		try{
 		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, serv_comerciales s where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(s.geom,32721) )").getResultList();
-		System.out.println("LA DISTANCIA Intrest" + distance);
+		
 		return result;
 		}
 		catch(Exception e){
@@ -128,7 +132,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 	@Override
 	public List<Integer> getDistanceParadas(Integer distance){
 		try{
-		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(p.geom,32721) )").getResultList();
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+distance+"),ST_Transform(p.geom,32721) )").getResultList();
 		System.out.println("LA DISTANCIA BUS" + distance);
 		return result;
 		}
@@ -162,6 +166,66 @@ public class PropiedadDAO implements IPropiedadDAO {
 		}
 		return null;
 	}
+
+	
+public boolean guardarApartamento(Apartamento apart) {
+		
+		try {
+			
+			em.persist(apart);
+			return true;
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return false;
+		}
+
+		
+
+	}
+
+
+public void modificarCasa(Casa c) {
+	
+	try {
+		em.merge(c);			
+
+	} catch (Exception e) {
+
+		e.printStackTrace();
+
+	}
+	
+}	
+
+
+public void modificarApto(Apartamento apart) {
+	
+	try {
+		em.merge(apart);			
+
+	} catch (Exception e) {
+
+		e.printStackTrace();
+
+	}
+	
+}
+
+
+@Override
+public Apartamento AptoFromGeom(int idPunto) {
+	try{
+		Apartamento ap = (Apartamento)em.createQuery("Select a FROM Apartamento a WHERE a.idGeom = '"+idPunto+"'").getSingleResult();
+		return ap;
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	return null;
+}
 
 	
 

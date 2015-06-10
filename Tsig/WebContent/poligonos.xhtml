@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	>
+	
+
+<h:head>
+ <h:outputStylesheet library="css" name="styles.css" />
+
+<link rel="stylesheet" href="../resources/css/ol.css"></link>
+
+<script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
+<script type="text/javascript" src="resources/js/poligonos.js"></script>
+	<style type="text/css">
+		#controlToggle li {
+			list-style: none;
+		}
+			
+		/* avoid pink tiles */
+		.olImageLoadError {
+			background-color: transparent !important;
+		}
+	</style>
+	</h:head>
+<h:body onload='init()' class="fondo">
+<ui:include src="/navbar.xhtml" />
+<div id="cont" class="contenedor">
+ <div id="mapWrap" class="mapWrap">
+	<div id='map' class="map">		
+	
+	
+	</div>
+	</div>
+	<button onclick="save();" id="botonGuardar">Guardar Zona</button>
+</div>	        
+</h:body>
+</html>

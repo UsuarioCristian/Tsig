@@ -82,7 +82,7 @@
 		           
 					);
 
-		            puntos = new OpenLayers.Layer.Vector(
+		           puntos = new OpenLayers.Layer.Vector(
 		                    "casageom",
 		                    {
 		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
@@ -102,7 +102,7 @@
 		           
 		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
 		                    OpenLayers.Feature.Vector.style["default"]);
-		           puntos.style.externalGraphic="../resources/Images/casa.png";
+		           puntos.style.externalGraphic="resources/Images/casa.png";
 		           puntos.style.graphicWidth= 40;
 		           puntos.style.graphicHeight= 32;
 		           puntos.style.fillOpacity=1;
@@ -132,7 +132,7 @@
 
 								input.value= puntos.features.length;
 								
-								feature.attributes.estado="privada";
+								//feature.attributes.numpunto=input.value;
 								
 								//alert(input.value);
 								feature.layer.drawFeature(feature);
@@ -163,6 +163,8 @@
 </h:head>
 
 <h:body class="fondo" onload="init()" >
+	
+<ui:include src="/navbar.xhtml" />
 
 <div id="cont" class="contenedor">
 
@@ -225,9 +227,10 @@
   <div id="mapWrap" class="mapWrap">
   <div id="map" class="map"></div>
   </div>	
-     
-	    <h:outputLabel value="Direccion del inmueble" />
-	    <b:inputText span="4" value="#{propiedadMB.direccion}" />
+  
+  
+  <h:outputLabel value="Direccion" />	    
+	    <b:inputText span="8" value="#{propiedadMB.direccion}"/>
  	
   <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()" action="#{propiedadMB.guardarPropiedad}"></h:commandButton>	
   </b:panel>

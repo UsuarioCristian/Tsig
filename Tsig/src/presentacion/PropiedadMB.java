@@ -26,6 +26,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
 import controladores.IPropiedadController;
+import dominio.Apartamento;
 import dominio.Casa;
 
 
@@ -36,16 +37,19 @@ public class PropiedadMB implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	
+	private int idPunto=0;
+	private int idDep=0;
 	private int idCasa=0;	
 	private int direccion=0;	
 	private String barrio="";	
 	private String tipoProp="";	
+	private String tipoNegocio="";
 	private int cantBanios=0;		
 	private int cantCuartos=0;	
 	private boolean garage=false;	
 	private boolean piscina=false;
 	private String titulo="";
+
 	/* For advanced filters*/
 	private Integer distanciaInteres=0;
 	private Integer distanciaBus=0;
@@ -53,8 +57,15 @@ public class PropiedadMB implements Serializable {
 	private Integer distanciaParada=0;
 	private String calle1="";
 	private String calle2="";
+
+	private int precio;
+	private float tamanio;
+	private int numeroap;
+
 	
 	private List<Integer> casas= new ArrayList();
+	private List<Integer> aptos= new ArrayList();
+	
 	@EJB
 	IPropiedadController ipc;
 
@@ -65,9 +76,7 @@ public class PropiedadMB implements Serializable {
 			
 			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 			
-			
-			
-			ipc.guardarCasa(usuario,idCasa,titulo, direccion, barrio, tipoProp, cantBanios, cantCuartos, piscina, garage);
+			ipc.guardarCasa(usuario,idCasa,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage, precio, tamanio);
 			
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
@@ -81,12 +90,44 @@ public class PropiedadMB implements Serializable {
 		return null;
 		
 	}
+	
+	
+
+	public String guardarApartamento(){
+		
+
+		try {
+			
+			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+								
+			ipc.guardarApartamento(usuario,idDep,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio,numeroap);
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+		
+	}
+	
+	
+	
+	
 	public void getInfo(){
 		
 		try{
 			
-			Casa c= ipc.getCasaFromGeom(idCasa);
+
+			Casa c= ipc.getCasaFromGeom(idPunto);
+
+
 			//Casa c= ipc.getCasa(idCasa);
+
 			
 			if (c!=null){
 				this.titulo=c.getTitulo();
@@ -107,10 +148,37 @@ public class PropiedadMB implements Serializable {
 		}
 		
 	}
+	public void getInfoApto(){
+			
+			try{
+				
+				Apartamento a= ipc.getAptoFromGeom(idPunto);
+				
+				if (a!=null){
+					this.titulo=a.getTitulo();
+					this.direccion = a.getDireccion();
+				    this.barrio = a.getBarrio();
+				    this.tipoProp = a.getTipoProp();
+				    this.cantBanios = a.getCantBanios();
+				    this.cantCuartos = a.getCantCuartos();
+				    this.garage = a.isGarage();
+				    this.numeroap= a.getIdApartamento();
+				}else
+				{
+					System.out.println("el apto ES NULL");
+				}
+			}
+			catch(Exception e){
+			e.printStackTrace();
+			}
+			
+		}
+	
 	/* Filters */
 	public void consultaPropiedad(){
 		 
 		try{
+
 		casas.clear();
 		
 	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
@@ -120,11 +188,15 @@ public class PropiedadMB implements Serializable {
     	}
 	    
 	    if(distanciaInteres!=0){
+	    	
 	    	List<Integer> aux=ipc.getDistanciaInteres(distanciaInteres);
+	    	
+	    	    	
 	    	if (aux != null){
 	    		casas.retainAll(aux);
 	    		aux.clear();
 	    	}else{
+	    		System.out.println("Casas Cleared dist int");
 	    		casas.clear(); 
 	    	}
 	    }
@@ -140,11 +212,13 @@ public class PropiedadMB implements Serializable {
 		    	if (aux2 != null){
 		    		casas.retainAll(aux2);
 		    		aux2.clear();
-		    	}else{
+		    	}
+		    	else{
 		    		casas.clear();
 		    	}
-	    	
-	    }
+		    	
+		}
+	    
 		
 		if(distanciaMar!=0){
 			
@@ -162,9 +236,7 @@ public class PropiedadMB implements Serializable {
 	    	}
     	
     }
-	    
-	    
-	    
+	 
 	    
 		}catch(Exception e){
 			e.printStackTrace();
@@ -179,6 +251,16 @@ public class PropiedadMB implements Serializable {
 
 	public void setIdCasa(int idCasa) {
 		this.idCasa = idCasa;
+	}
+	
+	
+	public int getIdApto() {
+		return idDep;
+	}
+
+
+	public void setIdApto(int idDep) {
+		this.idDep = idDep;
 	}
 
 
@@ -210,8 +292,8 @@ public class PropiedadMB implements Serializable {
 	public void setTipoProp(String tipoProp) {
 		this.tipoProp = tipoProp;
 	}
-
-
+	
+	
 	public int getCantBanios() {
 		return cantBanios;
 
@@ -267,6 +349,7 @@ public class PropiedadMB implements Serializable {
 	public void setCasas(List<Integer> casas) {
 		this.casas = casas;
 	}
+
 	public Integer getDistanciaInteres() {
 		return distanciaInteres;
 	}
@@ -302,6 +385,84 @@ public class PropiedadMB implements Serializable {
 	}
 	public void setCalle2(String calle2) {
 		this.calle2 = calle2;
+	}
+
+	public int getPrecio() {
+		return precio;
+	}
+	
+	public void setPrecio(int precio) {
+		this.precio = precio;
+	}
+
+
+	public float getTamanio() {
+		return tamanio;
+	}
+	
+	public void setTamanio(float tamanio) {
+		this.tamanio = tamanio;
+	}
+
+
+
+	public String getTipoNegocio() {
+		return tipoNegocio;
+	}
+
+
+
+	public void setTipoNegocio(String tipoNegocio) {
+		this.tipoNegocio = tipoNegocio;
+	}
+
+
+
+	public int getNumeroap() {
+		return numeroap;
+	}
+
+
+
+	public void setNumeroap(int numeroap) {
+		this.numeroap = numeroap;
+
+	}
+
+
+
+	public int getIdPunto() {
+		return idPunto;
+	}
+
+
+
+	public void setIdPunto(int idPunto) {
+		this.idPunto = idPunto;
+	}
+
+
+
+	public int getIdDep() {
+		return idDep;
+	}
+
+
+
+	public void setIdDep(int idDep) {
+		this.idDep = idDep;
+	}
+
+
+
+	public List<Integer> getAptos() {
+		return aptos;
+	}
+
+
+
+	public void setAptos(List<Integer> aptos) {
+		this.aptos = aptos;
 	}
 	
 	

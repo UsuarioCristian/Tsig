@@ -168,6 +168,7 @@
  		           
  		         function clickNotice(event) {
  		        	
+
 	        	        var id = event.attributes.id;
 						var input = document.getElementById('info:idcasa');
 						input.value=id;
@@ -210,6 +211,7 @@
  
   
   
+   <ui:include src="/navbar.xhtml" />
    
    <div id="cont" class="contenedor">
 
@@ -222,12 +224,20 @@
     
     <h:form id="info" style="display:none;">
     
-     <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
+     <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
      
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
     
    
-   	<f:ajax execute="@form" render="amodal" onevent="handleAjax" />
+    <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
+    
+    
+    </h:commandButton>
+    
+        <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
+    
+   
+    <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
     
     
     </h:commandButton>
