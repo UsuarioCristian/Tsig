@@ -6,6 +6,7 @@ import java.util.Collection;
 import dominio.Apartamento;
 
 
+
 import java.util.List;
 
 import javax.ejb.Local;
@@ -26,6 +27,7 @@ public interface IPropiedadController {
 	public Casa getCasaFromGeom(int idCasa);
 	public Apartamento getAptoFromGeom(int idPunto);
 	public List<Integer> getDistanceRambla(Integer distanciaRambla);
+	public List<Integer> getCasasUsuario(String usuario);
 
 
 

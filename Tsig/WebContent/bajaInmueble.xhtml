@@ -26,7 +26,8 @@
     var wms;
 
     var puntos;
-    
+   
+    //var username = #{FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario")};
     var saveStrategy = new OpenLayers.Strategy.Save();
    
 
@@ -146,6 +147,8 @@
 		                        styleMap: new OpenLayers.StyleMap(stylePuntos)
 		                    
 		                    });
+		            
+		            document.getElementById('getuser').click();
 	
 		           map.addLayers([tiled,puntos]);
 		           
@@ -184,6 +187,45 @@
 	
 		}
 		
+		function updateFilter() {
+
+			
+			var inputs = document.getElementById('este');
+			
+			var idFilter = [];
+			var filt =[];
+		
+			for (key in inputs.children) {
+				
+				if(!(isNaN(key))){
+				idFilter.push(inputs.children[key].value);
+				}
+				
+			}
+			//Id filter contiene los ids a filtrar
+			
+			
+			for (key in idFilter){
+				    filt[key] = new OpenLayers.Filter.Comparison({
+				    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				     property: "id",
+				    value: idFilter[key]
+				});
+				
+			}
+			
+
+
+			puntos.filter= new OpenLayers.Filter.Logical({
+			    	type: OpenLayers.Filter.Logical.OR,
+			    	filters: filt
+			});
+			
+
+			puntos.refresh({force:true});
+			
+		}
+		
 		function handleAjax(data) {
 		    var status = data.status;
 
@@ -201,6 +243,24 @@
 		            break;
 		    }
 		}
+		
+		function handleAjax2(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		        	updateFilter();
+		            break;
+		    }
+		}
 	
 
 	 </script>
@@ -208,7 +268,15 @@
    <h:body class="fondo" onload="init()">
    
  
+  <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
+  	<f:ajax  onevent="handleAjax2" render="este" update="este"/>
+  </h:commandButton>	
   
+  <h:panelGroup  id="este">
+    <ui:repeat value="#{propiedadMB.casas}"  var="id">
+		<h:inputHidden value="#{id}" class="ids" /> 
+	</ui:repeat>
+</h:panelGroup>
   
    
    <div id="cont" class="contenedor">
@@ -222,7 +290,7 @@
     
     <h:form id="info" style="display:none;">
     
-     <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
+     <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
      
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
     

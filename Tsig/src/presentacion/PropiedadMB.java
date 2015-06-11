@@ -173,6 +173,24 @@ public class PropiedadMB implements Serializable {
 			}
 			
 		}
+	public void getUser(){
+		
+		try {
+			
+			casas.clear();
+			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+			System.out.println("Entre getUser....."+ usuario);
+			casas=ipc.getCasasUsuario(usuario);
+			System.out.println("Entre getUser despues consulta"+ casas );
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+
+		
+		
+	}
 	
 	/* Filters */
 	public void consultaPropiedad(){

@@ -28,6 +28,7 @@ public interface IPropiedadDAO {
 	public Casa getCasaFromGeom(int idCasa);
 	public Apartamento AptoFromGeom(int idPunto);
 	public List<Integer> getDistanceRambla(Integer distance);
+	public List<Integer> getCasasUsuario(String usuario);
 
 
 	

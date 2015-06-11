@@ -159,11 +159,25 @@ public class PropiedadController implements IPropiedadController{
 			return null;
 	}
 
-	@Override
+
 	public Apartamento getAptoFromGeom(int idPunto) {
 	try{
 			
 			return  PropiedadDAO.AptoFromGeom(idPunto);
+			
+			}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	
+	public List<Integer> getCasasUsuario(String usuario) {
+		try{
+			
+			return  PropiedadDAO.getCasasUsuario(usuario);
 			
 			}
 		catch(Exception e){

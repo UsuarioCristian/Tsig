@@ -8,7 +8,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 
 import dominio.Casa;
-import dominio.Usuario;
+
 
 
 
@@ -27,6 +27,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 		try {
 		
 			em.persist(casa);
+			System.out.print("guarda casa"+casa.getIdCasa()+casa.getEncargado());
 			return true;
 
 		} catch (Exception e) {
@@ -157,7 +158,10 @@ public class PropiedadDAO implements IPropiedadDAO {
 	
 	public Casa getCasaFromGeom(int idCasa) {
 		try{
+			System.out.println("getinfocasa"+ idCasa);
+
 			Casa casa = (Casa)em.createQuery("Select c FROM Casa c WHERE c.idGeom = '"+idCasa+"'").getSingleResult();
+			System.out.println("getinfocasa"+ casa  );
 			return casa;
 			
 		}catch(Exception e){
@@ -219,6 +223,19 @@ public Apartamento AptoFromGeom(int idPunto) {
 	try{
 		Apartamento ap = (Apartamento)em.createQuery("Select a FROM Apartamento a WHERE a.idGeom = '"+idPunto+"'").getSingleResult();
 		return ap;
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	return null;
+}
+
+
+public List<Integer> getCasasUsuario(String usuario) {
+	try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from casa c, casageom g where c.idgeom=g.id and c.user_id='"+usuario+"'").getResultList();
+		return result;
 		
 	}catch(Exception e){
 		
