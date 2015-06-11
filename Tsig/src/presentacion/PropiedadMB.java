@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -273,6 +274,27 @@ public class PropiedadMB implements Serializable {
 	 
 	    
 		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void redirect (){
+		
+		
+		try {
+			
+			
+			String countrry = (String)FacesContext.getCurrentInstance().getAttributes().get("maxi");
+			
+			System.out.println("ID DE LA CASA CARAJO "+ idPunto);
+			
+			System.out.println("ID DE LA CASA CARAJO country "+ countrry);
+			 
+			System.out.println("titulo"+ titulo);
+				
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
