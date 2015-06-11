@@ -30,6 +30,10 @@ public interface IPropiedadDAO {
 	public Apartamento AptoFromGeom(int idPunto);
 	public List<Integer> getDistanceRambla(Integer distance);
 	
+	public List<Integer> getDistancePuntoInteresApto(Integer distanciaInteres);
+	public List<Integer> getDistanceParadasApto(Integer distanciaParadas);
+	public List<Integer> getDistanceRamblaApto(Integer distanciaRambla);
+	
 
 
 	

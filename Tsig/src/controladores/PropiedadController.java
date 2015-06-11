@@ -150,6 +150,44 @@ public class PropiedadController implements IPropiedadController{
 			}
 			return null;
 	}
+    ////////////////////////// Aptos
+	@Override
+	public List<Integer> getDistanciaInteresApto(Integer distanciaInteres) {
+		
+		try{
+		return   PropiedadDAO.getDistancePuntoInteresApto(distanciaInteres);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Integer> getDistanciaParadasApto(Integer distanciaParadas) {
+		
+		try{
+		return   PropiedadDAO.getDistanceParadasApto(distanciaParadas);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+    public List<Integer> getDistanceRamblaApto(Integer distanciaRambla) {
+		
+			try{
+			return   PropiedadDAO.getDistanceRamblaApto(distanciaRambla);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
+	}
+    
+    
+    /////////////////////////
 
 
 	

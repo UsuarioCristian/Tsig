@@ -225,6 +225,48 @@ String comb;
 	}
 
 	
+	///////Aptos
+	@Override
+	public List<Integer> getDistancePuntoInteresApto(Integer distance) {
+		
+		try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from apartamento c, aptogeom g, serv_comerciales s where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(s.geom,32721) )").getResultList();
+		
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	@Override
+	public List<Integer> getDistanceParadasApto(Integer distance){
+		try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from apartamento c, aptogeom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+distance+"),ST_Transform(p.geom,32721) )").getResultList();
+		System.out.println("LA DISTANCIA BUS" + distance);
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Integer> getDistanceRamblaApto(Integer distance){
+		try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from apartamento c, aptogeom g, borderambla b where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(b.the_geom,32721) )").getResultList();
+		
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	///////
+	
 	public Casa getCasaFromGeom(int idCasa) {
 		try{
 			Casa casa = (Casa)em.createQuery("Select c FROM Casa c WHERE c.idGeom = '"+idCasa+"'").getSingleResult();
