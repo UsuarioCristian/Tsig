@@ -43,6 +43,7 @@
     var map;
     var wms;
     var puntos;
+    var aptos;
     var paradas;
     var supers;
 	var parcelas;	
@@ -203,16 +204,16 @@
 		                    });
 
 
-// 			           var styleParadas = new OpenLayers.Style(
-// 			        	        // the first argument is a base symbolizer
-// 			        	        // all other symbolizers in rules will extend this one
-// 			        	        {
-// 			        	            graphicWidth: 10,
-// 			        	            graphicHeight: 10,
-// 			        	            externalGraphic: "resources/Images/bus.gif"
+			           var styleParadas = new OpenLayers.Style(
+			        	        // the first argument is a base symbolizer
+			        	        // all other symbolizers in rules will extend this one
+			        	        {
+			        	            graphicWidth: 10,
+			        	            graphicHeight: 10,
+			        	            externalGraphic: "resources/Images/bus.png"
 			        	           
-// 			        	        }
-// 			        	    );
+			        	        }
+			        	    );
 		             
 		             paradas = new OpenLayers.Layer.Vector(
 			                    "paradas",
@@ -230,13 +231,40 @@
 			                            
 			                        }),
 			                        filter:"",
-			                       // styleMap: new OpenLayers.StyleMap(styleParadas)
+			                        styleMap: new OpenLayers.StyleMap(styleParadas)
 			                    
 			                    });
 		           
-		    
-		         
-		           
+		             var styleAptos = new OpenLayers.Style(
+			        	        // the first argument is a base symbolizer
+			        	        // all other symbolizers in rules will extend this one
+			        	        {
+			        	            graphicWidth: 50,
+			        	            graphicHeight: 38,
+			        	            externalGraphic:"resources/Images/apto.png",
+			        	           
+			        	        });
+		             aptos = new OpenLayers.Layer.Vector(
+			                    "aptogeom",
+			                    {
+			                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+			                        , projection: new OpenLayers.Projection("EPSG:32721")
+			                         ,protocol: new OpenLayers.Protocol.WFS({
+			                            version: "1.1.0",
+			                            srsName: "EPSG:32721",
+			                            url: "http://localhost:8080/geoserver/wfs",
+			                            featurePrefix: 'sige', //geoserver worspace name
+			                            featureType: "aptogeom", //geoserver Layer Name
+			                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+			                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+			                            
+			                        }),
+
+			                        filter:"",
+			                        styleMap: new OpenLayers.StyleMap(styleAptos)
+			                    
+			                    });
+		         		           
 		           casageom = new OpenLayers.Layer.Vector(
 		                    "casageom",
 		                    {
@@ -262,7 +290,7 @@
 		           casageom.style.graphicHeight= 32;
 		           casageom.style.fillOpacity=1;
 		           
-		           map.addLayers([tiled,supers,paradas,casageom]);
+		           map.addLayers([tiled,supers,paradas,casageom,aptos]);
 		        
 		           
 		           var panel = new OpenLayers.Control.Panel(
@@ -297,15 +325,11 @@
 		   //]]>
 		}
 	
-	
-	function updateFilter() {
+	function filtrarCasa(){
 
-		
-		var inputs = document.getElementById('consultaInmueble:este');
-		
+		var inputs = document.getElementById('consultaInmueble:Casa');
 		var idFilter = [];
 		var filt =[];
-	
 		for (key in inputs.children) {
 			
 			if(!(isNaN(key))){
@@ -313,9 +337,6 @@
 			}
 			
 		}
-		//Id filter contiene los ids a filtrar
-		
-		
 		for (key in idFilter){
 			    filt[key] = new OpenLayers.Filter.Comparison({
 			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
@@ -324,16 +345,73 @@
 			});
 			
 		}
-		
-
-
 		casageom.filter= new OpenLayers.Filter.Logical({
 		    	type: OpenLayers.Filter.Logical.OR,
 		    	filters: filt
 		});
+		casageom.refresh({force:true});
+
+	}
+	
+	function filtrarApto(){
+
+		var inputsApto =document.getElementById('consultaInmueble:Apto');
+		
+		var idFilterApto=[];
+		
+		var filtApto =[];
+
+
+		for (key in inputsApto.children) {
+			
+			if(!(isNaN(key))){
+			idFilterApto.push(inputsApto.children[key].value);
+			}
+			
+		}
+
+		for (key in idFilterApto){
+		    filtApto[key] = new OpenLayers.Filter.Comparison({
+		    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		     property: "id",
+		    value: idFilterApto[key]
+			});
+		
+		}
+
+		aptos.filter= new OpenLayers.Filter.Logical({
+	    	type: OpenLayers.Filter.Logical.OR,
+	    	filters: filtApto
+		});
+
+		
+		aptos.refresh({force:true});
+
+	}
+	
+	function updateFilter() {
+
+		var Prop = document.getElementById('consultaInmueble:Prop').value;
+		
+		if (Prop=="Casa"){ 
+			
+			filtrarCasa();
+			casageom.setVisibility(true);
+			aptos.setVisibility(false);
+		}
+		else if (Prop=="Apartamento"){
+			//filtrarApto();
+			casageom.setVisibility(false);
+			aptos.setVisibility(true);
+		}
+		else{
+			filtrarCasa();
+			//filtrarApto();
+			casageom.setVisibility(true);
+			aptos.setVisibility(true);
+		}
 		
 
-		casageom.refresh({force:true});
 		
 	}
 	
@@ -407,15 +485,24 @@
   </div>	
      
  <b:panelGrid colSpans="2,10" rowClasses="rowform">
+ 
 	 	<h:outputLabel value="Titulo de la casa" />
 		<b:inputText span="8" value="#{propiedadMB.titulo}"/>
+		
+		<h:outputLabel value="Tipo de inmueble" />	
 	         
+		<b:selectOneMenu span="8" value="#{propiedadMB.propiedad}" >
+			<f:selectItem itemLabel="Cualquiera" itemValue="Cualquiera"/>
+			<f:selectItem itemLabel="Casa" itemValue="Casa"/>
+			<f:selectItem itemLabel="Apartamento" itemValue="Apartamento"/>
+		</b:selectOneMenu>
+	     
 	    <h:outputLabel value="Barrio de la casa" />	    
 	    <b:inputText span="8" value="#{propiedadMB.barrio}"/>
 	    
-	    <h:outputLabel value="Tipo de propiedad" />	
+	    <h:outputLabel value="Utilidad del inmueble" />	
 	    
-	    <b:selectOneMenu span="8" value="#{propiedadMB.tipoProp}" >
+	    <b:selectOneMenu span="8" id="Prop" value="#{propiedadMB.tipoProp}" >
 	    	<f:selectItem itemLabel="Cualquiera" itemValue="Cualquiera"/>
             <f:selectItem itemLabel="Comercial" itemValue="Comercial"/>
             <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
@@ -437,14 +524,20 @@
 	
  	
   <h:commandButton id="save" value="Consultar" actionListener="#{propiedadMB.consultaPropiedad}">
- 		<f:ajax execute="@form" onevent="handleAjax" render="idcasa este" update="este"/>
+ 		<f:ajax execute="@form" onevent="handleAjax" render="idcasa Casa Apto" update="Casa Apto"/>
   </h:commandButton>	
   </b:panel>
   
   <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
  
-<h:panelGroup  id="este">
+<h:panelGroup  id="Casa">
     <ui:repeat value="#{propiedadMB.casas}"  var="id">
+		<h:inputHidden value="#{id}" class="ids" /> 
+	</ui:repeat>
+</h:panelGroup>
+
+<h:panelGroup  id="Apto">
+    <ui:repeat value="#{propiedadMB.aptos}"  var="id">
 		<h:inputHidden value="#{id}" class="ids" /> 
 	</ui:repeat>
 </h:panelGroup>

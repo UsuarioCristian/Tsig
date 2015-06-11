@@ -49,6 +49,7 @@ public class PropiedadMB implements Serializable {
 	private boolean garage=false;	
 	private boolean piscina=false;
 	private String titulo="";
+	private String propiedad="";
 
 	/* For advanced filters*/
 	private Integer distanciaInteres=0;
@@ -57,7 +58,8 @@ public class PropiedadMB implements Serializable {
 	private Integer distanciaParada=0;
 	private String calle1="";
 	private String calle2="";
-
+	
+	
 	private int precio;
 	private float tamanio;
 	private int numeroap;
@@ -163,6 +165,9 @@ public class PropiedadMB implements Serializable {
 				    this.cantCuartos = a.getCantCuartos();
 				    this.garage = a.isGarage();
 				    this.numeroap= a.getIdApartamento();
+				    this.precio=a.getPrecio();
+				    this.tamanio=a.getTamanio();
+				   
 				}else
 				{
 					System.out.println("el apto ES NULL");
@@ -179,63 +184,66 @@ public class PropiedadMB implements Serializable {
 		 
 		try{
 
-		casas.clear();
 		
-	    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
-	    
-	    for(Integer c: casas){
-	    	System.out.println("casas filtro piche"+c);
-    	}
-	    
-	    if(distanciaInteres!=0){
-	    	
-	    	List<Integer> aux=ipc.getDistanciaInteres(distanciaInteres);
-	    	
-	    	    	
-	    	if (aux != null){
-	    		casas.retainAll(aux);
-	    		aux.clear();
-	    	}else{
-	    		System.out.println("Casas Cleared dist int");
-	    		casas.clear(); 
-	    	}
-	    }
-	    	
-		if(distanciaParada!=0){
+			casas.clear();
+			aptos.clear();
 			
-		    	List<Integer> aux2=ipc.getDistanciaParadas(distanciaParada);
+			
+		    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
+		    
+		    for(Integer c: casas){
+		    	System.out.println("casas filtro piche"+c);
+	    	}
+		    
+		    if(distanciaInteres!=0){
 		    	
-		    	for(Integer i: aux2){
-		    		System.out.println("Ids de parada "+i);
+		    	List<Integer> aux=ipc.getDistanciaInteres(distanciaInteres);
+		    	
+		    	    	
+		    	if (aux != null){
+		    		casas.retainAll(aux);
+		    		aux.clear();
+		    	}else{
+		    		System.out.println("Casas Cleared dist int");
+		    		casas.clear(); 
+		    	}
+		    }
+		    	
+			if(distanciaParada!=0){
+				
+			    	List<Integer> aux2=ipc.getDistanciaParadas(distanciaParada);
+			    	
+			    	for(Integer i: aux2){
+			    		System.out.println("Ids de parada "+i);
+			    	}
+			    	
+			    	if (aux2 != null){
+			    		casas.retainAll(aux2);
+			    		aux2.clear();
+			    	}
+			    	else{
+			    		casas.clear();
+			    	}
+			    	
+			}
+		    
+			
+			if(distanciaMar!=0){
+				
+		    	List<Integer> aux3=ipc.getDistanceRambla(distanciaMar);
+		    	
+		    	for(Integer i: aux3){
+		    		System.out.println("Ids de casa al mar "+i);
 		    	}
 		    	
-		    	if (aux2 != null){
-		    		casas.retainAll(aux2);
-		    		aux2.clear();
-		    	}
-		    	else{
+		    	if (aux3 != null){
+		    		casas.retainAll(aux3);
+		    		aux3.clear();
+		    	}else{
 		    		casas.clear();
 		    	}
-		    	
-		}
-	    
-		
-		if(distanciaMar!=0){
-			
-	    	List<Integer> aux3=ipc.getDistanceRambla(distanciaMar);
-	    	
-	    	for(Integer i: aux3){
-	    		System.out.println("Ids de casa al mar "+i);
-	    	}
-	    	
-	    	if (aux3 != null){
-	    		casas.retainAll(aux3);
-	    		aux3.clear();
-	    	}else{
-	    		casas.clear();
-	    	}
     	
-    }
+			}
 	 
 	    
 		}catch(Exception e){
@@ -463,6 +471,18 @@ public class PropiedadMB implements Serializable {
 
 	public void setAptos(List<Integer> aptos) {
 		this.aptos = aptos;
+	}
+
+
+
+	public String getPropiedad() {
+		return propiedad;
+	}
+
+
+
+	public void setPropiedad(String propiedad) {
+		this.propiedad = propiedad;
 	}
 	
 	
