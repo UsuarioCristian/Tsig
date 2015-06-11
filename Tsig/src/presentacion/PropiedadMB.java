@@ -189,10 +189,15 @@ public class PropiedadMB implements Serializable {
 			aptos.clear();
 			
 			
-		    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage);
+		    casas = ipc.getFilteredCasa(titulo,barrio,tipoProp,cantBanios,cantCuartos,piscina,garage,tamanio,precio,tipoNegocio);
+		    aptos = ipc.getFilteredAptos(titulo,barrio,tipoProp,cantBanios,cantCuartos,garage,tamanio,precio,tipoNegocio,numeroap);
 		    
 		    for(Integer c: casas){
-		    	System.out.println("casas filtro piche"+c);
+		    	System.out.println("casas filtro pichi "+c);
+	    	}
+		    
+		    for(Integer d: aptos){
+		    	System.out.println("aptos filtro pichi "+d);
 	    	}
 		    
 		    if(distanciaInteres!=0){

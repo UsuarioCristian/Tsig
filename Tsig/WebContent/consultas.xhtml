@@ -204,7 +204,7 @@
 		                    });
 
 
-			           var styleParadas = new OpenLayers.Style(
+			/*           var styleParadas = new OpenLayers.Style(
 			        	        // the first argument is a base symbolizer
 			        	        // all other symbolizers in rules will extend this one
 			        	        {
@@ -233,7 +233,7 @@
 			                        filter:"",
 			                        styleMap: new OpenLayers.StyleMap(styleParadas)
 			                    
-			                    });
+			                    });*/
 		           
 		             var styleAptos = new OpenLayers.Style(
 			        	        // the first argument is a base symbolizer
@@ -244,6 +244,16 @@
 			        	            externalGraphic:"resources/Images/apto.png",
 			        	           
 			        	        });
+
+		             var styleCasas = new OpenLayers.Style(
+			        	        // the first argument is a base symbolizer
+			        	        // all other symbolizers in rules will extend this one
+			        	        {
+			        	            graphicWidth: 40,
+			        	            graphicHeight: 32,
+			        	            externalGraphic:"resources/Images/casa.png",
+			        	           
+			        	        });			       
 		             aptos = new OpenLayers.Layer.Vector(
 			                    "aptogeom",
 			                    {
@@ -280,17 +290,13 @@
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                           
 		                        }),
-		                        filter:""
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(styleCasas)
 		                    
 		                    });
 		           
-		           casageom.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"},OpenLayers.Feature.Vector.style["default"]);
-		           casageom.style.externalGraphic="resources/Images/casa.png";
-		           casageom.style.graphicWidth= 40;
-		           casageom.style.graphicHeight= 32;
-		           casageom.style.fillOpacity=1;
-		           
-		           map.addLayers([tiled,supers,paradas,casageom,aptos]);
+		           	           
+		           map.addLayers([tiled,supers,casageom,aptos]);
 		        
 		           
 		           var panel = new OpenLayers.Control.Panel(
@@ -316,11 +322,11 @@
 			  
 		   if (zoom >=8) {
 			    supers.setVisibility(true);
-				paradas.setVisibility(true);
+			//	paradas.setVisibility(true);
 		   }
 		   else  {
 			   supers.setVisibility(false);
-			   paradas.setVisibility(false);
+			 //  paradas.setVisibility(false);
 		   }
 		   //]]>
 		}
@@ -330,6 +336,7 @@
 		var inputs = document.getElementById('consultaInmueble:Casa');
 		var idFilter = [];
 		var filt =[];
+		
 		for (key in inputs.children) {
 			
 			if(!(isNaN(key))){
@@ -400,13 +407,13 @@
 			aptos.setVisibility(false);
 		}
 		else if (Prop=="Apartamento"){
-			//filtrarApto();
+			filtrarApto();
 			casageom.setVisibility(false);
 			aptos.setVisibility(true);
 		}
 		else{
 			filtrarCasa();
-			//filtrarApto();
+			filtrarApto();
 			casageom.setVisibility(true);
 			aptos.setVisibility(true);
 		}
@@ -491,7 +498,7 @@
 		
 		<h:outputLabel value="Tipo de inmueble" />	
 	         
-		<b:selectOneMenu span="8" value="#{propiedadMB.propiedad}" >
+		<b:selectOneMenu span="8" id="Prop" value="#{propiedadMB.propiedad}" >
 			<f:selectItem itemLabel="Cualquiera" itemValue="Cualquiera"/>
 			<f:selectItem itemLabel="Casa" itemValue="Casa"/>
 			<f:selectItem itemLabel="Apartamento" itemValue="Apartamento"/>
@@ -502,25 +509,49 @@
 	    
 	    <h:outputLabel value="Utilidad del inmueble" />	
 	    
-	    <b:selectOneMenu span="8" id="Prop" value="#{propiedadMB.tipoProp}" >
+	    <b:selectOneMenu span="8"  value="#{propiedadMB.tipoProp}" >
 	    	<f:selectItem itemLabel="Cualquiera" itemValue="Cualquiera"/>
             <f:selectItem itemLabel="Comercial" itemValue="Comercial"/>
             <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
         </b:selectOneMenu>
         
+        <h:outputLabel value="Tipo de Contrato" />	
+	    
+	    <b:selectOneMenu span="8"  value="#{propiedadMB.tipoNegocio}" >
+	    	<f:selectItem itemLabel="Cualquiera" itemValue="Cualquiera"/>
+            <f:selectItem itemLabel="Alquiler" itemValue="Alquiler"/>
+            <f:selectItem itemLabel="Venta" itemValue="Venta"/>
+        </b:selectOneMenu>
+        
         <h:outputLabel value="Cantidad de baNIos" />	    
 	    <b:inputText span="8" value="#{propiedadMB.cantBanios}"/>
+	    
+	    <h:outputLabel value="Tamaño minimo: " />	    
+	    <b:inputText span="8" value="#{propiedadMB.tamanio}"/>
+	    
+	            <h:outputLabel value="Precio maximo" />	    
+	    <b:inputText span="8" value="#{propiedadMB.precio}"/>
         
+     
         <h:outputLabel value="Cantidad de cuartos" />	    
 	    <b:inputText span="8" value="#{propiedadMB.cantCuartos}"/>
         
 	    
-	    <h:outputLabel value="Piscina: " />
-	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" />
+
 	    
 	    <h:outputLabel value="Garage: " />
 	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
  	</b:panelGrid>
+ 	
+ 	   <h:panelGroup id="results">
+        
+        <h:outputLabel value="Piso: " rendered="#{propiedadMB.propiedad == 'Apartamento'}"/>	    
+	    <b:inputText span="8" value="#{propiedadMB.numeroap}" rendered="#{propiedadMB.propiedad == 'Apartamento'}"/>
+	    
+	    <h:outputLabel value="Piscina: " rendered="#{propiedadMB.propiedad == 'Casa'}"/>
+	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" rendered="#{propiedadMB.propiedad == 'Casa'}"/>
+	    
+        </h:panelGroup>
 	
  	
   <h:commandButton id="save" value="Consultar" actionListener="#{propiedadMB.consultaPropiedad}">
