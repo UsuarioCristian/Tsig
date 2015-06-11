@@ -26,6 +26,7 @@
     var wms;
 
     var puntos;
+    var aptos;
     
     var saveStrategy = new OpenLayers.Strategy.Save();
    
@@ -125,6 +126,62 @@
 		        	            ]
 		        	        }
 		        	    );
+
+		           var styleAptos = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 50,
+		        	            graphicHeight: 38,
+		        	           
+		        	           
+		        	        },
+		        	        // the second argument will include all rules
+		        	        {
+		        	            rules: [
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "privada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	  
+		        	                        externalGraphic: "resources/Images/aptoprivado.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "reservada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	     
+		        	                        externalGraphic: "resources/Images/aptoReservado.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "publica"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	      
+		        	                        externalGraphic: "resources/Images/aptopublico.png"
+		        	                    }
+		        	                }),
+		    
+		        	            ]
+		        	        }
+		        	    );
 			          
 		            puntos = new OpenLayers.Layer.Vector(
 		                    "casageom",
@@ -146,14 +203,35 @@
 		                        styleMap: new OpenLayers.StyleMap(stylePuntos)
 		                    
 		                    });
+
+		            aptos = new OpenLayers.Layer.Vector(
+		                    "aptogeom",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "aptogeom", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+		                            
+		                        }),
+
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(styleAptos)
+		                    
+		                    });
 	
-		           map.addLayers([tiled,puntos]);
+		           map.addLayers([tiled,puntos,aptos]);
 		           
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
 		               );
 	               
-		           var selectFeature = new OpenLayers.Control.SelectFeature(puntos, {
+		           var selectFeature = new OpenLayers.Control.SelectFeature([puntos, aptos], {
 		                	   hover: false,
 		                	   onSelect: clickNotice,
 		                       autoActivate: true
@@ -171,9 +249,19 @@
 
 	        	        var id = event.attributes.id;
 						var input = document.getElementById('info:idcasa');
+						
 						input.value=id;
-						document.getElementById('info:getinfo').click();
+						if(event.layer.name=="casageom"){
+							
+							document.getElementById('info:getinfo').click();
+						
+						}else{
+
+							document.getElementById('info:getinfoApto').click();
+						}
+
 						selectFeature.unselectAll();
+
  		        }      
   		            
 		            
@@ -252,7 +340,7 @@
 	    <h:outputLabel value="Titulo de la casa: " />	    
 	    <h:outputLabel value="#{propiedadMB.titulo}" />
 	    
-	      <h:outputLabel value="Barrio de la casa: " />   
+	    <h:outputLabel value="Barrio de la casa: " />   
 	    <h:outputLabel value="#{propiedadMB.barrio}" />	
 	    
 	    <h:outputLabel value="Tipo de propiedad: " />
@@ -264,11 +352,17 @@
 	    <h:outputLabel value="Cantidad de cuartos: " />
         <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
         
-        <h:outputLabel value="Piscina:" />
-	    <h:outputLabel value="#{propiedadMB.piscina}" />
+        <h:outputLabel value="Tamaño de la propiedad : " />
+        <h:outputLabel value="#{propiedadMB.tamanio}" />
+        
+        <h:outputLabel value="Precio : $" />
+        <h:outputLabel value="#{propiedadMB.precio}" />
+        
+        <h:outputLabel value="Piscina:" rendered="#{propiedadMB.piscina} != false" />
+	    <h:outputLabel value="#{propiedadMB.piscina}"  rendered="#{propiedadMB.piscina} != false"/>
 	    
-	    <h:outputLabel value="Garage: " />
-	    <h:outputLabel value="#{propiedadMB.garage}" />
+	    <h:outputLabel value="Garage: " rendered="#{propiedadMB.garage} != false" />
+	    <h:outputLabel value="#{propiedadMB.garage} " rendered="#{propiedadMB.garage} != false" />
 	   
 	  </b:panelGrid>  
 		    
