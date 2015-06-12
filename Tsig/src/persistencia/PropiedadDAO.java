@@ -53,7 +53,7 @@ public class PropiedadDAO implements IPropiedadDAO {
 		return null;
 	}
 	
-	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage){
+	public List<Integer> getFilteredCasa(String titulo, String barrio,String tipoProp, int cantbanios, int cantCuartos, boolean piscina,boolean garage, float tamanio, int precio, String tipoNegocio){
 		
 		String comb; 
 		
@@ -61,7 +61,11 @@ public class PropiedadDAO implements IPropiedadDAO {
 		if("".compareTo(titulo)!=0)
 		{
 			comb= comb+" and c.titulo like '"+titulo+"'";
-		}		
+		}
+		if("Cualquiera".compareTo(tipoNegocio)!=0)
+		{
+			comb= comb+" and c.tipoNegocio like '"+tipoNegocio+"'";
+		}
 		if("".compareTo(barrio)!=0)
 		{
 			comb=comb+" and c.barrio= '"+barrio+"'";
@@ -72,7 +76,13 @@ public class PropiedadDAO implements IPropiedadDAO {
 		}
 		if(cantbanios>0){
 			comb= comb + " and c.cantBanios ="+cantbanios;
-		}				
+		}	
+		if(tamanio>0){
+			comb= comb + " and c.tamanio >="+tamanio;
+		}	
+		if(precio>0){
+			comb= comb + " and c.precio <="+precio;
+		}	
 		if(cantCuartos>0){
 			comb = comb+" and c.cantCuartos ="+cantCuartos;
 		}		
@@ -99,6 +109,66 @@ public class PropiedadDAO implements IPropiedadDAO {
 		
 		
 	}
+	
+	@Override
+	public List<Integer> getFilteredApto(String titulo, String barrio,	String tipoProp, int cantBanios, int cantCuartos,	boolean garage, float tamanio, int precio, String tipoNegocio,	int numeroap) 
+	{
+String comb; 
+		
+		comb="(c.estado= 'publica' or c.estado='reservada')";
+		if("".compareTo(titulo)!=0)
+		{
+			comb= comb+" and c.titulo like '"+titulo+"'";
+		}
+		
+		if("Cualquiera".compareTo(tipoNegocio)!=0)
+		{
+			comb= comb+" and c.tipoNegocio like '"+tipoNegocio+"'";
+		}
+		if("".compareTo(barrio)!=0)
+		{
+			comb=comb+" and c.barrio= '"+barrio+"'";
+		}		
+		if("Cualquiera".compareTo(tipoProp)!=0)
+		{
+			comb=comb+" and c.tipoProp= '"+tipoProp+"'";
+		}
+		if(cantBanios>0){
+			comb= comb + " and c.cantBanios ="+cantBanios;
+		}	
+		if(tamanio>0){
+			comb= comb + " and c.tamanio >="+tamanio;
+		}	
+		if(precio>0){
+			comb= comb + " and c.precio <="+precio;
+		}	
+		if(cantCuartos>0){
+			comb = comb+" and c.cantCuartos ="+cantCuartos;
+		}		
+		if(garage){
+			comb= comb+" and c.garage= TRUE";
+		}
+		if(numeroap>0){
+			comb= comb + " and c.numeroap >="+(numeroap*100);
+		}	
+		
+		
+		try{
+			System.out.println("La query: "+comb);
+			
+		List<Integer>ids=em.createQuery("Select c.idGeom from Apartamento c where "+comb).getResultList();
+		
+		return ids;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+		
+	}
+
 
 	@Override
 	public List<Casa> consultaPropiedad(int cantCuartos) {
@@ -155,6 +225,48 @@ public class PropiedadDAO implements IPropiedadDAO {
 		return null;
 	}
 
+	
+	///////Aptos
+	@Override
+	public List<Integer> getDistancePuntoInteresApto(Integer distance) {
+		
+		try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from apartamento c, aptogeom g, serv_comerciales s where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(s.geom,32721) )").getResultList();
+		
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	@Override
+	public List<Integer> getDistanceParadasApto(Integer distance){
+		try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from apartamento c, aptogeom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+distance+"),ST_Transform(p.geom,32721) )").getResultList();
+		System.out.println("LA DISTANCIA BUS" + distance);
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Integer> getDistanceRamblaApto(Integer distance){
+		try{
+		List<Integer> result = em.createNativeQuery("select distinct c.idGeom from apartamento c, aptogeom g, borderambla b where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+(distance+50)+"),ST_Transform(b.the_geom,32721) )").getResultList();
+		
+		return result;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	///////
 	
 	public Casa getCasaFromGeom(int idCasa) {
 		try{
@@ -230,7 +342,6 @@ public Apartamento AptoFromGeom(int idPunto) {
 	}
 	return null;
 }
-
 
 public List<Integer> getCasasUsuario(String usuario) {
 	try{

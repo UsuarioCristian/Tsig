@@ -60,13 +60,17 @@ public class PropiedadController implements IPropiedadController{
 
 
 	@Override
-	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage) {
+	public List<Integer> getFilteredCasa(String titulo,String barrio,String tipoProp, int cantbanios, int cantCuartos,boolean piscina, boolean garage, float tamanio, int precio, String tipoNegocio) {
 		
 
-		return PropiedadDAO.getFilteredCasa(titulo,barrio,tipoProp,cantbanios,cantCuartos,piscina,garage);
+		return PropiedadDAO.getFilteredCasa(titulo,barrio,tipoProp,cantbanios,cantCuartos,piscina,garage,tamanio,precio,tipoNegocio);
 
 	}
-	
+	@Override
+	public List<Integer> getFilteredAptos(String titulo, String barrio,	String tipoProp, int cantBanios, int cantCuartos,boolean garage, float tamanio, int precio, String tipoNegocio,	int numeroap)
+	{
+		return PropiedadDAO.getFilteredApto( titulo, barrio, tipoProp, cantBanios, cantCuartos, garage, tamanio, precio, tipoNegocio, numeroap);
+	}
 	
 	public boolean guardarApartamento(String usuario,int IdGeom,String titulo, int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos, boolean garage, int precio, float tamanio,int numeroap)  {
 		try{
@@ -163,6 +167,44 @@ public class PropiedadController implements IPropiedadController{
 			}
 			return null;
 	}
+    ////////////////////////// Aptos
+	@Override
+	public List<Integer> getDistanciaInteresApto(Integer distanciaInteres) {
+		
+		try{
+		return   PropiedadDAO.getDistancePuntoInteresApto(distanciaInteres);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Integer> getDistanciaParadasApto(Integer distanciaParadas) {
+		
+		try{
+		return   PropiedadDAO.getDistanceParadasApto(distanciaParadas);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+    public List<Integer> getDistanceRamblaApto(Integer distanciaRambla) {
+		
+			try{
+			return   PropiedadDAO.getDistanceRamblaApto(distanciaRambla);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
+	}
+    
+    
+    /////////////////////////
 
 
 	
@@ -188,7 +230,6 @@ public class PropiedadController implements IPropiedadController{
 		}
 		return null;
 	}
-
 
 	
 	public List<Integer> getCasasUsuario(String usuario) {
@@ -217,5 +258,6 @@ public class PropiedadController implements IPropiedadController{
 		}
 		
 	}
+
 
 }
