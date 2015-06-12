@@ -263,6 +263,7 @@
 
 	        	        var id = event.attributes.id;
 						var input = document.getElementById('info:idcasa');
+
 						
 						input.value=id;
 						if(event.layer.name=="casageom"){
@@ -312,15 +313,16 @@
    
  
   
-     <a id="este" href="#modal">Call the modal with data-remodal-id="modal"</a>
+    
      
    <ui:include src="/navbar.xhtml" />
    
    <div id="cont" class="contenedor">
 
    
-    <a id="atrigger" class="" href="#amodal" data-toggle="modal" style="visibility: hidden;">test</a>
     
+    
+     <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
    <div id="mapWrap" class="mapWrap">
     <div id="map" class="map"></div>
  	 <br/>
@@ -345,14 +347,14 @@
     
     </h:commandButton>
     
-      <h:commandButton id="redirect" type="submit" action="#{propiedadMB.redirect()}" value="TOCA PAPA" >
+      <h:commandButton id="redirect" type="submit" action="#{propiedadMB.detalleInmueble}" value="TOCA PAPA" style="display: none;">
 	  
 	 
 	  
 	  </h:commandButton>
   
     </h:form>
-    </div>
+    </div> 
    
 
    
@@ -397,11 +399,11 @@
 
 	  
 	  
-	 <h:commandButton id="redirect2" type="submit" action="#{propiedadMB.redirect()}" value="TOCA PAPA" >
+	
 	  
 	 
 	  
-	  </h:commandButton>
+	 
 	  
 	  </h:form>
 	  

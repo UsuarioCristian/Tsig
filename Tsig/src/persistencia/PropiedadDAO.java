@@ -3,6 +3,7 @@ package persistencia;
 
 import dominio.Apartamento;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -337,6 +338,20 @@ public Apartamento AptoFromGeom(int idPunto) {
 		e.printStackTrace();
 	}
 	return null;
+}
+
+@Override
+public double[] getCoor(int idPunto) {
+
+	 Double x =(Double) em.createNativeQuery("SELECT ST_X(punto) FROM casageom g,casa c WHERE c.idgeom=g.id and g.id="+idPunto).getSingleResult();
+	 Double y =(Double) em.createNativeQuery("SELECT ST_Y(punto) FROM casageom g,casa c WHERE c.idgeom=g.id and g.id="+idPunto).getSingleResult(); 
+	 
+	 System.out.println("DAO COORDENADAAS: x:"+x+" y: "+y);
+	
+	 
+	 double[] result={x,y};
+	 
+	 return result;
 }
 
 

@@ -16,7 +16,7 @@
 
 .contenedor{
 	/*min-height: 1500px;*/
-
+	height:auto;
 	margin-left: 10%;
 	margin-right: 10%;
 	background: rgba(255,255,255, 0.8);
@@ -29,6 +29,7 @@
         border:solid 1px;*/
        
       }
+      
         
 .intab{
 	
@@ -69,4 +70,14 @@
  			
  	 width: 80%;
  	 height: 80%;
+ 	 }
+ 	 
+.mapWrap2{	display: block;
+ 	 		margin-left: auto;
+ 			margin-right: auto;
+ 			
+ 			
+ 	 width: 40%;
+ 	 height: 40%;
+ 	 float:left;
  	 }

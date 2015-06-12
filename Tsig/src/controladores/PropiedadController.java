@@ -215,6 +215,19 @@ public class PropiedadController implements IPropiedadController{
 	}
 
 
+	@Override
+	public double[] getCoor(int idPunto) {
+		try {
+			
+			return PropiedadDAO.getCoor(idPunto);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
 
 
 }

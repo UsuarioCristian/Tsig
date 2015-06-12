@@ -65,6 +65,8 @@ public class PropiedadMB implements Serializable {
 	private float tamanio;
 	private int numeroap;
 
+	private double x;
+	private double y;
 	
 	private List<Integer> casas= new ArrayList();
 	private List<Integer> aptos= new ArrayList();
@@ -165,7 +167,7 @@ public class PropiedadMB implements Serializable {
 				    this.cantBanios = a.getCantBanios();
 				    this.cantCuartos = a.getCantCuartos();
 				    this.garage = a.isGarage();
-				    this.numeroap= a.getIdApartamento();
+				    this.numeroap= a.getNumeroAp();
 				    this.precio=a.getPrecio();
 				    this.tamanio=a.getTamanio();
 				   
@@ -298,7 +300,47 @@ public class PropiedadMB implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+	public String detalleInmueble(){
+		
+		try{
+		Casa c=	ipc.getCasaFromGeom(idPunto);
+		System.out.println("id punto pre redirect: "+idPunto);
+		  
+		  
+		double[] coor= ipc.getCoor(idPunto);
+		
+		this.x=coor[0];
+		this.y=coor[1];
+		
+		System.out.println("MB x :"+ x+" y: "+y);
+		
+
+		
+	   
+		this.titulo=c.getTitulo();
+		this.direccion = c.getDireccion();
+	    this.barrio = c.getBarrio();
+	    this.tipoProp = c.getTipoProp();
+	    this.cantBanios = c.getCantBanios();
+	    this.cantCuartos = c.getCantCuartos();
+	    this.garage = c.isGarage();
+	    this.precio=c.getPrecio();
+	    this.tamanio=c.getTamanio();
+	    this.tipoNegocio=c.gettipoNegocio();
+	    this.piscina=c.isPiscina();
+	      
+	    
+	    System.out.println("id punto post redirect: "+idPunto);
+	    
+	    System.out.println("dsa"+this.titulo);
+	    
+	    return "detalleInmueble.xhtml";
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		return null;
+	}
 	
 	public int getIdCasa() {
 		return idCasa;
@@ -531,6 +573,30 @@ public class PropiedadMB implements Serializable {
 
 	public void setPropiedad(String propiedad) {
 		this.propiedad = propiedad;
+	}
+
+
+
+	public double getX() {
+		return x;
+	}
+
+
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+
+
+	public double getY() {
+		return y;
+	}
+
+
+
+	public void setY(double y) {
+		this.y = y;
 	}
 	
 	
