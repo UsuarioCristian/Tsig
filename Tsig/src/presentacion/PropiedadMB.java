@@ -37,6 +37,8 @@ public class PropiedadMB implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	
+	private int idborro=0;
 	private int idPunto=0;
 	private int idDep=0;
 	private int idCasa=0;	
@@ -117,6 +119,49 @@ public class PropiedadMB implements Serializable {
 		
 	}
 	
+	public String modificarApartamento(){
+		
+
+		try {
+			
+			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+								
+			ipc.modificarApto(usuario,idDep,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio,numeroap);
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+		
+	}
+	
+	public String modificarCasa(){
+		
+
+		try {
+			
+			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+								
+			ipc.modificarCasa(usuario,idCasa,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage, precio, tamanio);			
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+		
+	}
 	
 	
 	
@@ -267,6 +312,24 @@ public class PropiedadMB implements Serializable {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public void eliminarFeature(String ddd){
+		try{
+			
+			String data = (String)FacesContext.getCurrentInstance().getAttributes().get("id");
+			System.out.println("id" +data);
+		//	System.out.println("eliminarFeature.."+ idPunto);
+		//	ipc.eliminarFeature(idPunto);
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			
+		}
+		catch(Exception e){
+		e.printStackTrace();
+		}
+	
+		
 	}
 	
 	
@@ -501,6 +564,18 @@ public class PropiedadMB implements Serializable {
 
 	public void setPropiedad(String propiedad) {
 		this.propiedad = propiedad;
+	}
+
+
+
+	public int getIdborro() {
+		return idborro;
+	}
+
+
+
+	public void setIdborro(int idborro) {
+		this.idborro = idborro;
 	}
 	
 	

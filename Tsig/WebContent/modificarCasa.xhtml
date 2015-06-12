@@ -4,52 +4,32 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui"
 	>
-
-<h:head>
-
-
-
- <h:outputStylesheet library="css" name="styles.css" />
-
-
-<script type="text/javascript"   src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-
-<link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css"
-	type="text/css"></link>
-<style>
-
-.map {
-
-
-	height: 100%;
-	width: 100%;
 	
-	border: solid 1px;
+
+  <h:head>
+      <h:outputStylesheet library="css" name="styles.css" />
+     
+ <script  src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	
-}
-</style>
-<script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
-<title>OpenLayers 3 example</title>
+ <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
 
 
-<script type="text/javascript">
+	 
+	 
+    <title>OpenLayers 3 example</title>
+    
+    
+    <script type="text/javascript">
+    
     
     var map;
     var wms;
+
     var puntos;
-    
+   
     var saveStrategy = new OpenLayers.Strategy.Save();
-    saveStrategy.events.on({
-        'success': function(event) {
-             alert('Changes saved');
-        },
-        'fail': function(event) {
-             alert('Error! Changes not saved');
-        },
-        scope: this
-    });
-    
-	var cantidad= 0;
+   
+
     var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
     
     var map_controls = [
@@ -66,10 +46,10 @@
 			maxExtent:bounds ,
 			center: new OpenLayers.LonLat(574553.537,6141267.75),
 			maxResolution: 1000
-			
-			
 	    };
-	
+	 var defStyle = {strokeColor: "blue", strokeOpacity: "0.7", strokeWidth: 3, cursor: "pointer"};
+
+	 
 	function init() {
 		
 	
@@ -79,10 +59,74 @@
 		        		   
                 "mapabase", "http://localhost:8080/geoserver/sige/wms",
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
-		           
-					);
+                            
+            );
+		           tiled.style=OpenLayers.Util.applyDefaults(OpenLayers.Feature.Vector.style["default"]);
 
-		           puntos = new OpenLayers.Layer.Vector(
+		          		           
+		           tiled.style.externalGraphic="resources/Images/bus.gif";
+		           tiled.style.graphicWidth= 20;
+		           tiled.style.graphicHeight= 20;
+		           tiled.style.fillOpacity=1;
+
+
+		           var stylePuntos = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 40,
+		        	            graphicHeight: 32,
+		        	           
+		        	           
+		        	        },
+		        	        // the second argument will include all rules
+		        	        {
+		        	            rules: [
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "privada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	  
+		        	                        externalGraphic: "resources/Images/casa.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "reservada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	     
+		        	                        externalGraphic: "resources/Images/casaReservada.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "publica"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	      
+		        	                        externalGraphic: "resources/Images/casapublica.png"
+		        	                    }
+		        	                }),
+		    
+		        	            ]
+		        	        }
+		        	    );
+			          
+		            puntos = new OpenLayers.Layer.Vector(
 		                    "casageom",
 		                    {
 		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
@@ -95,88 +139,171 @@
 		                            featureType: "casageom", //geoserver Layer Name
 		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
-		                           
-		                        })
+		                            
+		                        }),
+
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(stylePuntos)
 		                    
 		                    });
-		           
-		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
-		                    OpenLayers.Feature.Vector.style["default"]);
-		           puntos.style.externalGraphic="../resources/Images/casa.png";
-		           puntos.style.graphicWidth= 40;
-		           puntos.style.graphicHeight= 32;
-		           puntos.style.fillOpacity=1;
-
-
-			       
+		            
+		          
+	
 		           map.addLayers([tiled,puntos]);
-		        
+		          
+		           
+		           document.getElementById('eliminar:getuser').click();
+
 		           
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
 		               );
 	               
-		               var drawPoint = new OpenLayers.Control.DrawFeature(
-		            		   puntos, OpenLayers.Handler.Point,
-		                       {displayClass: 'olControlDrawFeaturePoint'}
-		                   );
+		           
 
-		                	
-							drawPoint.featureAdded = function(feature) {
-								
-								feature.style.strokeColor = "#0000ff";
-
-								feature.state = OpenLayers.State.INSERT;
-
-								var input = document.getElementById('altaInmueble:iddep');
-
-								input.value= puntos.features.length;
-								
-								//feature.attributes.numpunto=input.value;
-								
-								//alert(input.value);
-								feature.layer.drawFeature(feature);
-								
-								drawPoint.deactivate();
-								OpenLayers.Util.removeItem(panel.controls, drawPoint);
-								panel.redraw(); 
-		                   }
-		              	
-		                   panel.addControls(
-		                       [new OpenLayers.Control.Navigation(), drawPoint]
-		                   );
-		                   
-		                   map.addControl(panel);
-		                   map.addControl(new OpenLayers.Control.LayerSwitcher());
+                   panel.addControls([new OpenLayers.Control.Navigation()]);
+                   map.addControl(panel);
+                   map.addControl(new OpenLayers.Control.LayerSwitcher());
+                   dragFeature = new OpenLayers.Control.DragFeature(puntos, {
+                	   onComplete: endDrag
+                	 });
+                   function endDrag(feature, pixel) {
+                	    	feature.state = OpenLayers.State.UPDATE;
+                	    
+                	}
+                   map.addControl(dragFeature);
+                   dragFeature.activate();
 		           
  		           map.zoomTo(7);
+ 		         
  		           
- 		      
-					
-			}
+ 		    
+  		            
+		            
+		}
+		
 	
-	function save() {
-		saveStrategy.save();
+		
+		function updateFilter() {
+
 			
-	}
-    </script>
-</h:head>
+			var inputs = document.getElementById('eliminar:este');
+			
+			var idFilter = [];
+			var filt =[];
+		
+			for (key in inputs.children) {
+				
+				if(!(isNaN(key))){
+				idFilter.push(inputs.children[key].value);
+				}
+				
+			}
+			//Id filter contiene los ids a filtrar
+			
+			
+			for (key in idFilter){
+				    filt[key] = new OpenLayers.Filter.Comparison({
+				    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				     property: "id",
+				    value: idFilter[key]
+				});
+				
+			}
+			
 
-<h:body class="fondo" onload="init()" >
+
+			puntos.filter= new OpenLayers.Filter.Logical({
+			    	type: OpenLayers.Filter.Logical.OR,
+			    	filters: filt
+			});
+			
+
+			puntos.refresh({force:true});
+			
+		}
+		
+		function handleAjax(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		           show();
+		            break;
+		    }
+		}
+		
+		function handleAjax2(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		        	updateFilter();
+		            break;
+		    }
+		}
+		 
+		function save() {
+
+	 			
+
+
+	 			alert("entre");
+	 		
+	 			saveStrategy.save();
+	 			
+	 			
+
+	 			
+	 		}
+		
+		
 	
-<ui:include src="/navbar.xhtml" />
-
-<div id="cont" class="contenedor">
-
-
 	
 
-</div>
+	 </script>
+  </h:head>
+   <h:body class="fondo" onload="init()">
+   
+ <h:form id="eliminar">
+  <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
+  	<f:ajax execute="@form"  onevent="handleAjax2" render="este" update="este"/>
+  </h:commandButton>  
+  <h:panelGroup  id="este">
+    <ui:repeat value="#{propiedadMB.casas}"  var="id">
+		<h:inputHidden value="#{id}" class="ids" /> 
+	</ui:repeat>
+</h:panelGroup>
+  </h:form>
+  
+     <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()"></h:commandButton>	 
+   <div id="cont" class="contenedor">
 
-
-
-
-</h:body>
-
-
+   
+    <a id="atrigger" class="" href="#amodal" data-toggle="modal" style="visibility: hidden;">test</a>
+    
+   <div id="mapWrap" class="mapWrap">
+    <div id="map" class="map"></div>
+ 	
+    </div>
+   
+	
+  </div>
+  </h:body>
 </html>

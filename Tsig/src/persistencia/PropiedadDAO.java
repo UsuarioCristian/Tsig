@@ -244,6 +244,22 @@ public List<Integer> getCasasUsuario(String usuario) {
 	return null;
 }
 
+
+public void eliminarFeature(int idPunto) {
+	
+	try{
+		em.createNativeQuery("delete  from casa c where c.idgeom='"+idPunto+"'").executeUpdate();
+		em.createNativeQuery("delete  from casageom g where g.id='"+idPunto+"'").executeUpdate();
+
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	
+	
+}
+
 	
 
 }

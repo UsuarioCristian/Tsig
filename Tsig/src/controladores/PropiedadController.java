@@ -87,26 +87,43 @@ public class PropiedadController implements IPropiedadController{
 		
 	}
 	
-	public void modificarCasa(Casa c) {
+	public void modificarCasa(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos,boolean piscina, boolean garage, int precio, float tamanio) {
 		try{
-	
-			PropiedadDAO.modificarCasa(c);
-		}catch(Exception e){
+			
+			Casa c = new Casa(IdGeom, titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage,"privada", precio, tamanio);
+			
+			
+			
+			Usuario u=	UsuarioDAO.getUsuario(usuario);
+			
+			c.setEncargado(u);
+			PropiedadDAO.modificarCasa(c);				
+
+		}		
+			
+		catch(Exception e){
 			e.printStackTrace();
 			
-		}
-		
+		}		
 	}
 	
 	
-	public void modificarApto(Apartamento apart) {
+	public void modificarApto(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos, boolean garage, int precio, float tamanio,int numeroap) {
 		try{
-	
-			PropiedadDAO.modificarApto(apart);
-		}catch(Exception e){
+			
+			Apartamento ap = new Apartamento(IdGeom, titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, garage,"privada", precio, tamanio,numeroap);
+			
+			Usuario u=	UsuarioDAO.getUsuario(usuario);
+			
+			ap.setEncargado(u);
+			PropiedadDAO.modificarApto(ap);				
+
+		}		
+			
+		catch(Exception e){
 			e.printStackTrace();
 			
-		}
+		}		
 		
 
 	}
@@ -184,6 +201,21 @@ public class PropiedadController implements IPropiedadController{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+	
+	public void eliminarFeature(int idPunto) {
+	
+		try{
+			
+			  PropiedadDAO.eliminarFeature(idPunto);
+			
+			}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 
 }

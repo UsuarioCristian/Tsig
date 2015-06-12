@@ -9,7 +9,7 @@
   <h:head>
       <h:outputStylesheet library="css" name="styles.css" />
      
- <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
+ <script  src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	
  <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
 
@@ -27,7 +27,6 @@
 
     var puntos;
    
-    //var username = #{FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario")};
     var saveStrategy = new OpenLayers.Strategy.Save();
    
 
@@ -148,9 +147,10 @@
 		                    
 		                    });
 		            
-		            document.getElementById('getuser').click();
 	
 		           map.addLayers([tiled,puntos]);
+		           document.getElementById('eliminar:getuser').click();
+
 		           
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
@@ -190,7 +190,7 @@
 		function updateFilter() {
 
 			
-			var inputs = document.getElementById('este');
+			var inputs = document.getElementById('eliminar:este');
 			
 			var idFilter = [];
 			var filt =[];
@@ -262,22 +262,31 @@
 		    }
 		}
 	
+		function eliminarFeature(){
+			alert("entre eliminar feature");
+			 document.getElementById('eliminar:eliminarfeature').click();
+			
+		}
 
 	 </script>
   </h:head>
    <h:body class="fondo" onload="init()">
    
- 
+ <h:form id="eliminar">
   <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
-  	<f:ajax  onevent="handleAjax2" render="este" update="este"/>
-  </h:commandButton>	
+  	<f:ajax execute="@form"  onevent="handleAjax2" render="este" update="este"/>
+  </h:commandButton>
+  <h:commandButton id="eliminarfeature" actionListener ="#{propiedadMB.eliminarFeature()}" style="display: none;" >
+  	<f:ajax  execute="@all" onevent="handleAjax2" render="@all" update="este"/>
+  	<f:attribute name="id" value="dsa" />
+  </h:commandButton>		
   
   <h:panelGroup  id="este">
     <ui:repeat value="#{propiedadMB.casas}"  var="id">
 		<h:inputHidden value="#{id}" class="ids" /> 
 	</ui:repeat>
 </h:panelGroup>
-  
+  </h:form>
    
    <div id="cont" class="contenedor">
 
@@ -293,18 +302,18 @@
      <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
      
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
-    
-   
-   	<f:ajax execute="@form" render="amodal" onevent="handleAjax" />
-    
-    
+   		<f:ajax execute="@all" render="amodal" onevent="handleAjax" />
     </h:commandButton>
-  
+    
+  	<h:commandButton type="submit" id="eliminarfeature2" value="dsd" actionListener="#{propiedadMB.eliminarFeature}"  > 
+  	<f:ajax execute="@all" render="@all" />
+  		<f:attribute name="id" value="dsa" />
+  	</h:commandButton>
     </h:form>
     </div>
    
 	<b:modal id="amodal" title="Informacion de propiedad" >
-		
+		   <h:form id="dsass45">
     <b:panelGrid colSpans="4,8" rowClasses="rowform">
     
 	    <h:outputLabel value="Titulo de la casa: " />	    
@@ -329,11 +338,23 @@
 	    <h:outputLabel value="#{propiedadMB.garage}" />
 	   
 	  </b:panelGrid>  
-		    
+	  
+	 
+		     </h:form>
 	    <f:facet name="footer">
+	 
+
+	  
+	    
+	    
 	        <b:button value="close" dismiss="modal" onclick="return false;"/>
+	        <b:button value="Eliminar" dismiss="modal" onclick="document.getElementById('info:eliminarfeature2').click(); return false;">
+	        	
+	        </b:button>
 	        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+	         
 	    </f:facet>
+	    
 	</b:modal>
   </div>
   </h:body>
