@@ -216,20 +216,55 @@
 		                        styleMap: new OpenLayers.StyleMap(styleSuper)
 		                    
 		                    });
-					
+		             var styleAptos = new OpenLayers.Style(
+			        	        // the first argument is a base symbolizer
+			        	        // all other symbolizers in rules will extend this one
+			        	        {
+			        	            graphicWidth: 50,
+			        	            graphicHeight: 38,
+			        	            externalGraphic:"resources/Images/apto.png",
+			        	           
+			        	        });
+
+
+		             aptos = new OpenLayers.Layer.Vector(
+			                    "aptogeom",
+			                    {
+			                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+			                        , projection: new OpenLayers.Projection("EPSG:32721")
+			                         ,protocol: new OpenLayers.Protocol.WFS({
+			                            version: "1.1.0",
+			                            srsName: "EPSG:32721",
+			                            url: "http://localhost:8080/geoserver/wfs",
+			                            featurePrefix: 'sige', //geoserver worspace name
+			                            featureType: "aptogeom", //geoserver Layer Name
+			                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+			                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+			                            
+			                        }),
+
+			                        filter:"",
+			                        styleMap: new OpenLayers.StyleMap(styleAptos)
+			                    
+			                    });
+	                    
 			       
-		           map.addLayers([tiled,puntos,supers]);
+		            map.addLayers([tiled,puntos,supers,aptos]);
+		            
 					var x =  document.getElementById('x').value;
+					
 					var y =  document.getElementById('y').value;
 	 		           
-	 		         var lonlat = new OpenLayers.LonLat(x, y);
-	 		         map.panTo(lonlat);
+	 		        var lonlat = new OpenLayers.LonLat(x, y);
+	 		        
+	 		        map.panTo(lonlat);
 
 	 		        var selectFeature = new OpenLayers.Control.SelectFeature([supers], {
 	                	   hover: false,
 	                	   onSelect: clickNotice,
 	                       autoActivate: true
 	                   });
+	                   
             		map.addControl(selectFeature);
 
 
@@ -258,9 +293,39 @@
 						distlabel.innerHTML=" "+Math.round(distance)+" mts";
 					
 
- 		        }   
-            		   
- 		           map.zoomTo(7);
+ 		       		 }   
+		       		 
+            		var propiedad = document.getElementById('propiedad').value;
+            		
+            		var id = document.getElementById('idcasa').value;
+
+				
+            		
+         		   if(propiedad=="Casa"){
+         			  puntos.setVisibility(true);
+         			  aptos.setVisibility(false);
+
+         			  
+         			 puntos.filter = new OpenLayers.Filter.Comparison({
+         			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+         			     property: "id",
+         			    value: id
+         				});
+         			puntos.refresh({force:true});
+         			  
+             		}
+
+         		   if(propiedad=="Apartamento"){
+             		 
+						puntos.setVisibility(false);
+						aptos.setVisibility(true);
+						
+						aptos.filter = new OpenLayers.Filter.Comparison({  type: OpenLayers.Filter.Comparison.EQUAL_TO, property: "id", value: id });
+						aptos.refresh({force:true});
+         			  
+         		   }
+         		   
+ 		           map.zoomTo(8);
 
  		           
 
@@ -369,8 +434,8 @@
 
   	
   	 
-    <h:inputHidden value="#{propiedadMB.idCasa}" id="idcasa" />
-    
+    <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
+    <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
 
 
 

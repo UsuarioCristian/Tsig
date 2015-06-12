@@ -354,6 +354,20 @@ public double[] getCoor(int idPunto) {
 	 return result;
 }
 
+@Override
+public double[] getCoorApto(int idPunto) {
+
+	 Double x =(Double) em.createNativeQuery("SELECT ST_X(punto) FROM aptogeom g,apartamento c WHERE c.idgeom=g.id and g.id="+idPunto).getSingleResult();
+	 Double y =(Double) em.createNativeQuery("SELECT ST_Y(punto) FROM aptogeom g,apartamento c WHERE c.idgeom=g.id and g.id="+idPunto).getSingleResult(); 
+	 
+	 System.out.println("DAO COORDENADAAS: x:"+x+" y: "+y);
+	
+	 
+	 double[] result={x,y};
+	 
+	 return result;
+}
+
 
 	
 

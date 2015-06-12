@@ -300,39 +300,76 @@ public class PropiedadMB implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
 	public String detalleInmueble(){
 		
 		try{
-		Casa c=	ipc.getCasaFromGeom(idPunto);
-		System.out.println("id punto pre redirect: "+idPunto);
-		  
-		  
-		double[] coor= ipc.getCoor(idPunto);
+			
+			
+		if("Casa".compareTo(this.propiedad)==0){
+			
+			Casa c=	ipc.getCasaFromGeom(idPunto);
+			System.out.println("id punto pre redirect: "+idPunto);
+			  
+			  
+			double[] coor= ipc.getCoor(idPunto);
+			
+			this.x=coor[0];
+			this.y=coor[1];
+			
+			System.out.println("MB x :"+ x+" y: "+y);
+					   
+			this.titulo=c.getTitulo();
+			this.direccion = c.getDireccion();
+		    this.barrio = c.getBarrio();
+		    this.tipoProp = c.getTipoProp();
+		    this.cantBanios = c.getCantBanios();
+		    this.cantCuartos = c.getCantCuartos();
+		    this.garage = c.isGarage();
+		    this.precio=c.getPrecio();
+		    this.tamanio=c.getTamanio();
+		    this.tipoNegocio=c.gettipoNegocio();
+		    this.piscina=c.isPiscina();
+		      
+		    
+		    System.out.println("id punto post redirect: "+idPunto);
+		    
+		    System.out.println("dsa"+this.titulo);
+			
+		}	else{
+			
+			Apartamento c=	ipc.getAptoFromGeom(idPunto);
+			System.out.println("id punto pre redirect: "+idPunto);
+			  
+			  
+			double[] coor= ipc.getCoorApto(idPunto);
+			
+			this.x=coor[0];
+			this.y=coor[1];
+			
+			System.out.println("MB x :"+ x+" y: "+y);
+					   
+			this.titulo=c.getTitulo();
+			this.direccion = c.getDireccion();
+		    this.barrio = c.getBarrio();
+		    this.tipoProp = c.getTipoProp();
+		    this.cantBanios = c.getCantBanios();
+		    this.cantCuartos = c.getCantCuartos();
+		    this.garage = c.isGarage();
+		    this.precio=c.getPrecio();
+		    this.tamanio=c.getTamanio();
+		    this.tipoNegocio=c.getTipoNegocio();
+		    
+		      
+		    
+		    System.out.println("id punto post redirect: "+idPunto);
+		    
+		    System.out.println("dsa"+this.titulo);
+			
+			
+		}
 		
-		this.x=coor[0];
-		this.y=coor[1];
 		
-		System.out.println("MB x :"+ x+" y: "+y);
-		
-
-		
-	   
-		this.titulo=c.getTitulo();
-		this.direccion = c.getDireccion();
-	    this.barrio = c.getBarrio();
-	    this.tipoProp = c.getTipoProp();
-	    this.cantBanios = c.getCantBanios();
-	    this.cantCuartos = c.getCantCuartos();
-	    this.garage = c.isGarage();
-	    this.precio=c.getPrecio();
-	    this.tamanio=c.getTamanio();
-	    this.tipoNegocio=c.gettipoNegocio();
-	    this.piscina=c.isPiscina();
-	      
-	    
-	    System.out.println("id punto post redirect: "+idPunto);
-	    
-	    System.out.println("dsa"+this.titulo);
 	    
 	    return "detalleInmueble.xhtml";
 		}catch(Exception e){

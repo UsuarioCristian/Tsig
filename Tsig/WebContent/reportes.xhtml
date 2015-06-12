@@ -61,7 +61,8 @@
 
 		 $(".remodal-cancel").click(function (){
 			 
-			 document.getElementById('info:redirect').click();
+			 
+			  document.getElementById('info:redirect').click();
 				
 
 			 });
@@ -267,11 +268,14 @@
 						
 						input.value=id;
 						if(event.layer.name=="casageom"){
+
+							document.getElementById('info:propiedad').value="Casa";
 							
 							document.getElementById('info:getinfo').click();
 						
 						}else{
 
+							document.getElementById('info:propiedad').value="Apartamento";
 							document.getElementById('info:getinfoApto').click();
 						}
 
@@ -311,11 +315,7 @@
   </h:head>
    <h:body class="fondo" onload="init()">
    
- 
-  
-    
-     
-   <ui:include src="/navbar.xhtml" />
+    <ui:include src="/navbar.xhtml" />
    
    <div id="cont" class="contenedor">
 
@@ -323,13 +323,15 @@
     
     
      <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
-   <div id="mapWrap" class="mapWrap">
+  	 <div id="mapWrap" class="mapWrap">
     <div id="map" class="map"></div>
  	 <br/>
     
     <h:form id="info" style="display:none;">
     
      <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
+     
+     <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
      
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
     
@@ -347,7 +349,7 @@
     
     </h:commandButton>
     
-      <h:commandButton id="redirect" type="submit" action="#{propiedadMB.detalleInmueble}" value="TOCA PAPA" style="display: none;">
+      <h:commandButton id="redirect"  action="#{propiedadMB.detalleInmueble}" value="" style="display: none;">
 	  
 	 
 	  
@@ -397,14 +399,6 @@
 	    
 	  <h:form>
 
-	  
-	  
-	
-	  
-	 
-	  
-	 
-	  
 	  </h:form>
 	  
 	  <button data-remodal-action="cancel" class="remodal-cancel">Borrar</button>

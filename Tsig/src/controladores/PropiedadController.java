@@ -228,6 +228,19 @@ public class PropiedadController implements IPropiedadController{
 	}
 
 
+	@Override
+	public double[] getCoorApto(int idPunto) {
+		try {
+			
+			return PropiedadDAO.getCoorApto(idPunto);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
 
 
 }
