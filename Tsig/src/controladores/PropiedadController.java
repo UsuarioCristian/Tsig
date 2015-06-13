@@ -244,7 +244,6 @@ public class PropiedadController implements IPropiedadController{
 		return null;
 	}
 
-
 	
 	public void eliminarFeature(int idPunto) {
 	
@@ -258,6 +257,35 @@ public class PropiedadController implements IPropiedadController{
 		}
 		
 	}
+
+
+	@Override
+	public double[] getCoor(int idPunto) {
+		try {
+			
+			return PropiedadDAO.getCoor(idPunto);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	@Override
+	public double[] getCoorApto(int idPunto) {
+		try {
+			
+			return PropiedadDAO.getCoorApto(idPunto);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+
 
 
 }

@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -66,6 +67,8 @@ public class PropiedadMB implements Serializable {
 	private float tamanio;
 	private int numeroap;
 
+	private double x;
+	private double y;
 	
 	private List<Integer> casas= new ArrayList();
 	private List<Integer> aptos= new ArrayList();
@@ -209,7 +212,7 @@ public class PropiedadMB implements Serializable {
 				    this.cantBanios = a.getCantBanios();
 				    this.cantCuartos = a.getCantCuartos();
 				    this.garage = a.isGarage();
-				    this.numeroap= a.getIdApartamento();
+				    this.numeroap= a.getNumeroAp();
 				    this.precio=a.getPrecio();
 				    this.tamanio=a.getTamanio();
 				   
@@ -358,6 +361,104 @@ public class PropiedadMB implements Serializable {
 		
 	}
 	
+	public void redirect (){
+		
+		
+		try {
+			
+			
+			String countrry = (String)FacesContext.getCurrentInstance().getAttributes().get("maxi");
+			
+			System.out.println("ID DE LA CASA CARAJO "+ idPunto);
+			
+			System.out.println("ID DE LA CASA CARAJO country "+ countrry);
+			 
+			System.out.println("titulo"+ titulo);
+				
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String detalleInmueble(){
+		
+		try{
+			
+			
+		if("Casa".compareTo(this.propiedad)==0){
+			
+			Casa c=	ipc.getCasaFromGeom(idPunto);
+			System.out.println("id punto pre redirect: "+idPunto);
+			  
+			  
+			double[] coor= ipc.getCoor(idPunto);
+			
+			this.x=coor[0];
+			this.y=coor[1];
+			
+			System.out.println("MB x :"+ x+" y: "+y);
+					   
+			this.titulo=c.getTitulo();
+			this.direccion = c.getDireccion();
+		    this.barrio = c.getBarrio();
+		    this.tipoProp = c.getTipoProp();
+		    this.cantBanios = c.getCantBanios();
+		    this.cantCuartos = c.getCantCuartos();
+		    this.garage = c.isGarage();
+		    this.precio=c.getPrecio();
+		    this.tamanio=c.getTamanio();
+		    this.tipoNegocio=c.gettipoNegocio();
+		    this.piscina=c.isPiscina();
+		      
+		    
+		    System.out.println("id punto post redirect: "+idPunto);
+		    
+		    System.out.println("dsa"+this.titulo);
+			
+		}	else{
+			
+			Apartamento c=	ipc.getAptoFromGeom(idPunto);
+			System.out.println("id punto pre redirect: "+idPunto);
+			  
+			  
+			double[] coor= ipc.getCoorApto(idPunto);
+			
+			this.x=coor[0];
+			this.y=coor[1];
+			
+			System.out.println("MB x :"+ x+" y: "+y);
+					   
+			this.titulo=c.getTitulo();
+			this.direccion = c.getDireccion();
+		    this.barrio = c.getBarrio();
+		    this.tipoProp = c.getTipoProp();
+		    this.cantBanios = c.getCantBanios();
+		    this.cantCuartos = c.getCantCuartos();
+		    this.garage = c.isGarage();
+		    this.precio=c.getPrecio();
+		    this.tamanio=c.getTamanio();
+		    this.tipoNegocio=c.getTipoNegocio();
+		    
+		      
+		    
+		    System.out.println("id punto post redirect: "+idPunto);
+		    
+		    System.out.println("dsa"+this.titulo);
+			
+			
+		}
+		
+		
+	    
+	    return "detalleInmueble.xhtml";
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		return null;
+	}
 	
 	public int getIdCasa() {
 		return idCasa;
@@ -594,6 +695,7 @@ public class PropiedadMB implements Serializable {
 
 
 
+
 	public int getIdborro() {
 		return idborro;
 	}
@@ -602,6 +704,29 @@ public class PropiedadMB implements Serializable {
 
 	public void setIdborro(int idborro) {
 		this.idborro = idborro;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+
+
+	public double getY() {
+		return y;
+	}
+
+
+
+	public void setY(double y) {
+		this.y = y;
+
 	}
 	
 	

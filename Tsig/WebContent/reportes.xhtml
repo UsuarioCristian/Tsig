@@ -8,11 +8,16 @@
 
   <h:head>
       <h:outputStylesheet library="css" name="styles.css" />
-     
+      <h:outputStylesheet library="css" name="remodal.css" />
+      <h:outputStylesheet library="css" name="remodal-default-theme.css" />
+      
+<script src="../dist/remodal.min.js"></script>
+
  <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
 	
  <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
-
+ 
+ <script type="text/javascript" src="resources/js/remodal.js"></script>
 
 	 
 	 
@@ -53,7 +58,17 @@
 	 
 	function init() {
 		
-	
+
+		 $(".remodal-cancel").click(function (){
+			 
+			 
+			  document.getElementById('info:redirect').click();
+				
+
+			 });
+
+
+		 
 		     map = new OpenLayers.Map('map', mapoptions);            
 		            // setup tiled layer
 		           var tiled = new OpenLayers.Layer.WMS(
@@ -249,14 +264,18 @@
 
 	        	        var id = event.attributes.id;
 						var input = document.getElementById('info:idcasa');
+
 						
 						input.value=id;
 						if(event.layer.name=="casageom"){
+
+							document.getElementById('info:propiedad').value="Casa";
 							
 							document.getElementById('info:getinfo').click();
 						
 						}else{
 
+							document.getElementById('info:propiedad').value="Apartamento";
 							document.getElementById('info:getinfoApto').click();
 						}
 
@@ -269,7 +288,7 @@
 		
 		function show(){
 	
-			document.getElementById('atrigger').click();
+			document.getElementById('este').click();
 	
 		}
 		
@@ -296,23 +315,23 @@
   </h:head>
    <h:body class="fondo" onload="init()">
    
- 
-  
-  
-   <ui:include src="/navbar.xhtml" />
+    <ui:include src="/navbar.xhtml" />
    
    <div id="cont" class="contenedor">
 
    
-    <a id="atrigger" class="" href="#amodal" data-toggle="modal" style="visibility: hidden;">test</a>
     
-   <div id="mapWrap" class="mapWrap">
+    
+     <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
+  	 <div id="mapWrap" class="mapWrap">
     <div id="map" class="map"></div>
  	 <br/>
     
     <h:form id="info" style="display:none;">
     
      <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
+     
+     <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
      
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
     
@@ -329,13 +348,25 @@
     
     
     </h:commandButton>
+    
+      <h:commandButton id="redirect"  action="#{propiedadMB.detalleInmueble}" value="" style="display: none;">
+	  
+	 
+	  
+	  </h:commandButton>
   
     </h:form>
-    </div>
+    </div> 
    
-	<b:modal id="amodal" title="Informacion de propiedad" >
-		
-    <b:panelGrid colSpans="4,8" rowClasses="rowform">
+
+   
+   <div  class="remodal" data-remodal-id="modal">
+	  <button data-remodal-action="close" class="remodal-close"></button>
+	  
+	  <h1>INMUEBLES</h1>
+	 
+	  
+	   <b:panelGrid id="amodal" colSpans="4,8" rowClasses="rowform">
     
 	    <h:outputLabel value="Titulo de la casa: " />	    
 	    <h:outputLabel value="#{propiedadMB.titulo}" />
@@ -364,13 +395,18 @@
 	    <h:outputLabel value="Garage: " rendered="#{propiedadMB.garage} != false" />
 	    <h:outputLabel value="#{propiedadMB.garage} " rendered="#{propiedadMB.garage} != false" />
 	   
-	  </b:panelGrid>  
-		    
-	    <f:facet name="footer">
-	        <b:button value="close" dismiss="modal" onclick="return false;"/>
-	        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
-	    </f:facet>
-	</b:modal>
+	  </b:panelGrid> 
+	    
+	  <h:form>
+
+	  </h:form>
+	  
+	  <button data-remodal-action="cancel" class="remodal-cancel">Borrar</button>
+
+</div>
+
+	    
+	    
   </div>
   </h:body>
 </html>

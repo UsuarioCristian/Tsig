@@ -33,6 +33,8 @@ public interface IPropiedadController {
 	
 	public Casa getCasaFromGeom(int idCasa);	
 	public Apartamento getAptoFromGeom(int idPunto);
+	public double[] getCoor(int idPunto);
+	public double[] getCoorApto(int idPunto);
 	
 	
 

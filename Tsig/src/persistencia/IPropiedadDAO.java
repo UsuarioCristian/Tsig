@@ -37,6 +37,8 @@ public interface IPropiedadDAO {
 	public List<Integer> getDistancePuntoInteresApto(Integer distanciaInteres);
 	public List<Integer> getDistanceParadasApto(Integer distanciaParadas);
 	public List<Integer> getDistanceRamblaApto(Integer distanciaRambla);
+	public double[] getCoor(int idPunto);
+	public double[] getCoorApto(int idPunto);
 	
 
 
