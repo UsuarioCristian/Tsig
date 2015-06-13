@@ -343,13 +343,13 @@ public class PropiedadMB implements Serializable {
 		}
 	}
 	
-	public void eliminarFeature(String ddd){
+	public void eliminarFeature(){
 		try{
 			
-			String data = (String)FacesContext.getCurrentInstance().getAttributes().get("id");
-			System.out.println("id" +data);
-		//	System.out.println("eliminarFeature.."+ idPunto);
-		//	ipc.eliminarFeature(idPunto);
+			
+			System.out.println("id ELIMINAR" +idPunto);
+		
+			ipc.eliminarFeature(idPunto);
 			
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
