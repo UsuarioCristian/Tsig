@@ -24,7 +24,9 @@ public interface IPropiedadController {
 	List<Integer> getDistanciaParadas(Integer distanciaParadas);
 	public List<Integer> getDistanceRambla(Integer distanciaRambla);
 	public List<Integer> getCasasUsuario(String usuario);
+	
 	public void eliminarFeature(int idPunto);
+	public void eliminarFeatureApto(int idPunto);
 	
 	public List<Integer> getDistanciaInteresApto(Integer distanciaInteres);
 	List<Integer> getDistanciaParadasApto(Integer distanciaParadas);
@@ -35,6 +37,7 @@ public interface IPropiedadController {
 	public Apartamento getAptoFromGeom(int idPunto);
 	public double[] getCoor(int idPunto);
 	public double[] getCoorApto(int idPunto);
+	
 	
 	
 

@@ -399,6 +399,20 @@ public void eliminarFeature(int idPunto) {
 	
 	
 }
+public void eliminarFeatureApto(int idPunto) {
+	
+	try{
+		em.createNativeQuery("delete  from apartamento c where c.idgeom='"+idPunto+"'").executeUpdate();
+		em.createNativeQuery("delete  from aptogeom g where g.id='"+idPunto+"'").executeUpdate();
+
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	
+	
+}
 
 	
 

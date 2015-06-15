@@ -257,6 +257,18 @@ public class PropiedadController implements IPropiedadController{
 		}
 		
 	}
+	public void eliminarFeatureApto(int idPunto) {
+		
+		try{
+			
+			  PropiedadDAO.eliminarFeatureApto(idPunto);
+			
+			}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
 
 
 	@Override

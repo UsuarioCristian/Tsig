@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -345,11 +345,19 @@ public class PropiedadMB implements Serializable {
 	
 	public void eliminarFeature(){
 		try{
+			if("Casa".compareTo(this.propiedad)==0){
+				
+				ipc.eliminarFeature(idPunto);
+				
+			}	else{
+				
+				ipc.eliminarFeatureApto(idPunto);
+				
+			}
 			
 			
-			System.out.println("id ELIMINAR" +idPunto);
 		
-			ipc.eliminarFeature(idPunto);
+		
 			
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
