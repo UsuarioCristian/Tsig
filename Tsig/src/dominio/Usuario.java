@@ -1,6 +1,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -24,10 +25,15 @@ public class Usuario implements Serializable {
 	private String password;
 	
 	@OneToMany(mappedBy="encargado", cascade=CascadeType.ALL)  
-	private Set<Casa> casas;  
+	private Set<Casa> casas;
+	
+	@OneToMany(mappedBy = "destinatario", cascade = CascadeType.ALL)
+	private Set<Mensaje> mensajes;
 
 	public Usuario() {
-
+		
+		this.mensajes = new LinkedHashSet<Mensaje>();
+		
 	}
 
 	public Usuario(String nombre, String password, String mail) {
@@ -59,8 +65,6 @@ public class Usuario implements Serializable {
 		this.mail = mail;
 	}
 
-	
-
 	public String getPassword() {
 		return password;
 	}
@@ -86,7 +90,19 @@ public class Usuario implements Serializable {
 		this.casas.remove(c);
 		
 	}
+
+	public Set<Mensaje> getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(Set<Mensaje> mensajes) {
+		this.mensajes = mensajes;
+	}
 	
-	
-	
+	public void removeMensaje(Mensaje m) {
+		if (this.mensajes != null) {
+			this.mensajes.remove(m);
+		}
+	}
+
 }
