@@ -35,6 +35,7 @@ public interface IPropiedadController {
 	public Apartamento getAptoFromGeom(int idPunto);
 	public double[] getCoor(int idPunto);
 	public double[] getCoorApto(int idPunto);
+	public List<Integer> getAptoUsuario(String usuario);
 	
 	
 

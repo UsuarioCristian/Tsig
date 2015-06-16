@@ -34,41 +34,34 @@
 
 <script type="text/javascript">
     
-    var map;
-    var wms;
-    var puntos;
-    
-    var saveStrategy = new OpenLayers.Strategy.Save();
-    saveStrategy.events.on({
-        'success': function(event) {
-             alert('Changes saved');
-        },
-        'fail': function(event) {
-             alert('Error! Changes not saved');
-        },
-        scope: this
-    });
-    
-	var cantidad= 0;
-    var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
-    
-    var map_controls = [
-                         new OpenLayers.Control.PanZoomBar(), 
-                         new OpenLayers.Control.MouseToolbar(),
-                         
-                         ];
-	var mapoptions = 
-		{ 
-			
-			
-			units: 'm',
-			projection: "EPSG:32721",
-			maxExtent:bounds ,
-			center: new OpenLayers.LonLat(574553.537,6141267.75),
-			maxResolution: 1000
-			
-			
-	    };
+var map;
+var wms;
+
+var puntos;
+
+var saveStrategy = new OpenLayers.Strategy.Save();
+
+
+var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
+
+var map_controls = [
+                     new OpenLayers.Control.PanZoomBar(), 
+                     new OpenLayers.Control.MouseToolbar(),
+                     
+                     ];
+var mapoptions = 
+	{ 
+		
+		
+		units: 'm',
+		projection: "EPSG:32721",
+		maxExtent:bounds ,
+		center: new OpenLayers.LonLat(574553.537,6141267.75),
+		maxResolution: 1000
+    };
+ var defStyle = {strokeColor: "blue", strokeOpacity: "0.7", strokeWidth: 3, cursor: "pointer"};
+
+ 
 	
 	function init() {
 		
@@ -81,9 +74,73 @@
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
 		           
 					);
+		            
+		           tiled.style=OpenLayers.Util.applyDefaults(OpenLayers.Feature.Vector.style["default"]);
+
+  		           
+		           tiled.style.externalGraphic="resources/Images/bus.gif";
+		           tiled.style.graphicWidth= 20;
+		           tiled.style.graphicHeight= 20;
+		           tiled.style.fillOpacity=1;
+		            
+		           var styleAptos = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 50,
+		        	            graphicHeight: 38,
+		        	           
+		        	           
+		        	        },
+		        	        // the second argument will include all rules
+		        	        {
+		        	            rules: [
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "privada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	  
+		        	                        externalGraphic: "resources/Images/aptoprivado.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "reservada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	     
+		        	                        externalGraphic: "resources/Images/aptoReservado.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "publica"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	      
+		        	                        externalGraphic: "resources/Images/aptopublico.png"
+		        	                    }
+		        	                }),
+		    
+		        	            ]
+		        	        }
+		        	    );
 
 		           puntos = new OpenLayers.Layer.Vector(
-		                    "casageom",
+		                    "aptogeom",
 		                    {
 		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
 		                        , projection: new OpenLayers.Projection("EPSG:32721")
@@ -92,68 +149,60 @@
 		                            srsName: "EPSG:32721",
 		                            url: "http://localhost:8080/geoserver/wfs",
 		                            featurePrefix: 'sige', //geoserver worspace name
-		                            featureType: "casageom", //geoserver Layer Name
+		                            featureType: "aptogeom", //geoserver Layer Name
 		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                           
-		                        })
+		                        }),
+		                        
+		                    	filter:"",
+	                        	styleMap: new OpenLayers.StyleMap(styleAptos)
 		                    
 		                    });
-		           
-		           puntos.style = OpenLayers.Util.applyDefaults({strokeColor: "#0000ff"}, 
-		                    OpenLayers.Feature.Vector.style["default"]);
-		           puntos.style.externalGraphic="../resources/Images/casa.png";
-		           puntos.style.graphicWidth= 40;
-		           puntos.style.graphicHeight= 32;
-		           puntos.style.fillOpacity=1;
-
-
-			       
+		              
 		           map.addLayers([tiled,puntos]);
-		        
 		           
+		       
+
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
 		               );
 	               
-		               var drawPoint = new OpenLayers.Control.DrawFeature(
-		            		   puntos, OpenLayers.Handler.Point,
-		                       {displayClass: 'olControlDrawFeaturePoint'}
-		                   );
+		           
 
-		                	
-							drawPoint.featureAdded = function(feature) {
-								
-								feature.style.strokeColor = "#0000ff";
+                   panel.addControls([new OpenLayers.Control.Navigation()]);
+                   map.addControl(panel);
+                   map.addControl(new OpenLayers.Control.LayerSwitcher());
+                   dragFeature = new OpenLayers.Control.DragFeature(puntos, {
+                	   onComplete: endDrag
+                	 });
+                   function endDrag(feature, pixel) {
+                	    	feature.state = OpenLayers.State.UPDATE;
+                	    
+                	}
+                   map.addControl(dragFeature);
+                   dragFeature.activate();
+                   
+                   var id = document.getElementById('idcasa').value;
+                   
+         			puntos.filter = new OpenLayers.Filter.Comparison({
+         			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+         			     property: "id",
+         			    value: id
+         				});
+         			puntos.refresh({force:true});
 
-								feature.state = OpenLayers.State.INSERT;
-
-								var input = document.getElementById('altaInmueble:iddep');
-
-								input.value= puntos.features.length;
-								
-								//feature.attributes.numpunto=input.value;
-								
-								//alert(input.value);
-								feature.layer.drawFeature(feature);
-								
-								drawPoint.deactivate();
-								OpenLayers.Util.removeItem(panel.controls, drawPoint);
-								panel.redraw(); 
-		                   }
-		              	
-		                   panel.addControls(
-		                       [new OpenLayers.Control.Navigation(), drawPoint]
-		                   );
-		                   
-		                   map.addControl(panel);
-		                   map.addControl(new OpenLayers.Control.LayerSwitcher());
+		          
 		           
  		           map.zoomTo(7);
  		           
  		      
 					
 			}
+	
+
+	
+
 	
 	function save() {
 		saveStrategy.save();
@@ -163,18 +212,73 @@
 </h:head>
 
 <h:body class="fondo" onload="init()" >
+
+
+ 
+ 
+ <h:form id="modificarInmueble">
+	  
+		<div id="cont" class="contenedor">
+		  
+			<div id="mapWrap" class="mapWrap">
+			    	
+			    <div id="map" class="map"></div>
+			 	
+			</div>
+		 
+		</div>
+		
+	<b:panel id="datos" styleClass="panel panel-primary outtab" title="Modificar Apartamento">
+ 
+      
+   <b:panelGrid colSpans="2,10" rowClasses="rowform">
+    
+	    <h:outputLabel value="Titulo del apartamento" />
+	    <b:inputText span="8" value="#{propiedadMB.titulo}"/>
+	         
+	    <h:outputLabel value="Barrio del apartamento" />	    
+	    <b:inputText span="8" value="#{propiedadMB.barrio}"/>
+	    
+	    <h:outputLabel value="Tipo de propiedad" />	
+	    
+	    <b:selectOneMenu span="8" value="#{propiedadMB.tipoProp}" >
+            <f:selectItem itemLabel="Comercial" itemValue="Comercial"/>
+            <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
+        </b:selectOneMenu>
+        
+        <h:outputLabel value="Tipo de negocio" />	
+        
+        <b:selectOneMenu span="8" value="#{propiedadMB.tipoNegocio}" >
+            <f:selectItem itemLabel="Alquiler" itemValue="Alquiler"/>
+            <f:selectItem itemLabel="Venta" itemValue="Venta"/>
+        </b:selectOneMenu>
+        
+        <h:outputLabel value="Cantidad de baños" />	    
+	    <b:inputText span="8" value="#{propiedadMB.cantBanios}"/>
+        
+        <h:outputLabel value="Cantidad de cuartos" />	    
+	    <b:inputText span="8" value="#{propiedadMB.cantCuartos}"/>
+        
+         <h:outputLabel value="Precio" />	    
+	    <b:inputText span="8" value="#{propiedadMB.precio}"/>
+	    
+	    <h:outputLabel value="Tamaño" />	    
+	    <b:inputText span="8" value="#{propiedadMB.tamanio}"/>
+	    	    
+	    <h:outputLabel value="Garage: " />
+	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
+	    
+	    
+	    
+		    
+	</b:panelGrid>
+</b:panel>
+	  
+	  <h:commandButton id="save" value="Guardar Inmueble" type="submit" action="#{propiedadMB.modificarApartamento}" onclick="save()" ></h:commandButton>	 
+	  
+  </h:form>
 	
-<ui:include src="/navbar.xhtml" />
-
-<div id="cont" class="contenedor">
-
-
-	
-
-</div>
-
-
-
+<h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
 
 </h:body>
 

@@ -400,6 +400,19 @@ public void eliminarFeature(int idPunto) {
 	
 }
 
+@Override
+public List<Integer> getAptoUsuario(String usuario) {
+	try{
+		List<Integer> result = em.createNativeQuery("select distinct a.idGeom from apartamento a, aptogeom g where a.idgeom=g.id and a.user_id='"+usuario+"'").getResultList();
+		return result;
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	return null;
+}
+
 	
 
 }

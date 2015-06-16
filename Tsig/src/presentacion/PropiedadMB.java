@@ -122,49 +122,6 @@ public class PropiedadMB implements Serializable {
 		
 	}
 	
-	public String modificarApartamento(){
-		
-
-		try {
-			
-			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-								
-			ipc.modificarApto(usuario,idDep,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio,numeroap);
-			
-			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-			
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-		
-	}
-	
-	public String modificarCasa(){
-		
-
-		try {
-			
-			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-								
-			ipc.modificarCasa(usuario,idCasa,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage, precio, tamanio);			
-			
-			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-			
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-		
-	}
 	
 	
 	
@@ -231,9 +188,11 @@ public class PropiedadMB implements Serializable {
 		try {
 			
 			casas.clear();
+			aptos.clear();
 			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 			System.out.println("Entre getUser....."+ usuario);
 			casas=ipc.getCasasUsuario(usuario);
+			aptos=ipc.getAptoUsuario(usuario);
 			System.out.println("Entre getUser despues consulta"+ casas );
 			
 		} catch (Exception e) {
@@ -460,6 +419,121 @@ public class PropiedadMB implements Serializable {
 		return null;
 	}
 	
+	public String modificarInmueble(){
+			
+			try{
+				
+			System.out.println("Entre modificara...: "+idPunto);
+			System.out.println("Entre modificar con propiedad...: "+ this.propiedad);
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("idPunto", idPunto);
+
+			
+			if("Casa".compareTo(this.propiedad)==0){
+				System.out.println("Entre modificar casa...: "+idPunto);	
+
+				Casa c=	ipc.getCasaFromGeom(idPunto);
+				System.out.println("id punto pre redirect: "+idPunto);
+				System.out.println("id idgeom pre redirect:.. "+ c.getIdGeom());
+
+				this.idPunto=c.getIdGeom();
+				this.titulo=c.getTitulo();
+				this.direccion = c.getDireccion();
+			    this.barrio = c.getBarrio();
+			    this.tipoProp = c.getTipoProp();
+			    this.cantBanios = c.getCantBanios();
+			    this.cantCuartos = c.getCantCuartos();
+			    this.garage = c.isGarage();
+			    this.precio=c.getPrecio();
+			    this.tamanio=c.getTamanio();
+			    this.tipoNegocio=c.gettipoNegocio();
+			    this.piscina=c.isPiscina();
+	
+			    return "modificarCasa.xhtml";
+			}	else{
+				
+				Apartamento c=	ipc.getAptoFromGeom(idPunto);
+						   
+				this.titulo=c.getTitulo();
+				this.direccion = c.getDireccion();
+			    this.barrio = c.getBarrio();
+			    this.tipoProp = c.getTipoProp();
+			    this.cantBanios = c.getCantBanios();
+			    this.cantCuartos = c.getCantCuartos();
+			    this.garage = c.isGarage();
+			    this.precio=c.getPrecio();
+			    this.tamanio=c.getTamanio();
+			    this.tipoNegocio=c.getTipoNegocio();
+	
+			    return "modificarApto.xhtml";
+				
+			}
+			
+			
+		    
+		    
+			}catch(Exception e){
+				e.printStackTrace();
+				
+			}
+			return null;
+		}
+	
+	public String modificarCasa(){
+		
+		System.out.println("Entre modificaraCasa() este es el idPunto...: "+ idPunto);
+		System.out.println("Entre modificaraCasa() este es el idCasa...: "+ idCasa);
+
+
+		System.out.println("Entre modificaraCasa()...: "+idPunto+titulo+ direccion +barrio +tipoProp + tipoNegocio + cantBanios + cantCuartos + piscina + garage + precio + tamanio);
+
+		try {
+			
+			String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+			Integer idpunto =(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("idPunto");
+			System.out.println("Entre modificaraCasa()...: "+idpunto+titulo+ direccion +barrio +tipoProp + tipoNegocio + cantBanios + cantCuartos + piscina + garage + precio + tamanio);
+
+			
+			ipc.modificarCasa(usuario,idpunto,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage, precio, tamanio);			
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+		
+	}
+	
+	public String modificarApartamento(){
+			
+	
+			try {
+				
+				String usuario =(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+				Integer idpunto =(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("idPunto");
+				
+				System.out.println("Entre modificarApartamento()...: "+idpunto+titulo+ direccion +barrio +tipoProp + tipoNegocio + cantBanios + cantCuartos + numeroap + garage + precio + tamanio);
+				System.out.println("Entre modificarApartamento()...: "+idPunto+titulo+ direccion +barrio +tipoProp + tipoNegocio + cantBanios + cantCuartos + numeroap + garage + precio + tamanio);
+	
+				
+				ipc.modificarApto(usuario,idpunto,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio,numeroap);
+				
+				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+				
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+			return null;
+			
+	}
 	public int getIdCasa() {
 		return idCasa;
 	}

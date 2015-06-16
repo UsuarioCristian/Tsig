@@ -150,9 +150,6 @@
 		          
 	
 		           map.addLayers([tiled,puntos]);
-		          
-		           
-		           document.getElementById('eliminar:getuser').click();
 
 		           
 		           var panel = new OpenLayers.Control.Panel(
@@ -173,6 +170,15 @@
                 	}
                    map.addControl(dragFeature);
                    dragFeature.activate();
+                   
+                   var id = document.getElementById('idcasa').value;
+                   
+        			puntos.filter = new OpenLayers.Filter.Comparison({
+        			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+        			     property: "id",
+        			    value: id
+        				});
+        			puntos.refresh({force:true});
 		           
  		           map.zoomTo(7);
  		         
@@ -184,85 +190,9 @@
 		
 	
 		
-		function updateFilter() {
 
-			
-			var inputs = document.getElementById('eliminar:este');
-			
-			var idFilter = [];
-			var filt =[];
-		
-			for (key in inputs.children) {
-				
-				if(!(isNaN(key))){
-				idFilter.push(inputs.children[key].value);
-				}
-				
-			}
-			//Id filter contiene los ids a filtrar
-			
-			
-			for (key in idFilter){
-				    filt[key] = new OpenLayers.Filter.Comparison({
-				    type: OpenLayers.Filter.Comparison.EQUAL_TO,
-				     property: "id",
-				    value: idFilter[key]
-				});
-				
-			}
-			
-
-
-			puntos.filter= new OpenLayers.Filter.Logical({
-			    	type: OpenLayers.Filter.Logical.OR,
-			    	filters: filt
-			});
-			
-
-			puntos.refresh({force:true});
-			
-		}
-		
-		function handleAjax(data) {
-		    var status = data.status;
-
-		    switch(status) {
-		        case "begin":
-		            // This is invoked right before ajax request is sent.
-		            break;
-
-		        case "complete":
-		            // This is invoked right after ajax response is returned.
-		            break;
-
-		        case "success":
-		           show();
-		            break;
-		    }
-		}
-		
-		function handleAjax2(data) {
-		    var status = data.status;
-
-		    switch(status) {
-		        case "begin":
-		            // This is invoked right before ajax request is sent.
-		            break;
-
-		        case "complete":
-		            // This is invoked right after ajax response is returned.
-		            break;
-
-		        case "success":
-		        	updateFilter();
-		            break;
-		    }
-		}
 		 
 		function save() {
-
-	 			
-
 
 	 			alert("entre");
 	 		
@@ -279,31 +209,78 @@
 
 	 </script>
   </h:head>
-   <h:body class="fondo" onload="init()">
+  
+ <h:body class="fondo" onload="init()">
    
- <h:form id="eliminar">
-  <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
-  	<f:ajax execute="@form"  onevent="handleAjax2" render="este" update="este"/>
-  </h:commandButton>  
-  <h:panelGroup  id="este">
-    <ui:repeat value="#{propiedadMB.casas}"  var="id">
-		<h:inputHidden value="#{id}" class="ids" /> 
-	</ui:repeat>
-</h:panelGroup>
+ 
+  
+  
+	<h:form id="modificarInmueble">
+	  
+		<div id="cont" class="contenedor">
+		  
+			<div id="mapWrap" class="mapWrap">
+			    	
+			    <div id="map" class="map"></div>
+			 	
+			</div>
+		 
+		</div>
+		
+		<b:panel id="datos" styleClass="panel panel-primary outtab" title="Modificar Casa">
+	 
+	      
+	    <b:panelGrid colSpans="2,10" rowClasses="rowform">
+	    
+		    <h:outputLabel value="Titulo de la casa" />
+		    <b:inputText span="8" value="#{propiedadMB.titulo}"/>
+		         
+		    <h:outputLabel value="Barrio de la casa" />	    
+		    <b:inputText span="8" value="#{propiedadMB.barrio}"/>
+		    
+		    <h:outputLabel value="Tipo de propiedad" />	
+		    
+		    <b:selectOneMenu span="8" value="#{propiedadMB.tipoProp}" >
+	            <f:selectItem itemLabel="Comercial" itemValue="Comercial"/>
+	            <f:selectItem itemLabel="Residencial" itemValue="Residencial"/>
+	        </b:selectOneMenu>
+	        
+	        <h:outputLabel value="Tipo de negocio" />	
+	        
+	        <b:selectOneMenu span="8" value="#{propiedadMB.tipoNegocio}" >
+	            <f:selectItem itemLabel="Alquiler" itemValue="Alquiler"/>
+	            <f:selectItem itemLabel="Venta" itemValue="Venta"/>
+	        </b:selectOneMenu>
+	        
+	        <h:outputLabel value="Cantidad de baños" />	    
+		    <b:inputText span="8" value="#{propiedadMB.cantBanios}"/>
+	        
+	        <h:outputLabel value="Cantidad de cuartos" />	    
+		    <b:inputText span="8" value="#{propiedadMB.cantCuartos}"/>
+	        
+	         <h:outputLabel value="Precio" />	    
+		    <b:inputText span="8" value="#{propiedadMB.precio}"/>
+		    
+		    <h:outputLabel value="Tamaño" />	    
+		    <b:inputText span="8" value="#{propiedadMB.tamanio}"/>
+		    
+		    <h:outputLabel value="Numero de piso" />	    
+		    <b:inputText span="8" value="#{propiedadMB.numeroap}"/>
+		    
+		    <h:outputLabel value="Piscina: " />
+		    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" />
+		    
+		    <h:outputLabel value="Garage: " />
+		    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
+		    
+			    
+		</b:panelGrid>
+	</b:panel>
+	  
+	  <h:commandButton id="save" value="Guardar Inmueble" type="submit" action="#{propiedadMB.modificarCasa}" onclick="save()" ></h:commandButton>	 
+	  
   </h:form>
   
-     <h:commandButton id="save" value="Guardar Inmueble" type="submit" onclick="save()"></h:commandButton>	 
-   <div id="cont" class="contenedor">
-
-   
-    <a id="atrigger" class="" href="#amodal" data-toggle="modal" style="visibility: hidden;">test</a>
-    
-   <div id="mapWrap" class="mapWrap">
-    <div id="map" class="map"></div>
- 	
-    </div>
-   
-	
-  </div>
+  <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
   </h:body>
 </html>

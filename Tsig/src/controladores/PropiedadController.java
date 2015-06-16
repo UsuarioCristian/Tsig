@@ -94,13 +94,22 @@ public class PropiedadController implements IPropiedadController{
 	public void modificarCasa(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos,boolean piscina, boolean garage, int precio, float tamanio) {
 		try{
 			
-			Casa c = new Casa(IdGeom, titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage,"privada", precio, tamanio);
-			
-			
-			
+			Casa c =PropiedadDAO.getCasaFromGeom(IdGeom);			
 			Usuario u=	UsuarioDAO.getUsuario(usuario);
-			
 			c.setEncargado(u);
+			c.setBarrio(barrio);
+			c.setCantBanios(cantBanios);
+			c.setCantCuartos(cantCuartos);
+			c.setDireccion(direccion);
+			//c.setEstado(estado);
+			c.setGarage(garage);
+			c.setPiscina(piscina);
+			c.setPrecio(precio);
+			c.setTamanio(tamanio);
+			c.setTitulo(titulo);
+			
+			
+			
 			PropiedadDAO.modificarCasa(c);				
 
 		}		
@@ -115,11 +124,24 @@ public class PropiedadController implements IPropiedadController{
 	public void modificarApto(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos, boolean garage, int precio, float tamanio,int numeroap) {
 		try{
 			
-			Apartamento ap = new Apartamento(IdGeom, titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, garage,"privada", precio, tamanio,numeroap);
-			
+			Apartamento ap = PropiedadDAO.AptoFromGeom(IdGeom);
 			Usuario u=	UsuarioDAO.getUsuario(usuario);
-			
 			ap.setEncargado(u);
+			ap.setBarrio(barrio);
+			ap.setCantBanios(cantBanios);
+			ap.setCantCuartos(cantCuartos);
+			ap.setDireccion(direccion);
+			//c.setEstado(estado);
+			ap.setGarage(garage);
+			ap.setTipoProp(tipoProp);
+			ap.setTipoNegocio(tipoNegocio);
+			ap.setNumeroAp(numeroap);
+			ap.setPrecio(precio);
+			ap.setTamanio(tamanio);
+			ap.setTitulo(titulo);
+			
+			
+			
 			PropiedadDAO.modificarApto(ap);				
 
 		}		
@@ -279,6 +301,20 @@ public class PropiedadController implements IPropiedadController{
 			return PropiedadDAO.getCoorApto(idPunto);
 			
 		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	@Override
+	public List<Integer> getAptoUsuario(String usuario) {
+		try{
+			
+			return  PropiedadDAO.getAptoUsuario(usuario);
+			
+			}
+		catch(Exception e){
 			e.printStackTrace();
 		}
 		return null;

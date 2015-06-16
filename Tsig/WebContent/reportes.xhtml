@@ -75,6 +75,12 @@
 			  document.getElementById('info:redirect').click();
 
 			 });
+		 
+		 $("#btnModificar").click(function(){
+
+			  document.getElementById('info:modificar').click();
+
+			 });
 
 
 		 
@@ -251,6 +257,7 @@
 	
 		           map.addLayers([tiled,puntos,aptos]);
 		           
+		           
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
 		               );
@@ -267,7 +274,8 @@
                    map.addControl(new OpenLayers.Control.LayerSwitcher());
 		           
  		           map.zoomTo(7);
- 		           
+		           document.getElementById('eliminar:getuser').click();
+
  		         function clickNotice(event) {
  		        	
 
@@ -294,6 +302,71 @@
   		            
 		            
 		}
+	
+		function updateFilter() {
+	
+			
+			var inputs = document.getElementById('eliminar:listcasas');
+			var inputsA = document.getElementById('eliminar:listaptos');
+			
+			var idFilter = [];
+			var idFilterA = [];
+			var filt =[];
+			var filtA = [];
+		
+			for (key in inputs.children) {
+				
+				if(!(isNaN(key))){
+				idFilter.push(inputs.children[key].value);
+				}
+				
+			}
+			//Id filter contiene los ids a filtrar
+			for (key in inputsA.children) {
+				
+				if(!(isNaN(key))){
+					idFilterA.push(inputsA.children[key].value);
+				}
+				
+			}
+			
+			
+			
+			for (key in idFilter){
+				    filt[key] = new OpenLayers.Filter.Comparison({
+				    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				     property: "id",
+				    value: idFilter[key]
+				});
+				
+			}
+			
+			for (key in idFilterA){
+				filtA[key] = new OpenLayers.Filter.Comparison({
+			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			     property: "id",
+			    value: idFilterA[key]
+			});
+			
+		}
+			
+	
+	
+			puntos.filter= new OpenLayers.Filter.Logical({
+			    	type: OpenLayers.Filter.Logical.OR,
+			    	filters: filt
+			});
+			
+	
+			aptos.filter= new OpenLayers.Filter.Logical({
+		    	type: OpenLayers.Filter.Logical.OR,
+		    	filters: filtA
+			});
+		
+			puntos.refresh({force:true});
+			aptos.refresh({force:true});
+			
+		}
 		
 		function show(){
 	
@@ -318,108 +391,139 @@
 		            break;
 		    }
 		}
+		
+		function handleAjax2(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		        	updateFilter();
+		            break;
+		    }
+		}
 	
 
 	 </script>
   </h:head>
    <h:body class="fondo" onload="init()">
    
-    <ui:include src="/navbar.xhtml" />
+   
    
    <div id="cont" class="contenedor">
 
-    <h:form id="eliminar">
-  
-	 	
-  
- 
- 	 </h:form>
-    
-    
-     <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
-  	 <div id="mapWrap" class="mapWrap">
-    <div id="map" class="map"></div>
- 	 <br/>
-    
-    <h:form id="info" style="display:none;">
-    
-    
-    
-     <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
-     
-     <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
-     
-    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
-   	 <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
-    </h:commandButton>
-    
-     <h:commandButton id="eliminarfeature" actionListener ="#{propiedadMB.eliminarFeature()}" style="display: none;" ></h:commandButton>	
-     <h:commandButton id="redirect"  action="#{propiedadMB.detalleInmueble}" value="" style="display: none;">  </h:commandButton>
-    
-     <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
-  		  <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
-    </h:commandButton>
-    
-    
-      
-	  
-	 
-	  
-	
-  
-    </h:form>
-    </div> 
-   
-
-   
-   <div  class="remodal" data-remodal-id="modal">
-	  <button data-remodal-action="close" class="remodal-close"></button>
-	  
-	  <h1>INMUEBLES</h1>
-	 
-	  
-	   <b:panelGrid id="amodal" colSpans="4,8" rowClasses="rowform">
-    
-	    <h:outputLabel value="Titulo de la casa: " />	    
-	    <h:outputLabel value="#{propiedadMB.titulo}" />
-	    
-	    <h:outputLabel value="Barrio de la casa: " />   
-	    <h:outputLabel value="#{propiedadMB.barrio}" />	
-	    
-	    <h:outputLabel value="Tipo de propiedad: " />
-	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
-        
-        <h:outputLabel value="Cantidad de baños: " />
-        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
-	   
-	    <h:outputLabel value="Cantidad de cuartos: " />
-        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
-        
-        <h:outputLabel value="Tamaño de la propiedad : " />
-        <h:outputLabel value="#{propiedadMB.tamanio}" />
-        
-        <h:outputLabel value="Precio : $" />
-        <h:outputLabel value="#{propiedadMB.precio}" />
-        
-        <h:outputLabel value="Piscina:" rendered="#{propiedadMB.piscina} != false" />
-	    <h:outputLabel value="#{propiedadMB.piscina}"  rendered="#{propiedadMB.piscina} != false"/>
-	    
-	    <h:outputLabel value="Garage: " rendered="#{propiedadMB.garage} != false" />
-	    <h:outputLabel value="#{propiedadMB.garage} " rendered="#{propiedadMB.garage} != false" />
-	   
-	  </b:panelGrid> 
-	    
-	  <h:form>
-
-	  </h:form>
-	  
-	   
-	   
-	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnEliminar">Eliminar</button>
-	  
-	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnDetalles">Ver detalles</button>
-
-</div>
+		    <h:form id="eliminar">
+			  <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
+			  	<f:ajax execute="@form"  onevent="handleAjax2" render="listcasas listaptos" update="listcasas listaptos"/>
+			  </h:commandButton>
+					
+			  
+			  <h:panelGroup  id="listcasas">
+			    <ui:repeat value="#{propiedadMB.casas}"  var="id">
+					<h:inputHidden value="#{id}" class="ids" /> 
+				</ui:repeat>
+			</h:panelGroup>
+			
+			<h:panelGroup  id="listaptos">
+			    <ui:repeat value="#{propiedadMB.aptos}"  var="id">
+					<h:inputHidden value="#{id}" class="ids" /> 
+				</ui:repeat>
+			</h:panelGroup>
+		  </h:form>
+		
+		    
+		    
+		     <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
+		  	 <div id="mapWrap" class="mapWrap">
+			    <div id="map" class="map"></div>
+			 	 <br/>
+			    
+			    <h:form id="info" style="display:none;">
+			    
+			    
+				    
+				     <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
+				     
+				     <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
+				     
+				    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
+				   	 <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
+				    </h:commandButton>
+				    
+				     <h:commandButton id="eliminarfeature" actionListener ="#{propiedadMB.eliminarFeature()}" style="display: none;" ></h:commandButton>
+				     	
+				     <h:commandButton id="redirect"  action="#{propiedadMB.detalleInmueble}" value="" style="display: none;">  </h:commandButton>
+				     
+				     <h:commandButton id="modificar"  action="#{propiedadMB.modificarInmueble}" value="" style="display: none;">  </h:commandButton>
+				     
+				    
+				     <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
+				  		  <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
+				    </h:commandButton>
+			 
+			    </h:form>
+		    </div> 
+		   
+		
+		   
+		   <div  class="remodal" data-remodal-id="modal">
+			  <button data-remodal-action="close" class="remodal-close"></button>
+			  
+			  <h1>INMUEBLES</h1>
+			 
+			  
+			   <b:panelGrid id="amodal" colSpans="4,8" rowClasses="rowform">
+		    
+			    <h:outputLabel value="Titulo de la casa: " />	    
+			    <h:outputLabel value="#{propiedadMB.titulo}" />
+			    
+			    <h:outputLabel value="Barrio de la casa: " />   
+			    <h:outputLabel value="#{propiedadMB.barrio}" />	
+			    
+			    <h:outputLabel value="Tipo de propiedad: " />
+			    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
+		        
+		        <h:outputLabel value="Cantidad de baños: " />
+		        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
+			   
+			    <h:outputLabel value="Cantidad de cuartos: " />
+		        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
+		        
+		        <h:outputLabel value="Tamaño de la propiedad : " />
+		        <h:outputLabel value="#{propiedadMB.tamanio}" />
+		        
+		        <h:outputLabel value="Precio : $" />
+		        <h:outputLabel value="#{propiedadMB.precio}" />
+		        
+		        <h:outputLabel value="Piscina:" rendered="#{propiedadMB.piscina} != false" />
+			    <h:outputLabel value="#{propiedadMB.piscina}"  rendered="#{propiedadMB.piscina} != false"/>
+			    
+			    <h:outputLabel value="Garage: " rendered="#{propiedadMB.garage} != false" />
+			    <h:outputLabel value="#{propiedadMB.garage} " rendered="#{propiedadMB.garage} != false" />
+			   
+			  </b:panelGrid> 
+			    
+			  <h:form>
+		
+			  </h:form>
+			  
+			   
+			   
+			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnEliminar">Eliminar</button>
+			  
+			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnDetalles">Ver detalles</button>
+			  
+			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnModificar">Modificar</button>
+			  
+		
+		</div>
 
 	    
 	    

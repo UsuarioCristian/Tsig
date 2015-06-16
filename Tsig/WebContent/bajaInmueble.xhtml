@@ -125,6 +125,61 @@
 		        	            ]
 		        	        }
 		        	    );
+		           var styleAptos = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 50,
+		        	            graphicHeight: 38,
+		        	           
+		        	           
+		        	        },
+		        	        // the second argument will include all rules
+		        	        {
+		        	            rules: [
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "privada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	  
+		        	                        externalGraphic: "resources/Images/aptoprivado.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "reservada"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	     
+		        	                        externalGraphic: "resources/Images/aptoReservado.png"
+		        	                    }
+		        	                }),
+		        	                new OpenLayers.Rule({
+		        	                    // a rule contains an optional filter
+		        	                    filter: new OpenLayers.Filter.Comparison({
+		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+		        	                        property: "estado", // the "foo" feature attribute
+		        	                        value: "publica"
+		        	                    }),
+		        	                    // if a feature matches the above filter, use this symbolizer
+		        	                    symbolizer: {
+		    		        	      
+		        	                        externalGraphic: "resources/Images/aptopublico.png"
+		        	                    }
+		        	                }),
+		    
+		        	            ]
+		        	        }
+		        	    );
 			          
 		            puntos = new OpenLayers.Layer.Vector(
 		                    "casageom",
@@ -147,8 +202,29 @@
 		                    
 		                    });
 		            
+		            aptos = new OpenLayers.Layer.Vector(
+		                    "aptogeom",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "aptogeom", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+		                            
+		                        }),
+
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(styleAptos)
+		                    
+		                    });
+		            
 	
-		           map.addLayers([tiled,puntos]);
+		           map.addLayers([tiled,puntos,aptos]);
 		           document.getElementById('eliminar:getuser').click();
 
 		           
@@ -191,9 +267,12 @@
 
 			
 			var inputs = document.getElementById('eliminar:este');
+			var inputsA = document.getElementById('eliminar:este2');
 			
 			var idFilter = [];
+			var idFilterA = [];
 			var filt =[];
+			var filtA = [];
 		
 			for (key in inputs.children) {
 				
@@ -203,6 +282,14 @@
 				
 			}
 			//Id filter contiene los ids a filtrar
+			for (key in inputsA.children) {
+				
+				if(!(isNaN(key))){
+					idFilterA.push(inputsA.children[key].value);
+				}
+				
+			}
+			
 			
 			
 			for (key in idFilter){
@@ -214,6 +301,15 @@
 				
 			}
 			
+			for (key in idFilterA){
+				filtA[key] = new OpenLayers.Filter.Comparison({
+			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			     property: "id",
+			    value: idFilterA[key]
+			});
+			
+		}
+			
 
 
 			puntos.filter= new OpenLayers.Filter.Logical({
@@ -222,7 +318,13 @@
 			});
 			
 
+			aptos.filter= new OpenLayers.Filter.Logical({
+		    	type: OpenLayers.Filter.Logical.OR,
+		    	filters: filtA
+			});
+		
 			puntos.refresh({force:true});
+			aptos.refresh({force:true});
 			
 		}
 		
@@ -274,7 +376,7 @@
    
  <h:form id="eliminar">
   <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
-  	<f:ajax execute="@form"  onevent="handleAjax2" render="este" update="este"/>
+  	<f:ajax execute="@form"  onevent="handleAjax2" render="este este2" update="este este2"/>
   </h:commandButton>
   <h:commandButton id="eliminarfeature" actionListener ="#{propiedadMB.eliminarFeature()}" style="display: none;" >
   	<f:ajax  execute="@all" onevent="handleAjax2" render="@all" update="este"/>
@@ -286,76 +388,26 @@
 		<h:inputHidden value="#{id}" class="ids" /> 
 	</ui:repeat>
 </h:panelGroup>
+
+<h:panelGroup  id="este2">
+    <ui:repeat value="#{propiedadMB.aptos}"  var="id">
+		<h:inputHidden value="#{id}" class="ids" /> 
+	</ui:repeat>
+</h:panelGroup>
   </h:form>
    
    <div id="cont" class="contenedor">
 
    
-    <a id="atrigger" class="" href="#amodal" data-toggle="modal" style="visibility: hidden;">test</a>
     
    <div id="mapWrap" class="mapWrap">
     <div id="map" class="map"></div>
- 	 <br/>
+ 	
     
-    <h:form id="info" style="display:none;">
     
-     <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
-     
-    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
-   		<f:ajax execute="@all" render="amodal" onevent="handleAjax" />
-    </h:commandButton>
-    
-  	<h:commandButton type="submit" id="eliminarfeature2" value="dsd" actionListener="#{propiedadMB.eliminarFeature}"  > 
-  	<f:ajax execute="@all" render="@all" />
-  		<f:attribute name="id" value="dsa" />
-  	</h:commandButton>
-    </h:form>
     </div>
    
-	<b:modal id="amodal" title="Informacion de propiedad" >
-		   <h:form id="dsass45">
-    <b:panelGrid colSpans="4,8" rowClasses="rowform">
-    
-	    <h:outputLabel value="Titulo de la casa: " />	    
-	    <h:outputLabel value="#{propiedadMB.titulo}" />
-	    
-	      <h:outputLabel value="Barrio de la casa: " />   
-	    <h:outputLabel value="#{propiedadMB.barrio}" />	
-	    
-	    <h:outputLabel value="Tipo de propiedad: " />
-	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
-        
-        <h:outputLabel value="Cantidad de baños: " />
-        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
-	   
-	    <h:outputLabel value="Cantidad de cuartos: " />
-        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
-        
-        <h:outputLabel value="Piscina:" />
-	    <h:outputLabel value="#{propiedadMB.piscina}" />
-	    
-	    <h:outputLabel value="Garage: " />
-	    <h:outputLabel value="#{propiedadMB.garage}" />
-	   
-	  </b:panelGrid>  
-	  
-	 
-		     </h:form>
-	    <f:facet name="footer">
-	 
 
-	  
-	    
-	    
-	        <b:button value="close" dismiss="modal" onclick="return false;"/>
-	        <b:button value="Eliminar" dismiss="modal" onclick="document.getElementById('info:eliminarfeature2').click(); return false;">
-	        	
-	        </b:button>
-	        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
-	         
-	    </f:facet>
-	    
-	</b:modal>
   </div>
   </h:body>
 </html>
