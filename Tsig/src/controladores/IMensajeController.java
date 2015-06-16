@@ -9,7 +9,7 @@ import dominio.Mensaje;
 
 @Local
 public interface IMensajeController {
-	public boolean altaMensaje(String asunto, String contenido, Date fecha, String nombreUsuario);
+	public boolean altaMensaje(String asunto, String contenido, Date fecha, String nombreUsuario, String mail);
 	public boolean borrarMensaje(int mensajeID);
 	public boolean marcarComoLeido(int mensajeID);
 	public List<Mensaje> getMensajes(String nombreUsuario);

@@ -25,6 +25,7 @@ public class Mensaje implements Serializable {
 	private String contenido;
 	private Date fecha;
 	private boolean visto;
+	private String mail;
 		
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario destinatario;
@@ -80,9 +81,17 @@ public class Mensaje implements Serializable {
 		this.visto = visto;
 	}
 		
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
 	@Override
-	public String toString() {		
-		return "Mensaje[" + this.id + "]"+" Asunto: "+this.asunto;
+	public String toString() {
+		return "Mensaje[" + this.id + "]" + " Asunto: " + this.asunto;
 	}
 
 }
