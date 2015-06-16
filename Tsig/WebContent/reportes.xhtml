@@ -322,9 +322,10 @@
 
 	 </script>
   </h:head>
-   <h:body class="fondo" onload="init()">
+      <ui:include src="/navbar.xhtml" />
+   <h:body class="fondo" onload="init()"  rendered="#{usuarioMB.log}">
    
-    <ui:include src="/navbar.xhtml" />
+
    
    <div id="cont" class="contenedor">
 
@@ -346,7 +347,7 @@
     
     
      <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
-     <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
+     <h:inputHidden value="#{propiedadMB.propiedadClick}" id="propiedad" />
      
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
    	 <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
@@ -408,8 +409,7 @@
 
 </div>
 
-	    
-	    
   </div>
   </h:body>
+
 </html>

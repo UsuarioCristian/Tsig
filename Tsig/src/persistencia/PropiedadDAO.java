@@ -4,6 +4,7 @@ package persistencia;
 import dominio.Apartamento;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -442,6 +443,30 @@ public void eliminarFeatureApto(int idPunto) {
 		e.printStackTrace();
 	}
 	
+	
+}
+
+@Override
+public void actualizarZonas() {
+
+	try{
+		
+		List<Integer> zonas=em.createNativeQuery("select zg.id from zonageom zg").getResultList();
+		
+		for(Integer i:zonas){
+			
+		BigInteger val =(BigInteger) em.createNativeQuery("select count(*)  from ZonaGeom zg ,aptogeom c  where ST_intersects(c.punto,zg.geom) and zg.id="+i).getSingleResult();	
+		System.out.println("ACTUALIZAR ZONAS Id: "+i+"Val: "+val);
+		em.createNativeQuery("update zonageom set visitas ="+val+" where zonageom.id ="+i).executeUpdate();
+		}
+		
+	
+		
+	}catch(Exception e ){
+		
+		
+		e.printStackTrace();
+	}
 	
 }
 

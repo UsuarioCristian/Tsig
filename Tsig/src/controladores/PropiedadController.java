@@ -312,6 +312,19 @@ public class PropiedadController implements IPropiedadController{
 	}
 
 
+	@Override
+	public void actualizarZonas() {
+		try{
+			
+			PropiedadDAO.actualizarZonas();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+
+
 
 
 

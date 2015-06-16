@@ -13,7 +13,7 @@ var mapoptions = {
 
 };
 
-var map, drawControls,drawPolygon,casageom,aptos;
+var map, drawControls,drawPolygon,casageom,aptos,polygonLayer;
 
 
 
@@ -21,7 +21,7 @@ var map, drawControls,drawPolygon,casageom,aptos;
 
 function init() {
 	
-	
+
 		
     map = new OpenLayers.Map('map', mapoptions);
 	// setup tiled layer
@@ -52,7 +52,7 @@ function init() {
 	                    // a rule contains an optional filter
 	                    filter: new OpenLayers.Filter.Comparison({
 	                        type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
-	                        property: "Visitas", // the "foo" feature attribute
+	                        property: "visitas", // the "foo" feature attribute
 	                        value: 0
 	                    }),
 	                    // if a feature matches the above filter, use this symbolizer
@@ -65,21 +65,21 @@ function init() {
 	                    // a rule contains an optional filter
 	                    filter: new OpenLayers.Filter.Comparison({
 	                        type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
-	                        property: "Visitas", // the "foo" feature attribute
-	                        value: 100
+	                        property: "visitas", // the "foo" feature attribute
+	                        value: 3
 	                    }),
 	                    // if a feature matches the above filter, use this symbolizer
 	                    symbolizer: {
 	        	  
 	                    	fillOpacity:0.3,
 	                    }
-	                }),
+	                }) ,
 	                new OpenLayers.Rule({
 	                    // a rule contains an optional filter
 	                    filter: new OpenLayers.Filter.Comparison({
 	                        type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
-	                        property: "Visitas", // the "foo" feature attribute
-	                        value: 300
+	                        property: "visitas", // the "foo" feature attribute
+	                        value: 10
 	                    }),
 	                    // if a feature matches the above filter, use this symbolizer
 	                    symbolizer: {
@@ -91,8 +91,8 @@ function init() {
 	                    // a rule contains an optional filter
 	                    filter: new OpenLayers.Filter.Comparison({
 	                        type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
-	                        property: "Visitas", // the "foo" feature attribute
-	                        value: 700
+	                        property: "visitas", // the "foo" feature attribute
+	                        value: 20
 	                    }),
 	                    // if a feature matches the above filter, use this symbolizer
 	                    symbolizer: {
@@ -106,8 +106,7 @@ function init() {
 	    );
 	
     var styleAptos = new OpenLayers.Style(
-	        // the first argument is a base symbolizer
-	        // all other symbolizers in rules will extend this one
+
 	        {
 	            graphicWidth: 50,
 	            graphicHeight: 50,
@@ -166,7 +165,7 @@ function init() {
         });
 
 	
-	polygonLayer = new OpenLayers.Layer.Vector("ZonaGeom", {
+	polygonLayer = new OpenLayers.Layer.Vector("zonageom", {
 		strategies : [ new OpenLayers.Strategy.BBOX() ],
 		projection : new OpenLayers.Projection("EPSG:32721"),
 		protocol : new OpenLayers.Protocol.WFS({
@@ -174,7 +173,7 @@ function init() {
 			srsName : "EPSG:32721",
 			url : "http://localhost:8080/geoserver/wfs",
 			featurePrefix : 'sige', // geoserver worspace name
-			featureType : "ZonaGeom", // geoserver Layer Name
+			featureType : "zonageom", // geoserver Layer Name
 			featureNS : "localhost:8080/geoserver/sige", // Edit Workspace
 			// Namespace URI
 			geometryName : "geom", // field in Feature Type details with type

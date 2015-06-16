@@ -53,16 +53,7 @@
 	var parcelas;	
     
     var saveStrategy = new OpenLayers.Strategy.Save();
-    saveStrategy.events.on({
-        'success': function(event) {
-             alert('Changes saved');
-        },
-        'fail': function(event) {
-             alert('Error! Changes not saved');
-        },
-        scope: this
-    });
-    
+   
 	var cantidad= 0;
     var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
     
@@ -86,6 +77,11 @@
 	
 	function init() {
 		
+			$("#btnDetalles").click(function(){
+
+				  document.getElementById('consultaInmueble:redirect').click();
+
+			 });
 	
 		     map = new OpenLayers.Map('map', mapoptions);            
 		            // setup tiled layer
@@ -302,11 +298,13 @@
 		           	           
 		           map.addLayers([tiled,supers,casageom,aptos]);
 /**/
-		           var selectFeature = new OpenLayers.Control.SelectFeature([casageom, aptos], {
+		           var selectFeature = new OpenLayers.Control.SelectFeature([aptos,casageom ], {
                 	   hover: false,
                 	   onSelect: clickNotice,
                        autoActivate: true
                    });
+		       
+		         
         		   map.addControl(selectFeature);
 
 
@@ -314,25 +312,30 @@
     		        	
 
 	        	        var id = event.attributes.id;
-
-	        	      
 						var input = document.getElementById('consultaInmueble:idcasas');
 						input.value=id;
 						
-						event.attributes.visitas=(parseInt( event.attributes.visitas)+1).toString();
 
-						event.state = OpenLayers.State.UPDATE;
 						
-						saveStrategy.save();
+						
 						if(event.layer.name=="casageom"){
 
-							
+							event.attributes.visitas= parseInt(event.attributes.visitas) + 1;
+
+							event.state = OpenLayers.State.UPDATE;
+							saveStrategy.save();
 							document.getElementById('consultaInmueble:getinfo').click();
+							document.getElementById('consultaInmueble:propiedad').value="Casa";
 						
 						}else{
 
+							event.attributes.visitas= parseInt(event.attributes.visitas) + 1;
+
+							event.state = OpenLayers.State.UPDATE;
+							saveStrategy.save();
 							
 							document.getElementById('consultaInmueble:getinfoApto').click();
+							document.getElementById('consultaInmueble:propiedad').value="Apartamento";
 						}
 
 						selectFeature.unselectAll();
@@ -492,8 +495,8 @@
 
     </script>
 </h:head>
-
-<h:body class="fondo" onload="init()" >
+      <ui:include src="/navbar.xhtml" />
+<h:body class="fondo" onload="init()"  >
 	
 <!--  <ui:include src="/navbar.xhtml" />-->
 
@@ -507,42 +510,13 @@
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
    	 <f:ajax execute="@form" render="amodal" onevent="handleAjax2" />
     </h:commandButton>
-    
+    <h:commandButton id="redirect"  action="#{propiedadMB.detalleInmueble}" value="" style="display: none;">  </h:commandButton>
      <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
   		  <f:ajax execute="@form" render="amodal" onevent="handleAjax2" />
     </h:commandButton>
-    
+    <h:inputHidden value="#{propiedadMB.propiedadClick}" id="propiedad" />
 
-	<b:panel id="Geo" styleClass="panel panel-primary " title="Consultas avanzadas" >
-	
-		<b:panelGrid colSpans="2,10" rowClasses="rowform">
-				<h:outputLabel value="Ingrese a cuantos metros de un supermercado" />	    
-			    <b:inputText span="8" value="#{propiedadMB.distanciaInteres}"/>
-			    
-			    <h:outputLabel value="Distancia a una parada de omnibus" />	    
-			    <b:inputText span="8" value="#{propiedadMB.distanciaParada}"/>
-			    
-			    <h:outputLabel value="Indique a cuantos metros del mar" />	    
-			    <b:inputText span="8" value="#{propiedadMB.distanciaMar}"/>
-			    
-		</b:panelGrid>
-		
-		 <h:outputLabel value="Marque la esquina donde debe dejarlo el omnibus" />	
-		 
-		 <b:panelGrid colSpans="2,10" rowClasses="rowform">
-		 
-			 <h:outputLabel value="Calle" />	
-			 <b:inputText span="8" value="#{propiedadMB.calle1}"/>
-			 
-			 <h:outputLabel value="Esquina" />	
-			 <b:inputText span="8" value="#{propiedadMB.calle2}"/>
-			 
-			 <h:outputLabel value="A cuantos metros le gustaria tomar este omnibus ?" />	
-			 <b:inputText span="8" value="#{propiedadMB.distanciaBus}"/>
-		 </b:panelGrid>    
-		 
-			
-	</b:panel>
+
 
 
   <b:panel id="mapa" styleClass="panel panel-primary " title="Consultas">
@@ -552,6 +526,9 @@
   <div id="mapWrap" class="mapWrap">
   <div id="map" class="map"></div>
   </div>	
+  
+  
+
      
  <b:panelGrid colSpans="2,10" rowClasses="rowform">
  
@@ -605,15 +582,36 @@
 	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
  	</b:panelGrid>
  	
- 	   <h:panelGroup id="results">
-        
-        <h:outputLabel value="Piso: " rendered="#{propiedadMB.propiedad == 'Apartamento'}"/>	    
-	    <b:inputText span="8" value="#{propiedadMB.numeroap}" rendered="#{propiedadMB.propiedad == 'Apartamento'}"/>
-	    
-	    <h:outputLabel value="Piscina: " rendered="#{propiedadMB.propiedad == 'Casa'}"/>
-	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" rendered="#{propiedadMB.propiedad == 'Casa'}"/>
-	    
-        </h:panelGroup>
+  	<b:panel id="Geo" styleClass="panel panel-primary " title="Consultas avanzadas" >
+	
+		<b:panelGrid colSpans="2,10" rowClasses="rowform">
+				<h:outputLabel value="Ingrese a cuantos metros de un supermercado" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaInteres}"/>
+			    
+			    <h:outputLabel value="Distancia a una parada de omnibus" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaParada}"/>
+			    
+			    <h:outputLabel value="Indique a cuantos metros del mar" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaMar}"/>
+			    
+		</b:panelGrid>
+		
+		 <h:outputLabel value="Marque la esquina donde debe dejarlo el omnibus" />	
+		 
+		 <b:panelGrid colSpans="2,10" rowClasses="rowform">
+		 
+			 <h:outputLabel value="Calle" />	
+			 <b:inputText span="8" value="#{propiedadMB.calle1}"/>
+			 
+			 <h:outputLabel value="Esquina" />	
+			 <b:inputText span="8" value="#{propiedadMB.calle2}"/>
+			 
+			 <h:outputLabel value="A cuantos metros le gustaria tomar este omnibus ?" />	
+			 <b:inputText span="8" value="#{propiedadMB.distanciaBus}"/>
+		 </b:panelGrid>    
+		 
+			
+	</b:panel>
 	
  	
   <h:commandButton id="save" value="Consultar" actionListener="#{propiedadMB.consultaPropiedad}">
@@ -680,9 +678,6 @@
 	   
 	  </b:panelGrid> 
 	    
-   
-	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnEliminar">Eliminar</button>
-	  
 	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnDetalles">Ver detalles</button>
 
 </div>

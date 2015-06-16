@@ -53,6 +53,7 @@ public class PropiedadMB implements Serializable {
 	private boolean piscina=false;
 	private String titulo="";
 	private String propiedad="";
+	private String propiedadClick="";
 
 	/* For advanced filters*/
 	private Integer distanciaInteres=0;
@@ -337,7 +338,7 @@ public class PropiedadMB implements Serializable {
 		    
 		    	
 			}
-			if((" ".compareTo(calle1)!=0)&&(" ".compareTo(calle2)!=0)){
+			if(distanciaBus!=0){
 	    		
 	    		List<Integer> aux4=	ipc.getBusaDestino(distanciaBus,calle1,calle2);
 	    		
@@ -408,7 +409,7 @@ public class PropiedadMB implements Serializable {
 		try{
 			
 			
-		if("Casa".compareTo(this.propiedad)==0){
+		if("Casa".compareTo(this.propiedadClick)==0){
 			
 			Casa c=	ipc.getCasaFromGeom(idPunto);
 			System.out.println("id punto pre redirect: "+idPunto);
@@ -479,6 +480,19 @@ public class PropiedadMB implements Serializable {
 			
 		}
 		return null;
+	}
+	
+	public void actualizarZonas(){
+		
+		try{
+			ipc.actualizarZonas();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public int getIdCasa() {
@@ -748,6 +762,18 @@ public class PropiedadMB implements Serializable {
 	public void setY(double y) {
 		this.y = y;
 
+	}
+
+
+
+	public String getPropiedadClick() {
+		return propiedadClick;
+	}
+
+
+
+	public void setPropiedadClick(String propiedadClick) {
+		this.propiedadClick = propiedadClick;
 	}
 	
 	

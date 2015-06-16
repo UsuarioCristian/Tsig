@@ -42,9 +42,10 @@ public interface IPropiedadDAO {
 	public double[] getCoor(int idPunto);
 	public double[] getCoorApto(int idPunto);
 	List<Integer> getBusaDestino(Integer distance, String calle1, String calle2);
+	public void actualizarZonas();
 	
 	
-//select sum(c.visitas) ,zg.id from ZonaGeom zg ,aptogeom c where ST_intersects(c.punto,zg.geom) group by zg.id;
+	//select sum(c.visitas) ,zg.id from ZonaGeom zg ,aptogeom c where ST_intersects(c.punto,zg.geom) group by zg.id;
 
 
 	
