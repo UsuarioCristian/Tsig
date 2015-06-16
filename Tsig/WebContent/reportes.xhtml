@@ -11,7 +11,7 @@
       <h:outputStylesheet library="css" name="remodal.css" />
       <h:outputStylesheet library="css" name="remodal-default-theme.css" />
       
-<script src="../dist/remodal.min.js"></script>
+
 
  <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
 	
@@ -413,11 +413,13 @@
 
 	 </script>
   </h:head>
-   <h:body class="fondo" onload="init()">
+     
+   <h:body class="fondo" onload="init()"  rendered="#{usuarioMB.log}">
    
-   
+
    
    <div id="cont" class="contenedor">
+
 
 		    <h:form id="eliminar">
 			  <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
@@ -451,7 +453,7 @@
 				    
 				     <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
 				     
-				     <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
+				      <h:inputHidden value="#{propiedadMB.propiedadClick}" id="propiedad" />
 				     
 				    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
 				   	 <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
@@ -525,8 +527,8 @@
 		
 		</div>
 
-	    
-	    
+
   </div>
   </h:body>
+
 </html>

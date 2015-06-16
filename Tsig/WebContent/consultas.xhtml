@@ -10,9 +10,13 @@
 
 
  <h:outputStylesheet library="css" name="styles.css" />
+      <h:outputStylesheet library="css" name="remodal.css" />
+      <h:outputStylesheet library="css" name="remodal-default-theme.css" />
+      
+ <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
+ <script type="text/javascript" src="resources/js/remodal.js"></script>
 
 
-<script type="text/javascript"   src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
 <link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css"
 	type="text/css"></link>
@@ -49,16 +53,7 @@
 	var parcelas;	
     
     var saveStrategy = new OpenLayers.Strategy.Save();
-    saveStrategy.events.on({
-        'success': function(event) {
-             alert('Changes saved');
-        },
-        'fail': function(event) {
-             alert('Error! Changes not saved');
-        },
-        scope: this
-    });
-    
+   
 	var cantidad= 0;
     var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
     
@@ -82,6 +77,11 @@
 	
 	function init() {
 		
+			$("#btnDetalles").click(function(){
+
+				  document.getElementById('consultaInmueble:redirect').click();
+
+			 });
 	
 		     map = new OpenLayers.Map('map', mapoptions);            
 		            // setup tiled layer
@@ -240,7 +240,7 @@
 			        	        // all other symbolizers in rules will extend this one
 			        	        {
 			        	            graphicWidth: 50,
-			        	            graphicHeight: 38,
+			        	            graphicHeight: 50,
 			        	            externalGraphic:"resources/Images/apto.png",
 			        	           
 			        	        });
@@ -254,7 +254,7 @@
 			        	            externalGraphic:"resources/Images/casa.png",
 			        	           
 			        	        });			       
-		             aptos = new OpenLayers.Layer.Vector(
+			            aptos = new OpenLayers.Layer.Vector(
 			                    "aptogeom",
 			                    {
 			                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
@@ -297,8 +297,52 @@
 		           
 		           	           
 		           map.addLayers([tiled,supers,casageom,aptos]);
+/**/
+		           var selectFeature = new OpenLayers.Control.SelectFeature([aptos,casageom ], {
+                	   hover: false,
+                	   onSelect: clickNotice,
+                       autoActivate: true
+                   });
+		       
+		         
+        		   map.addControl(selectFeature);
+
+
+        		   function clickNotice(event) {
+    		        	
+
+	        	        var id = event.attributes.id;
+						var input = document.getElementById('consultaInmueble:idcasas');
+						input.value=id;
+						
+
+						
+						
+						if(event.layer.name=="casageom"){
+
+							event.attributes.visitas= parseInt(event.attributes.visitas) + 1;
+
+							event.state = OpenLayers.State.UPDATE;
+							saveStrategy.save();
+							document.getElementById('consultaInmueble:getinfo').click();
+							document.getElementById('consultaInmueble:propiedad').value="Casa";
+						
+						}else{
+
+							event.attributes.visitas= parseInt(event.attributes.visitas) + 1;
+
+							event.state = OpenLayers.State.UPDATE;
+							saveStrategy.save();
+							
+							document.getElementById('consultaInmueble:getinfoApto').click();
+							document.getElementById('consultaInmueble:propiedad').value="Apartamento";
+						}
+
+						selectFeature.unselectAll();
+
+		        }      
 		        
-		           
+		  /**/         
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
 		               );
@@ -421,66 +465,58 @@
 
 		
 	}
+	function show(){
+		
+		document.getElementById('este').click();
+
+	}
 	
 	function handleAjax(data) {
 	    var status = data.status;
 
 	    switch(status) {
-	        case "begin":
-	            // This is invoked right before ajax request is sent.
-	            break;
-
-	        case "complete":
-	            // This is invoked right after ajax response is returned.
-	            break;
-
+	      
 	        case "success":
 	            // This is invoked right after successful processing of ajax response and update of HTML DOM.
 	            updateFilter();
 	            break;
 	    }
 	}
+	function handleAjax2(data) {
+	    var status = data.status;
+
+	    switch(status) {
+	        case "success":
+	            // This is invoked right after successful processing of ajax response and update of HTML DOM.
+	             show();
+	            break;
+	    }
+	}
 
     </script>
 </h:head>
-
-<h:body class="fondo" onload="init()" >
+      <ui:include src="/navbar.xhtml" />
+<h:body class="fondo" onload="init()"  >
 	
 <!--  <ui:include src="/navbar.xhtml" />-->
 
 <div id="cont" class="contenedor">
 
 <h:form id="consultaInmueble">
-	<b:panel id="Geo" styleClass="panel panel-primary " title="Consultas avanzadas" >
-	
-		<b:panelGrid colSpans="2,10" rowClasses="rowform">
-				<h:outputLabel value="Ingrese a cuantos metros de un supermercado" />	    
-			    <b:inputText span="8" value="#{propiedadMB.distanciaInteres}"/>
-			    
-			    <h:outputLabel value="Distancia a una parada de omnibus" />	    
-			    <b:inputText span="8" value="#{propiedadMB.distanciaParada}"/>
-			    
-			    <h:outputLabel value="Indique a cuantos metros del mar" />	    
-			    <b:inputText span="8" value="#{propiedadMB.distanciaMar}"/>
-			    
-		</b:panelGrid>
-		
-		 <h:outputLabel value="Marque la esquina donde debe dejarlo el omnibus" />	
-		 
-		 <b:panelGrid colSpans="2,10" rowClasses="rowform">
-		 
-			 <h:outputLabel value="Calle" />	
-			 <b:inputText span="8" value="#{propiedadMB.calle1}"/>
-			 
-			 <h:outputLabel value="Esquina" />	
-			 <b:inputText span="8" value="#{propiedadMB.calle2}"/>
-			 
-			 <h:outputLabel value="A cuantos metros le gustaria tomar este omnibus ?" />	
-			 <b:inputText span="8" value="#{propiedadMB.distanciaBus}"/>
-		 </b:panelGrid>    
-		 
-			
-	</b:panel>
+
+ <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasas" />
+
+     
+    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
+   	 <f:ajax execute="@form" render="amodal" onevent="handleAjax2" />
+    </h:commandButton>
+    <h:commandButton id="redirect"  action="#{propiedadMB.detalleInmueble}" value="" style="display: none;">  </h:commandButton>
+     <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
+  		  <f:ajax execute="@form" render="amodal" onevent="handleAjax2" />
+    </h:commandButton>
+    <h:inputHidden value="#{propiedadMB.propiedadClick}" id="propiedad" />
+
+
 
 
   <b:panel id="mapa" styleClass="panel panel-primary " title="Consultas">
@@ -490,6 +526,9 @@
   <div id="mapWrap" class="mapWrap">
   <div id="map" class="map"></div>
   </div>	
+  
+  
+
      
  <b:panelGrid colSpans="2,10" rowClasses="rowform">
  
@@ -543,15 +582,36 @@
 	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
  	</b:panelGrid>
  	
- 	   <h:panelGroup id="results">
-        
-        <h:outputLabel value="Piso: " rendered="#{propiedadMB.propiedad == 'Apartamento'}"/>	    
-	    <b:inputText span="8" value="#{propiedadMB.numeroap}" rendered="#{propiedadMB.propiedad == 'Apartamento'}"/>
-	    
-	    <h:outputLabel value="Piscina: " rendered="#{propiedadMB.propiedad == 'Casa'}"/>
-	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" rendered="#{propiedadMB.propiedad == 'Casa'}"/>
-	    
-        </h:panelGroup>
+  	<b:panel id="Geo" styleClass="panel panel-primary " title="Consultas avanzadas" >
+	
+		<b:panelGrid colSpans="2,10" rowClasses="rowform">
+				<h:outputLabel value="Ingrese a cuantos metros de un supermercado" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaInteres}"/>
+			    
+			    <h:outputLabel value="Distancia a una parada de omnibus" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaParada}"/>
+			    
+			    <h:outputLabel value="Indique a cuantos metros del mar" />	    
+			    <b:inputText span="8" value="#{propiedadMB.distanciaMar}"/>
+			    
+		</b:panelGrid>
+		
+		 <h:outputLabel value="Marque la esquina donde debe dejarlo el omnibus" />	
+		 
+		 <b:panelGrid colSpans="2,10" rowClasses="rowform">
+		 
+			 <h:outputLabel value="Calle" />	
+			 <b:inputText span="8" value="#{propiedadMB.calle1}"/>
+			 
+			 <h:outputLabel value="Esquina" />	
+			 <b:inputText span="8" value="#{propiedadMB.calle2}"/>
+			 
+			 <h:outputLabel value="A cuantos metros le gustaria tomar este omnibus ?" />	
+			 <b:inputText span="8" value="#{propiedadMB.distanciaBus}"/>
+		 </b:panelGrid>    
+		 
+			
+	</b:panel>
 	
  	
   <h:commandButton id="save" value="Consultar" actionListener="#{propiedadMB.consultaPropiedad}">
@@ -578,6 +638,47 @@
 </h:form>
 
 	
+
+</div>
+   <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
+   <div  class="remodal" data-remodal-id="modal">
+	  <button data-remodal-action="close" class="remodal-close"></button>
+	  
+	  <h1>INMUEBLES</h1>
+	 
+	  
+	   <b:panelGrid id="amodal" colSpans="4,8" rowClasses="rowform">
+    
+	    <h:outputLabel value="Titulo de la casa: " />	    
+	    <h:outputLabel value="#{propiedadMB.titulo}" />
+	    
+	    <h:outputLabel value="Barrio de la casa: " />   
+	    <h:outputLabel value="#{propiedadMB.barrio}" />	
+	    
+	    <h:outputLabel value="Tipo de propiedad: " />
+	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
+        
+        <h:outputLabel value="Cantidad de baños: " />
+        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
+	   
+	    <h:outputLabel value="Cantidad de cuartos: " />
+        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
+        
+        <h:outputLabel value="Tamaño de la propiedad : " />
+        <h:outputLabel value="#{propiedadMB.tamanio}" />
+        
+        <h:outputLabel value="Precio : $" />
+        <h:outputLabel value="#{propiedadMB.precio}" />
+        
+        <h:outputLabel value="Piscina:" rendered="#{propiedadMB.piscina} != false" />
+	    <h:outputLabel value="#{propiedadMB.piscina}"  rendered="#{propiedadMB.piscina} != false"/>
+	    
+	    <h:outputLabel value="Garage: " rendered="#{propiedadMB.garage} != false" />
+	    <h:outputLabel value="#{propiedadMB.garage} " rendered="#{propiedadMB.garage} != false" />
+	   
+	  </b:panelGrid> 
+	    
+	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnDetalles">Ver detalles</button>
 
 </div>
 

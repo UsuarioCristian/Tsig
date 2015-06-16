@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import controladores.IPropiedadController;
 import controladores.IUsuarioController;
 
 
@@ -22,6 +23,9 @@ public class UsuarioMB implements Serializable {
 	 @EJB
 	 private IUsuarioController iuc;
 	 
+	 @EJB
+	 private IPropiedadController ipc;
+	 
 	 private String nombre;
 	 
 	 private String mail;
@@ -32,6 +36,7 @@ public class UsuarioMB implements Serializable {
 	 
 	 private String logo="resources/Images/logo.png";
 	 
+	 private boolean admin = false;
 	
 	public void altaUsuario()
 	{	
@@ -52,7 +57,6 @@ public class UsuarioMB implements Serializable {
 			}
 			
 				
-				
 		} catch (Exception e) {
 		
 			e.printStackTrace();
@@ -71,7 +75,10 @@ public class UsuarioMB implements Serializable {
 			this.log=true;
 			if (iuc.autenticarUsuario(this.nombre, this.password) ) {	
 				
-		
+				ipc.actualizarZonas();
+				if("admin".compareTo(this.nombre)==0){
+					this.admin=true;
+				}
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", this.nombre);
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 				
@@ -145,6 +152,14 @@ public class UsuarioMB implements Serializable {
 
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 

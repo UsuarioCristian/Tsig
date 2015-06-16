@@ -4,6 +4,7 @@ package persistencia;
 import dominio.Apartamento;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -266,6 +267,37 @@ String comb;
 		}
 		return null;
 	}
+	@Override
+	public List<Integer> getBusaDestino(Integer distance,String calle1,String calle2){
+		try{
+		
+		String query=	"select distinct c.idgeom from casa c, casageom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+distance+"),ST_Transform(p.geom,32721) ) and p.desc_linea in" +
+			
+			" (select distinct linea from (select ST_Intersection(buff.geom,bus.geom) as result ,bus.desc_linea as linea from (select distinct ST_Buffer(e,200) as geom"+
+					" from (select (ST_Intersection(ca.geom,ca2.geom)) as e "+
+						" from (select *"+ 
+							" from calles c where c.nom_calle='"+calle1+"') ca,"+ 
+							" (select * from calles c where c.nom_calle='"+calle2+"') ca2  )inter  "+
+							" where  not ST_IsEmpty(inter.e)) buff	, lineasbus bus )  intersections where not ST_IsEmpty(intersections.result))";
+
+			
+			
+			System.out.println(query);
+			
+		List<Integer> result = em.createNativeQuery(query).getResultList();
+		
+		for(Integer i:result){
+			
+			System.out.println("GET DESTINO DE BUS"+i);
+		}
+		return result;
+		
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	///////
 	
@@ -400,6 +432,7 @@ public void eliminarFeature(int idPunto) {
 	
 }
 
+
 @Override
 public List<Integer> getAptoUsuario(String usuario) {
 	try{
@@ -411,6 +444,44 @@ public List<Integer> getAptoUsuario(String usuario) {
 		e.printStackTrace();
 	}
 	return null;
+}
+public void eliminarFeatureApto(int idPunto) {
+	
+	try{
+		em.createNativeQuery("delete  from apartamento c where c.idgeom='"+idPunto+"'").executeUpdate();
+		em.createNativeQuery("delete  from aptogeom g where g.id='"+idPunto+"'").executeUpdate();
+
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+	}
+	
+	
+}
+
+@Override
+public void actualizarZonas() {
+
+	try{
+		
+		List<Integer> zonas=em.createNativeQuery("select zg.id from zonageom zg").getResultList();
+		
+		for(Integer i:zonas){
+			
+		BigInteger val =(BigInteger) em.createNativeQuery("select count(*)  from ZonaGeom zg ,aptogeom c  where ST_intersects(c.punto,zg.geom) and zg.id="+i).getSingleResult();	
+		System.out.println("ACTUALIZAR ZONAS Id: "+i+"Val: "+val);
+		em.createNativeQuery("update zonageom set visitas ="+val+" where zonageom.id ="+i).executeUpdate();
+		}
+		
+	
+		
+	}catch(Exception e ){
+		
+		
+		e.printStackTrace();
+	}
+
 }
 
 	

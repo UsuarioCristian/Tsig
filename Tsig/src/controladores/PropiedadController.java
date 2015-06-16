@@ -279,6 +279,18 @@ public class PropiedadController implements IPropiedadController{
 		}
 		
 	}
+	public void eliminarFeatureApto(int idPunto) {
+		
+		try{
+			
+			  PropiedadDAO.eliminarFeatureApto(idPunto);
+			
+			}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
 
 
 	@Override
@@ -308,6 +320,7 @@ public class PropiedadController implements IPropiedadController{
 
 
 	@Override
+
 	public List<Integer> getAptoUsuario(String usuario) {
 		try{
 			
@@ -318,6 +331,33 @@ public class PropiedadController implements IPropiedadController{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<Integer> getBusaDestino(Integer distanciaBus, String calle1,String calle2) {
+		try {
+			
+			return PropiedadDAO.getBusaDestino(distanciaBus,calle1,calle2);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+	}
+
+
+	@Override
+	public void actualizarZonas() {
+		try{
+			
+			PropiedadDAO.actualizarZonas();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+
 	}
 
 

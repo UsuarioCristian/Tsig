@@ -31,7 +31,9 @@ public interface IPropiedadDAO {
 	public List<Integer> getDistanceRambla(Integer distance);
 
 	public List<Integer> getCasasUsuario(String usuario);
+	
 	public void eliminarFeature(int idPunto);
+	public void eliminarFeatureApto(int idPunto);
 
 	
 	public List<Integer> getDistancePuntoInteresApto(Integer distanciaInteres);
@@ -39,9 +41,15 @@ public interface IPropiedadDAO {
 	public List<Integer> getDistanceRamblaApto(Integer distanciaRambla);
 	public double[] getCoor(int idPunto);
 	public double[] getCoorApto(int idPunto);
-	public List<Integer> getAptoUsuario(String usuario);
-	
 
+	public List<Integer> getAptoUsuario(String usuario);
+
+	List<Integer> getBusaDestino(Integer distance, String calle1, String calle2);
+	public void actualizarZonas();
+
+	
+	
+	//select sum(c.visitas) ,zg.id from ZonaGeom zg ,aptogeom c where ST_intersects(c.punto,zg.geom) group by zg.id;
 
 
 	

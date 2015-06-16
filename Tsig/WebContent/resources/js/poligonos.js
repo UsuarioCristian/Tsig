@@ -44,7 +44,10 @@ function init() {
 
 	);
 
-	polygonLayer = new OpenLayers.Layer.Vector("ZonaGeom", {
+	
+	
+	
+	polygonLayer = new OpenLayers.Layer.Vector("zonageom", {
 		strategies : [ new OpenLayers.Strategy.BBOX(), saveStrategy ],
 		projection : new OpenLayers.Projection("EPSG:32721"),
 		protocol : new OpenLayers.Protocol.WFS({
@@ -52,13 +55,16 @@ function init() {
 			srsName : "EPSG:32721",
 			url : "http://localhost:8080/geoserver/wfs",
 			featurePrefix : 'sige', // geoserver worspace name
-			featureType : "ZonaGeom", // geoserver Layer Name
+			featureType : "zonageom", // geoserver Layer Name
 			featureNS : "localhost:8080/geoserver/sige", // Edit Workspace
 			// Namespace URI
 			geometryName : "geom", // field in Feature Type details with type
 		// "Geometry"
 
-		})
+		}),
+		
+		 filter:"",
+        /* styleMap: new OpenLayers.StyleMap(stylePoli)*/
 
 	});
 
@@ -80,7 +86,8 @@ function init() {
 	
 	drawPolygon.featureAdded = function(feature) {	//drawControls[0] = polygon
 		
-		feature.attributes.nombre="ZonaPolygon";        
+		feature.attributes.nombre="ZonaPolygon";   
+		feature.attributes.Visitas=0; 
         feature.state = OpenLayers.State.INSERT;
         feature.layer.drawFeature(feature);
                 

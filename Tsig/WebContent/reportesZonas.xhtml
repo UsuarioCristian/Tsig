@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../resources/css/ol.css"></link>
 
 <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
-<script type="text/javascript" src="resources/js/poligonos.js"></script>
+<script type="text/javascript" src="resources/js/poligonos2.js"></script>
 	<style type="text/css">
 		#controlToggle li {
 			list-style: none;
@@ -26,14 +26,24 @@
 	</h:head>
 <h:body onload='init()' class="fondo">
 
+
+
 <div id="cont" class="contenedor">
+
+<h:form id="zonas">
+
+    <h:commandButton id="actualizar" actionListener="#{propiedadMB.actualizarZonas}" style="display: none;" >
+   	 <f:ajax execute="@form" render="@form" onevent="" />
+    </h:commandButton>
+
+</h:form>
  <div id="mapWrap" class="mapWrap">
 	<div id='map' class="map">		
 	
 	
 	</div>
 	</div>
-	<button onclick="save();" id="botonGuardar">Guardar Zona</button>
+	
 </div>	        
 </h:body>
 </html>

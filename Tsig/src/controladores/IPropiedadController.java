@@ -24,18 +24,26 @@ public interface IPropiedadController {
 	List<Integer> getDistanciaParadas(Integer distanciaParadas);
 	public List<Integer> getDistanceRambla(Integer distanciaRambla);
 	public List<Integer> getCasasUsuario(String usuario);
+	
 	public void eliminarFeature(int idPunto);
+	public void eliminarFeatureApto(int idPunto);
 	
 	public List<Integer> getDistanciaInteresApto(Integer distanciaInteres);
 	List<Integer> getDistanciaParadasApto(Integer distanciaParadas);
 	public List<Integer> getDistanceRamblaApto(Integer distanciaRambla);
-	
+	public List<Integer> getBusaDestino(Integer distanciaBus, String calle1,String calle2);
 	
 	public Casa getCasaFromGeom(int idCasa);	
 	public Apartamento getAptoFromGeom(int idPunto);
 	public double[] getCoor(int idPunto);
 	public double[] getCoorApto(int idPunto);
+
 	public List<Integer> getAptoUsuario(String usuario);
+
+	public void actualizarZonas();
+
+	
+
 	
 	
 

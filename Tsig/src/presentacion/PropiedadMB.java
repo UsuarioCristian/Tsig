@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -53,6 +53,7 @@ public class PropiedadMB implements Serializable {
 	private boolean piscina=false;
 	private String titulo="";
 	private String propiedad="";
+	private String propiedadClick="";
 
 	/* For advanced filters*/
 	private Integer distanciaInteres=0;
@@ -145,6 +146,8 @@ public class PropiedadMB implements Serializable {
 			    this.cantCuartos = c.getCantCuartos();
 			    this.garage = c.isGarage();
 			    this.piscina = c.isPiscina();
+			    this.precio=c.getPrecio();
+			    this.tamanio=c.getTamanio();
 			}else
 			{
 				System.out.println("LA CASA ES NULL");
@@ -291,10 +294,21 @@ public class PropiedadMB implements Serializable {
 		    		System.out.println("Casas Cleared dist int");
 		    		aptos.clear(); 
 		    	}
+		    
 		    	
-		    	
-    	
 			}
+			if(distanciaBus!=0){
+	    		
+	    		List<Integer> aux4=	ipc.getBusaDestino(distanciaBus,calle1,calle2);
+	    		
+	    		if (aux4 != null){
+		    		casas.retainAll(aux4);
+		    		aux4.clear();
+		    	}else{
+		    		casas.clear();
+		    	}
+	    	
+	    	}
 	 
 	    
 		}catch(Exception e){
@@ -304,11 +318,19 @@ public class PropiedadMB implements Serializable {
 	
 	public void eliminarFeature(){
 		try{
+			if("Casa".compareTo(this.propiedad)==0){
+				
+				ipc.eliminarFeature(idPunto);
+				
+			}	else{
+				
+				ipc.eliminarFeatureApto(idPunto);
+				
+			}
 			
 			
-			System.out.println("id ELIMINAR" +idPunto);
 		
-			ipc.eliminarFeature(idPunto);
+		
 			
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
@@ -346,7 +368,7 @@ public class PropiedadMB implements Serializable {
 		try{
 			
 			
-		if("Casa".compareTo(this.propiedad)==0){
+		if("Casa".compareTo(this.propiedadClick)==0){
 			
 			Casa c=	ipc.getCasaFromGeom(idPunto);
 			System.out.println("id punto pre redirect: "+idPunto);
@@ -419,6 +441,19 @@ public class PropiedadMB implements Serializable {
 		return null;
 	}
 	
+	public void actualizarZonas(){
+		
+		try{
+			ipc.actualizarZonas();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	public String modificarInmueble(){
 			
 			try{
@@ -428,7 +463,7 @@ public class PropiedadMB implements Serializable {
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("idPunto", idPunto);
 
 			
-			if("Casa".compareTo(this.propiedad)==0){
+			if("Casa".compareTo(this.propiedadClick)==0){
 				System.out.println("Entre modificar casa...: "+idPunto);	
 
 				Casa c=	ipc.getCasaFromGeom(idPunto);
@@ -801,6 +836,18 @@ public class PropiedadMB implements Serializable {
 	public void setY(double y) {
 		this.y = y;
 
+	}
+
+
+
+	public String getPropiedadClick() {
+		return propiedadClick;
+	}
+
+
+
+	public void setPropiedadClick(String propiedadClick) {
+		this.propiedadClick = propiedadClick;
 	}
 	
 	
