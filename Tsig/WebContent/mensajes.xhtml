@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	> 
+	
+	
+	<h:head>
+   
+    <style>
+
+    </style>
+     <h:outputStylesheet library="css" name="styles.css" />
+     <h:outputStylesheet library="css" name="remodal.css" />
+     <h:outputStylesheet library="css" name="remodal-default-theme.css" />
+      
+ 	 <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
+     <script type="text/javascript" src="resources/js/remodal.js"></script>
+     
+
+	 
+  </h:head>
+   <h:body class="fondo" >
+   
+   <ui:include src="/navbar.xhtml" />
+   
+   <div id="cont" class="contenedor">
+   
+   <a id="este" href="#modal" style="visibility: hidden;"></a>
+ 
+  
+   <ui:repeat var="mje" value="#{mensajeMB.mensajes}">
+    
+    
+	    <b:panel styleClass="panel panel-info" title="De: #{mje.mail}   #{mje.fecha} ">
+		    <b:panelGrid colSpans="2,10" > 
+		    	
+		    	<h:outputLabel value="#{mje.asunto}" /> 
+		    
+		    	<h:outputLabel value="#{mje.contenido}" />
+		    	
+		    </b:panelGrid>
+	    </b:panel>
+   	 
+   </ui:repeat>
+	
+     
+      
+   <div  class="remodal" data-remodal-id="modal">
+	  <button data-remodal-action="close" class="remodal-close"></button>
+	  
+	<h1>INMUEBLES</h1>
+	 
+	  
+	 
+	</div>
+
+
+
+    </div>
+  </h:body>
+</html>

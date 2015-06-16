@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	> 
+	
+	
+	<h:head>
+   
+    <style>
+
+    </style>
+     <h:outputStylesheet library="css" name="styles.css" />
+     <h:outputStylesheet library="css" name="remodal.css" />
+     <h:outputStylesheet library="css" name="remodal-default-theme.css" />
+      
+ 	 <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
+     <script type="text/javascript" src="resources/js/remodal.js"></script>
+     
+
+	 
+  </h:head>
+   <h:body class="fondo" >
+   
+   <ui:include src="/navbar.xhtml" />
+   
+   <div id="cont" class="contenedor">
+   <h:form>
+   
+   
+	<b:panelGrid colSpans="3,9"> 
+	   	 <h:outputLabel value="Asunto: " /> <b:inputText span="8" value="#{mensajeMB.asunto}" ></b:inputText>
+	   	 
+	   	 <h:outputLabel value="contenido: " /> <h:inputTextarea value="#{mensajeMB.contenido}" />
+	   	 
+	   	 <h:outputLabel value="Mail de contacto: " /> <h:inputTextarea value="#{mensajeMB.mail}" />
+
+	</b:panelGrid>
+	<h:commandButton action="#{mensajeMB.altaMensaje}" value="Enviar Mensaje" />
+	</h:form>
+    </div>
+  </h:body>
+</html>

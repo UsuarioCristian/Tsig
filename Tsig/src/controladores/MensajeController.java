@@ -22,13 +22,14 @@ public class MensajeController implements IMensajeController {
 	IUsuarioDAO usuarioDAO;
 	
 	@Override
-	public boolean altaMensaje(String asunto, String contenido, Date fecha, String nombreUsuario) {
+	public boolean altaMensaje(String asunto, String contenido, Date fecha, String nombreUsuario, String mail) {
 		
 		Mensaje mensaje = new Mensaje();
 		mensaje.setAsunto(asunto);
 		mensaje.setContenido(contenido);
 		mensaje.setVisto(false);
 		mensaje.setFecha(fecha);
+		mensaje.setMail(mail);
 		
 		Usuario usuario = usuarioDAO.getUsuario(nombreUsuario);
 		mensaje.setDestinatario(usuario);
