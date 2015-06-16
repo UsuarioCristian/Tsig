@@ -266,6 +266,37 @@ String comb;
 		}
 		return null;
 	}
+	@Override
+	public List<Integer> getBusaDestino(Integer distance,String calle1,String calle2){
+		try{
+		
+		String query=	"select distinct c.idgeom from casa c, casageom g, paradas p where c.idgeom=g.id and ST_Intersects(ST_Buffer(g.punto,"+distance+"),ST_Transform(p.geom,32721) ) and p.desc_linea in" +
+			
+			" (select distinct linea from (select ST_Intersection(buff.geom,bus.geom) as result ,bus.desc_linea as linea from (select distinct ST_Buffer(e,200) as geom"+
+					" from (select (ST_Intersection(ca.geom,ca2.geom)) as e "+
+						" from (select *"+ 
+							" from calles c where c.nom_calle='"+calle1+"') ca,"+ 
+							" (select * from calles c where c.nom_calle='"+calle2+"') ca2  )inter  "+
+							" where  not ST_IsEmpty(inter.e)) buff	, lineasbus bus )  intersections where not ST_IsEmpty(intersections.result))";
+
+			
+			
+			System.out.println(query);
+			
+		List<Integer> result = em.createNativeQuery(query).getResultList();
+		
+		for(Integer i:result){
+			
+			System.out.println("GET DESTINO DE BUS"+i);
+		}
+		return result;
+		
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	///////
 	

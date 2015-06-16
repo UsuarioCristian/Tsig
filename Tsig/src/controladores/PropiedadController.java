@@ -297,6 +297,21 @@ public class PropiedadController implements IPropiedadController{
 	}
 
 
+	@Override
+	public List<Integer> getBusaDestino(Integer distanciaBus, String calle1,String calle2) {
+		try {
+			
+			return PropiedadDAO.getBusaDestino(distanciaBus,calle1,calle2);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+	}
+
+
 
 
 

@@ -10,9 +10,13 @@
 
 
  <h:outputStylesheet library="css" name="styles.css" />
+      <h:outputStylesheet library="css" name="remodal.css" />
+      <h:outputStylesheet library="css" name="remodal-default-theme.css" />
+      
+ <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
+ <script type="text/javascript" src="resources/js/remodal.js"></script>
 
 
-<script type="text/javascript"   src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
 <link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css"
 	type="text/css"></link>
@@ -239,7 +243,8 @@
 			        	        // the first argument is a base symbolizer
 			        	        // all other symbolizers in rules will extend this one
 			        	        {
-			        	     
+			        	            graphicWidth: 50,
+			        	            graphicHeight: 50,
 			        	            externalGraphic:"resources/Images/apto.png",
 			        	           
 			        	        });
@@ -253,7 +258,7 @@
 			        	            externalGraphic:"resources/Images/casa.png",
 			        	           
 			        	        });			       
-		             aptos = new OpenLayers.Layer.Vector(
+			            aptos = new OpenLayers.Layer.Vector(
 			                    "aptogeom",
 			                    {
 			                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
@@ -296,8 +301,45 @@
 		           
 		           	           
 		           map.addLayers([tiled,supers,casageom,aptos]);
+/**/
+		           var selectFeature = new OpenLayers.Control.SelectFeature([casageom, aptos], {
+                	   hover: false,
+                	   onSelect: clickNotice,
+                       autoActivate: true
+                   });
+        		   map.addControl(selectFeature);
+
+
+        		   function clickNotice(event) {
+    		        	
+
+	        	        var id = event.attributes.id;
+
+	        	      
+						var input = document.getElementById('consultaInmueble:idcasas');
+						input.value=id;
+						
+						event.attributes.visitas=(parseInt( event.attributes.visitas)+1).toString();
+
+						event.state = OpenLayers.State.UPDATE;
+						
+						saveStrategy.save();
+						if(event.layer.name=="casageom"){
+
+							
+							document.getElementById('consultaInmueble:getinfo').click();
+						
+						}else{
+
+							
+							document.getElementById('consultaInmueble:getinfoApto').click();
+						}
+
+						selectFeature.unselectAll();
+
+		        }      
 		        
-		           
+		  /**/         
 		           var panel = new OpenLayers.Control.Panel(
 		                   {displayClass: 'olControlEditingToolbar'}
 		               );
@@ -420,22 +462,30 @@
 
 		
 	}
+	function show(){
+		
+		document.getElementById('este').click();
+
+	}
 	
 	function handleAjax(data) {
 	    var status = data.status;
 
 	    switch(status) {
-	        case "begin":
-	            // This is invoked right before ajax request is sent.
-	            break;
-
-	        case "complete":
-	            // This is invoked right after ajax response is returned.
-	            break;
-
+	      
 	        case "success":
 	            // This is invoked right after successful processing of ajax response and update of HTML DOM.
 	            updateFilter();
+	            break;
+	    }
+	}
+	function handleAjax2(data) {
+	    var status = data.status;
+
+	    switch(status) {
+	        case "success":
+	            // This is invoked right after successful processing of ajax response and update of HTML DOM.
+	             show();
 	            break;
 	    }
 	}
@@ -450,6 +500,19 @@
 <div id="cont" class="contenedor">
 
 <h:form id="consultaInmueble">
+
+ <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasas" />
+
+     
+    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
+   	 <f:ajax execute="@form" render="amodal" onevent="handleAjax2" />
+    </h:commandButton>
+    
+     <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
+  		  <f:ajax execute="@form" render="amodal" onevent="handleAjax2" />
+    </h:commandButton>
+    
+
 	<b:panel id="Geo" styleClass="panel panel-primary " title="Consultas avanzadas" >
 	
 		<b:panelGrid colSpans="2,10" rowClasses="rowform">
@@ -577,6 +640,50 @@
 </h:form>
 
 	
+
+</div>
+   <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
+   <div  class="remodal" data-remodal-id="modal">
+	  <button data-remodal-action="close" class="remodal-close"></button>
+	  
+	  <h1>INMUEBLES</h1>
+	 
+	  
+	   <b:panelGrid id="amodal" colSpans="4,8" rowClasses="rowform">
+    
+	    <h:outputLabel value="Titulo de la casa: " />	    
+	    <h:outputLabel value="#{propiedadMB.titulo}" />
+	    
+	    <h:outputLabel value="Barrio de la casa: " />   
+	    <h:outputLabel value="#{propiedadMB.barrio}" />	
+	    
+	    <h:outputLabel value="Tipo de propiedad: " />
+	    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
+        
+        <h:outputLabel value="Cantidad de baños: " />
+        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
+	   
+	    <h:outputLabel value="Cantidad de cuartos: " />
+        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
+        
+        <h:outputLabel value="Tamaño de la propiedad : " />
+        <h:outputLabel value="#{propiedadMB.tamanio}" />
+        
+        <h:outputLabel value="Precio : $" />
+        <h:outputLabel value="#{propiedadMB.precio}" />
+        
+        <h:outputLabel value="Piscina:" rendered="#{propiedadMB.piscina} != false" />
+	    <h:outputLabel value="#{propiedadMB.piscina}"  rendered="#{propiedadMB.piscina} != false"/>
+	    
+	    <h:outputLabel value="Garage: " rendered="#{propiedadMB.garage} != false" />
+	    <h:outputLabel value="#{propiedadMB.garage} " rendered="#{propiedadMB.garage} != false" />
+	   
+	  </b:panelGrid> 
+	    
+   
+	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnEliminar">Eliminar</button>
+	  
+	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnDetalles">Ver detalles</button>
 
 </div>
 

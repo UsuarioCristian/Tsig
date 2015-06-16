@@ -11,7 +11,7 @@
       <h:outputStylesheet library="css" name="remodal.css" />
       <h:outputStylesheet library="css" name="remodal-default-theme.css" />
       
-<script src="../dist/remodal.min.js"></script>
+
 
  <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
 	
@@ -346,7 +346,6 @@
     
     
      <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
-     
      <h:inputHidden value="#{propiedadMB.propiedad}" id="propiedad" />
      
     <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
@@ -360,13 +359,6 @@
   		  <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
     </h:commandButton>
     
-    
-      
-	  
-	 
-	  
-	
-  
     </h:form>
     </div> 
    
@@ -409,12 +401,7 @@
 	   
 	  </b:panelGrid> 
 	    
-	  <h:form>
-
-	  </h:form>
-	  
-	   
-	   
+   
 	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnEliminar">Eliminar</button>
 	  
 	  <button data-remodal-action="cancel" class="remodal-cancel" id="btnDetalles">Ver detalles</button>

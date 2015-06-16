@@ -5,7 +5,7 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <nav>
-	<b:navBar brandImg="#{resource['Images:logo.png']}"  brandHref="" inverse="true" static="true" id="nav" >
+	<b:navBar brandImg="resources/Images/logo.png"  brandHref="" inverse="true" static="true" id="nav" >
 	    <b:navbarLinks >
 	  
 	    	<b:dropMenu value="Inmuebles" rendered="#{usuarioMB.log}" >
@@ -13,14 +13,10 @@
 	    		<b:navLink header="Casa"></b:navLink>
 
 			    <b:navLink value="Alta" href="altaCasa.xhtml"></b:navLink>
-			    <b:navLink value="Edicion" href="#"></b:navLink>
-			    <b:navLink value="Baja" href="#"></b:navLink>
-			    
 			    <b:navLink></b:navLink>
-			    <b:navLink header="Apartamento"></b:navLink>
+			    
+			    <b:navLink header="Apartamento"></b:navLink>   
 			    <b:navLink value="Alta" href="altaApto.xhtml"></b:navLink>
-			    <b:navLink value="Edicion" href="modificarApto.xhtml"></b:navLink>
-			     <b:navLink value="Baja" href="#"></b:navLink>
 			     
 			</b:dropMenu>
 			

@@ -44,6 +44,9 @@ function init() {
 
 	);
 
+	
+	
+	
 	polygonLayer = new OpenLayers.Layer.Vector("ZonaGeom", {
 		strategies : [ new OpenLayers.Strategy.BBOX(), saveStrategy ],
 		projection : new OpenLayers.Projection("EPSG:32721"),
@@ -58,7 +61,10 @@ function init() {
 			geometryName : "geom", // field in Feature Type details with type
 		// "Geometry"
 
-		})
+		}),
+		
+		 filter:"",
+        /* styleMap: new OpenLayers.StyleMap(stylePoli)*/
 
 	});
 
@@ -80,7 +86,8 @@ function init() {
 	
 	drawPolygon.featureAdded = function(feature) {	//drawControls[0] = polygon
 		
-		feature.attributes.nombre="ZonaPolygon";        
+		feature.attributes.nombre="ZonaPolygon";   
+		feature.attributes.Visitas=0; 
         feature.state = OpenLayers.State.INSERT;
         feature.layer.drawFeature(feature);
                 

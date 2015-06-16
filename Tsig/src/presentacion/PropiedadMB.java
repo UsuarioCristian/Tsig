@@ -188,6 +188,8 @@ public class PropiedadMB implements Serializable {
 			    this.cantCuartos = c.getCantCuartos();
 			    this.garage = c.isGarage();
 			    this.piscina = c.isPiscina();
+			    this.precio=c.getPrecio();
+			    this.tamanio=c.getTamanio();
 			}else
 			{
 				System.out.println("LA CASA ES NULL");
@@ -332,10 +334,21 @@ public class PropiedadMB implements Serializable {
 		    		System.out.println("Casas Cleared dist int");
 		    		aptos.clear(); 
 		    	}
+		    
 		    	
-		    	
-    	
 			}
+			if((" ".compareTo(calle1)!=0)&&(" ".compareTo(calle2)!=0)){
+	    		
+	    		List<Integer> aux4=	ipc.getBusaDestino(distanciaBus,calle1,calle2);
+	    		
+	    		if (aux4 != null){
+		    		casas.retainAll(aux4);
+		    		aux4.clear();
+		    	}else{
+		    		casas.clear();
+		    	}
+	    	
+	    	}
 	 
 	    
 		}catch(Exception e){

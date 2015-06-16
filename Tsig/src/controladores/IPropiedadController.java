@@ -31,12 +31,13 @@ public interface IPropiedadController {
 	public List<Integer> getDistanciaInteresApto(Integer distanciaInteres);
 	List<Integer> getDistanciaParadasApto(Integer distanciaParadas);
 	public List<Integer> getDistanceRamblaApto(Integer distanciaRambla);
-	
+	public List<Integer> getBusaDestino(Integer distanciaBus, String calle1,String calle2);
 	
 	public Casa getCasaFromGeom(int idCasa);	
 	public Apartamento getAptoFromGeom(int idPunto);
 	public double[] getCoor(int idPunto);
 	public double[] getCoorApto(int idPunto);
+
 	
 	
 	
