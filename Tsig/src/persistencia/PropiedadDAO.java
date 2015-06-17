@@ -470,8 +470,16 @@ public void actualizarZonas() {
 		for(Integer i:zonas){
 			
 		BigInteger val =(BigInteger) em.createNativeQuery("select count(*)  from ZonaGeom zg ,aptogeom c  where ST_intersects(c.punto,zg.geom) and zg.id="+i).getSingleResult();	
+		BigInteger val2 =(BigInteger) em.createNativeQuery("select count(*)  from ZonaGeom zg ,casageom c  where ST_intersects(c.punto,zg.geom) and zg.id="+i).getSingleResult();
+		val.add(val2);
+		
+		int uno = val.intValue();
+		int dos = val2.intValue();
+		uno=uno+dos;
 		System.out.println("ACTUALIZAR ZONAS Id: "+i+"Val: "+val);
-		em.createNativeQuery("update zonageom set visitas ="+val+" where zonageom.id ="+i).executeUpdate();
+		System.out.println("ACTUALIZAR ZONAS Id 1: "+i+"Val: "+uno);
+
+		em.createNativeQuery("update zonageom set visitas ="+(uno)+" where zonageom.id ="+i).executeUpdate();
 		}
 		
 	
