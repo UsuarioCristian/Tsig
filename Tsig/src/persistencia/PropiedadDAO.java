@@ -39,6 +39,22 @@ public class PropiedadDAO implements IPropiedadDAO {
 		}
 
 	}
+public boolean guardarApartamento(Apartamento apart) {
+		
+		try {
+			
+			em.persist(apart);
+			return true;
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return false;
+		}
+
+		
+
+	}
 
 	@Override
 	public Casa getCasa(Integer id) {
@@ -317,22 +333,7 @@ String comb;
 	}
 
 	
-public boolean guardarApartamento(Apartamento apart) {
-		
-		try {
-			
-			em.persist(apart);
-			return true;
 
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			return false;
-		}
-
-		
-
-	}
 
 
 public void modificarCasa(Casa c) {

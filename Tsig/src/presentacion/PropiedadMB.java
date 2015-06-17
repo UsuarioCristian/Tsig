@@ -305,7 +305,7 @@ public class PropiedadMB implements Serializable {
 	
 	public void eliminarFeature(){
 		try{
-			if("Casa".compareTo(this.propiedad)==0){
+			if("Casa".compareTo(this.propiedadClick)==0){
 				
 				ipc.eliminarFeature(idPunto);
 				

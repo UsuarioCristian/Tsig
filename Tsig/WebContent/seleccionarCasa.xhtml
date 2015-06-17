@@ -184,7 +184,7 @@
                    map.addControl(new OpenLayers.Control.LayerSwitcher());
 		           
  		           map.zoomTo(7);
-		          
+ 		          document.getElementById('eliminar:getuser').click();
 
  		         function clickNotice(event) {
  		        	
@@ -207,10 +207,12 @@
 
 						selectFeature.unselectAll();
 
- 		        }      
+ 		        }   
+  		           
   		            
 		            
 		}
+	
 	
 		
 		
@@ -218,6 +220,70 @@
 	
 			document.getElementById('este').click();
 	
+		}
+	function updateFilter() {
+	
+			
+			var inputs = document.getElementById('eliminar:listcasas');
+			var inputsA = document.getElementById('eliminar:listaptos');
+			
+			var idFilter = [];
+			var idFilterA = [];
+			var filt =[];
+			var filtA = [];
+		
+			for (key in inputs.children) {
+				
+				if(!(isNaN(key))){
+				idFilter.push(inputs.children[key].value);
+				}
+				
+			}
+			//Id filter contiene los ids a filtrar
+			for (key in inputsA.children) {
+				
+				if(!(isNaN(key))){
+					idFilterA.push(inputsA.children[key].value);
+				}
+				
+			}
+			
+			
+			
+			for (key in idFilter){
+				    filt[key] = new OpenLayers.Filter.Comparison({
+				    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				     property: "id",
+				    value: idFilter[key]
+				});
+				
+			}
+			
+			for (key in idFilterA){
+				filtA[key] = new OpenLayers.Filter.Comparison({
+			    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			     property: "id",
+			    value: idFilterA[key]
+			});
+			
+		}
+			
+	
+	
+			puntos.filter= new OpenLayers.Filter.Logical({
+			    	type: OpenLayers.Filter.Logical.OR,
+			    	filters: filt
+			});
+			
+	
+			aptos.filter= new OpenLayers.Filter.Logical({
+		    	type: OpenLayers.Filter.Logical.OR,
+		    	filters: filtA
+			});
+		
+			puntos.refresh({force:true});
+			aptos.refresh({force:true});
+			
 		}
 		
 		function handleAjax(data) {
@@ -237,11 +303,29 @@
 		            break;
 		    }
 		}
+		function handleAjax2(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		        	updateFilter();
+		            break;
+		    }
+		}
 		
 	
 	 </script>
   </h:head>
-     
+  
+   <ui:include src="/navbar.xhtml" />
    <h:body class="fondo" onload="init()"  rendered="#{usuarioMB.log}">
    
 
@@ -250,8 +334,10 @@
 
 
 		    <h:form id="eliminar">
-
-					
+		    
+			  <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
+			  	<f:ajax execute="@form"  onevent="handleAjax2" render="listcasas listaptos" update="listcasas listaptos"/>
+			  </h:commandButton>
 			  
 			  <h:panelGroup  id="listcasas">
 			    <ui:repeat value="#{propiedadMB.casas}"  var="id">
@@ -264,6 +350,7 @@
 					<h:inputHidden value="#{id}" class="ids" /> 
 				</ui:repeat>
 			</h:panelGroup>
+			
 		  </h:form>
 		
 		    
