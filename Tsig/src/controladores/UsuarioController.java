@@ -2,6 +2,8 @@ package controladores;
 
 
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -85,6 +87,29 @@ public class UsuarioController implements IUsuarioController {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public List<String> getUsuarios() {
+		try{
+			return UsuarioDAO.getUsuarios();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public void eliminarUsuario(String usuarioNombre) {
+		try{
+			UsuarioDAO.eliminarUsuario(usuarioNombre);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
 	}
 	
 

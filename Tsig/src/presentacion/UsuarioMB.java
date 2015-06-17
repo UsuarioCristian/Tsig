@@ -1,6 +1,7 @@
 package presentacion;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -37,6 +38,9 @@ public class UsuarioMB implements Serializable {
 	 private String logo="resources/Images/logo.png";
 	 
 	 private boolean admin = false;
+	 
+	 private List<String> usuarios;
+	 private String usuarioNombre;
 	
 	public void altaUsuario()
 	{	
@@ -115,6 +119,50 @@ public class UsuarioMB implements Serializable {
 		return null;
 	}
 	
+	public void getUsuariosNombre()
+	{	
+		
+		
+		System.out.println("entre get ususarios");
+		try {
+			
+			usuarios =iuc.getUsuarios();
+			System.out.println("estos son los usuarios.." + usuarios);
+
+		
+				
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	public void eliminarUsuario()
+	{	
+		
+		
+		System.out.println("entre eliminar ususario");
+		System.out.println("con ususario.."+ usuarioNombre);
+
+		try {
+			
+			iuc.eliminarUsuario(usuarioNombre);
+			System.out.println("usuarios eliminado ..");
+
+		
+				
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -160,6 +208,22 @@ public class UsuarioMB implements Serializable {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	public String getUsuarioNombre() {
+		return usuarioNombre;
+	}
+
+	public void setUsuarioNombre(String usuarioNombre) {
+		this.usuarioNombre = usuarioNombre;
+	}
+
+	public List<String> getUsuarios(){
+		return usuarios;
+	}
+	
+	public void setUsuarios(List<String> usuarios) {
+		this.usuarios = usuarios;
 	}
 
 

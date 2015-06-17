@@ -2,6 +2,8 @@ package persistencia;
 
 
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 
 import dominio.Usuario;
@@ -74,6 +76,55 @@ public class UsuarioDAO implements IUsuarioDAO {
 			return true;
 		else
 			return false;
+	}
+
+
+	@Override
+	public List<String> getUsuarios() {
+		try {
+			List<String> result = em.createNativeQuery("select  u.nombre from usuario u ").getResultList();
+
+			return result;
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return null;
+		
+
+	}
+
+
+	@Override
+	public void eliminarUsuario(String usuarioNombre) {
+		System.out.println("usuarios eliminado Dao con nombre .."+usuarioNombre);
+		try {
+			List<Integer> resultAptos = em.createNativeQuery("select distinct a.idGeom from apartamento a where a.user_id='"+usuarioNombre+"'").getResultList();
+
+			List<Integer> resultCasas = em.createNativeQuery("select distinct c.idGeom from casa c where c.user_id='"+usuarioNombre+"'").getResultList();
+
+			for(int elem : resultAptos){
+				em.createNativeQuery("delete  from apartamento c where c.idgeom='"+elem+"'").executeUpdate();
+				em.createNativeQuery("delete  from aptogeom g where g.id='"+elem+"'").executeUpdate();
+
+				}
+			for(int elem : resultCasas){
+				em.createNativeQuery("delete  from casa c where c.idgeom='"+elem+"'").executeUpdate();
+				em.createNativeQuery("delete  from casageom g where g.id='"+elem+"'").executeUpdate();
+				}
+			
+			em.createNativeQuery("delete from usuario u where u.nombre='"+usuarioNombre+"'").executeUpdate();
+
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		
+		
+		
 	}
 
 

@@ -1,6 +1,9 @@
 package controladores;
 
+import java.util.List;
+
 import javax.ejb.Local;
+
 import dominio.Usuario;
 
 @Local
@@ -14,6 +17,10 @@ public interface IUsuarioController {
 	public Usuario buscarUsuario(String nombre);
 	
 	public void modificarUsuario(Usuario u);
+
+	public List<String> getUsuarios();
+
+	public void eliminarUsuario(String usuarioNombre);
 	
 }
 

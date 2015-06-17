@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	>
+
+  <h:head>
+   
+    <style>
+
+    </style>
+     <h:outputStylesheet library="css" name="styles.css" />
+     
+
+	 <script type="text/javascript">
+    
+   
+	 
+	function init() {
+		
+	
+		document.getElementById('listar:getuser').click();
+  		            
+		            
+		}
+		
+	
+		
+		function handleAjax(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		            break;
+		    }
+		}
+		
+	
+	
+		function eliminarFeature(){
+		
+			 document.getElementById('eliminar:eliminarfeature').click();
+			
+		}
+
+	 </script>
+  </h:head>
+   <h:body class="fondo" onload="init()">
+   
+   <ui:include src="/navbar.xhtml" />
+   
+    <h:form id="listar">
+  <h:commandButton id="getuser" actionListener="#{usuarioMB.getUsuariosNombre}" style="display: none;" >
+  	<f:ajax execute="@form"  onevent="handleAjax" render="listnombre:nombre" update="listnombre:nombre"/>
+  </h:commandButton>
+ 
+  </h:form>
+   
+   <div id="cont" class="contenedor">
+	<h:form id="listnombre">
+	
+		 <b:panelGrid colSpans="3,3,6">
+		    
+		    <h:outputLabel value="Seleccione Usuario a eliminar:" for="usuarios" />
+		    <b:selectOneMenu value="#{usuarioMB.usuarioNombre}" id="nombre">
+		        <f:selectItems value="#{usuarioMB.usuarios}" var="usuarioNombre" itemValue="#{usuarioNombre}"
+		            itemLabel="#{usuarioNombre}" />
+		    </b:selectOneMenu>
+		   
+		</b:panelGrid>
+		
+	<h:commandButton type="submit" value="Eliminar" action="#{usuarioMB.eliminarUsuario}" />
+	  
+	
+</h:form>
+    </div>
+  </h:body>
+</html>
