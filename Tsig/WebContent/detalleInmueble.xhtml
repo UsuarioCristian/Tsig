@@ -295,9 +295,9 @@
 
  		       		 }   
 		       		 
-            		var propiedad = document.getElementById('propiedad').value;
+            		var propiedad = document.getElementById('detalle:propiedad').value;
             		
-            		var id = document.getElementById('idcasa').value;
+            		var id = document.getElementById('detalle:idcasa').value;
 
 				
             		
@@ -434,11 +434,14 @@
 
   	
   	 
-    <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
+    
+
+
+<h:form id="detalle">
+<h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
     <h:inputHidden value="#{propiedadMB.propiedadClick}" id="propiedad" />
-
-
-
+<h:commandLink  action="#{propiedadMB.consultar()}" value="Hacer Consulta" />
+</h:form>
 
 
 

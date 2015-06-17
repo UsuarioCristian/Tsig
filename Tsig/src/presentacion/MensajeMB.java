@@ -7,15 +7,16 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import controladores.IMensajeController;
 import dominio.Mensaje;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class MensajeMB implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -31,6 +32,7 @@ public class MensajeMB implements Serializable{
 	private String usuario;
 	private String mail;
 	
+	
 	@PostConstruct
 	public void loadMensajes(){
 		
@@ -42,11 +44,14 @@ public class MensajeMB implements Serializable{
 	
 	public void altaMensaje(){
 		
+	String tipo=(String)	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("TipoDeCasa");
+	Integer idinm=(Integer)	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("IdInmueble");
+	
 		
-		
-		imc.altaMensaje(asunto, contenido, new Date(),"admin",mail);
+		imc.altaMensaje(asunto, contenido, new Date(),idinm,tipo,mail);
 		
 	}
+
 	
 	
 	public String getAsunto() {
