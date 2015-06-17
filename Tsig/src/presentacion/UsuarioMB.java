@@ -83,6 +83,7 @@ public class UsuarioMB implements Serializable {
 				if("admin".compareTo(this.nombre)==0){
 					this.admin=true;
 				}
+				this.admin=false;
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", this.nombre);
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 				

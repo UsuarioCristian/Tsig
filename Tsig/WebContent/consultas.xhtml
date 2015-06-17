@@ -15,6 +15,8 @@
       
  <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
  <script type="text/javascript" src="resources/js/remodal.js"></script>
+  <script type="text/javascript" src="resources/js/proj4.js"></script>
+ 
 
 
 
@@ -275,7 +277,19 @@
 			                            
 			                        }),
 
-			                        filter:"",
+			                        filter: new OpenLayers.Filter.Logical({
+			            		    	type: OpenLayers.Filter.Logical.OR,
+			            		    	filters:[ new OpenLayers.Filter.Comparison({
+	        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+	        	                        property: "estado",
+	        	                        value: "publica"
+	        	                    }),
+	        	                    new OpenLayers.Filter.Comparison({
+	        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+	        	                        property: "estado",
+	        	                        value: "reservada"
+	        	                    })]
+		                        }),
 			                        styleMap: new OpenLayers.StyleMap(styleAptos)
 			                    
 			                    });
@@ -295,7 +309,20 @@
 		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
 		                           
 		                        }),
-		                        filter:"",
+			                    filter: new OpenLayers.Filter.Logical({
+			            		    	type: OpenLayers.Filter.Logical.OR,
+			            		    	filters:[ new OpenLayers.Filter.Comparison({
+	        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+	        	                        property: "estado",
+	        	                        value: "publica"
+	        	                    }),
+	        	                    new OpenLayers.Filter.Comparison({
+	        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+	        	                        property: "estado",
+	        	                        value: "reservada"
+	        	                    })]
+		                        }),
+		                    
 		                        styleMap: new OpenLayers.StyleMap(styleCasas)
 		                    
 		                    });
@@ -318,16 +345,23 @@
             		   var geolocate = new OpenLayers.Control.Geolocate({
         			    bind: false,
         			    geolocationOptions: {
-        			        enableHighAccuracy: false,
+        			        enableHighAccuracy: true,
         			        maximumAge: 0,
         			        timeout: 7000
         			    }
         			});
             		geolocate.events.register("locationupdated",geolocate,function(e) {	
+            			
+            		  proj4.defs("EPSG:32721","+proj=utm +zone=21 +south +datum=WGS84 +units=m +no_defs");	
 
-                			
-                	 var ds = new OpenLayers.LonLat(e.eposition.coords.longitude, e.position.coords.latitude).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
-                	 map.setCenter(ds, 8);
+            		 //var proj =	new OpenLayers.Projection("EPSG:4326");
+            		 var ds = proj4("EPSG:32721",[e.position.coords.longitude, e.position.coords.latitude]);
+                	 //var ds = new OpenLayers.LonLat(e.eposition.coords.longitude, e.position.coords.latitude);
+            		 //ds.transform(proj, map.getProjectionObject());
+            		 
+                	var lonLat = new OpenLayers.LonLat(ds[0],ds[1]);
+            		 
+                	 map.panTo(lonLat);
                 			  });
                			
         			map.addControl(geolocate);
@@ -543,7 +577,7 @@
 
 <h:body class="fondo" onload="init()"  >
 	
-<!--  <ui:include src="/navbar.xhtml" />-->
+ <ui:include src="/navbar.xhtml" />
 
 <div id="cont" class="contenedor">
 
