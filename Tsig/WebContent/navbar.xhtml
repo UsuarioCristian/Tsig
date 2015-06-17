@@ -10,7 +10,10 @@
 	<b:navBar brandImg="resources/Images/logo.png"  brandHref="index.xhtml" inverse="true" static="true" id="nav" >
 
 	    <b:navbarLinks >
-	  
+	    
+	  		<b:navLink value="Consultas " href="consultas.xhtml"></b:navLink>
+	        <b:navLink value="Login" href="login.xhtml" rendered="#{!usuarioMB.log}" ></b:navLink>
+	        
 	    	<b:dropMenu value="Inmuebles" rendered="#{usuarioMB.log}" >
 	    	
 	    	
@@ -38,10 +41,16 @@
 	        
 	        <b:navLink value="Alta Administradores" href="altaUsuario.xhtml" rendered="#{usuarioMB.admin}"></b:navLink>
 	        
+	       
+	       
+	         <b:dropMenu value="Sesion" rendered="#{usuarioMB.log}" >
 	        
+	        <h:form>
+	        <b:commandButton value="Logout" action="#{usuarioMB.logOut()}" look="link" style=" color: black !Important;  text-decoration: none Important;" rendered="#{usuarioMB.log}"></b:commandButton>
+	        </h:form>
+	        </b:dropMenu>
 	        
-	        <b:navLink value="Consultas " href="consultas.xhtml"></b:navLink>
-	        <b:navLink value="Login" href="login.xhtml" rendered="#{!usuarioMB.log}" ></b:navLink>
+	       
 	
 	    </b:navbarLinks>
 	    
