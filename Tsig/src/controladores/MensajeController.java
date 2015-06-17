@@ -8,7 +8,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import persistencia.IMensajeDAO;
+import persistencia.IPropiedadDAO;
 import persistencia.IUsuarioDAO;
+import dominio.Apartamento;
+import dominio.Casa;
 import dominio.Mensaje;
 import dominio.Usuario;
 
@@ -21,8 +24,11 @@ public class MensajeController implements IMensajeController {
 	@EJB
 	IUsuarioDAO usuarioDAO;
 	
+	@EJB
+	IPropiedadDAO propiedadDAO;
+	
 	@Override
-	public boolean altaMensaje(String asunto, String contenido, Date fecha, String nombreUsuario, String mail) {
+	public boolean altaMensaje(String asunto, String contenido, Date fecha, int idInmueble,String tipoInmueble, String mail) {
 		
 		Mensaje mensaje = new Mensaje();
 		mensaje.setAsunto(asunto);
@@ -30,6 +36,28 @@ public class MensajeController implements IMensajeController {
 		mensaje.setVisto(false);
 		mensaje.setFecha(fecha);
 		mensaje.setMail(mail);
+		
+		String nombreUsuario;
+		
+		System.out.println("Tipo inmueble : "+tipoInmueble);
+		
+		if("Casa".compareTo(tipoInmueble)==0){
+			
+		Casa c = propiedadDAO.getCasaFromGeom(idInmueble);
+		System.out.println("USUARIO mensaje1  : "+c.getEncargado().getNombre());
+		nombreUsuario=c.getEncargado().getNombre();
+		System.out.println("USUARIO mensaje2  : "+nombreUsuario);
+		
+		
+		}
+		else{
+			Apartamento a = propiedadDAO.AptoFromGeom(idInmueble);
+			
+			nombreUsuario=a.getEncargado().getNombre();
+			System.out.println("USUARIO mensaje  : "+nombreUsuario);
+		}
+		
+		
 		
 		Usuario usuario = usuarioDAO.getUsuario(nombreUsuario);
 		mensaje.setDestinatario(usuario);

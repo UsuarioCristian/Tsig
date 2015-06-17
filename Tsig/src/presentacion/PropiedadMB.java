@@ -3,13 +3,12 @@ package presentacion;
 
 import java.io.IOException;
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
-
 import javax.faces.context.FacesContext;
 
 import controladores.IPropiedadController;
@@ -558,6 +557,20 @@ public class PropiedadMB implements Serializable {
 			return null;
 			
 	}
+	
+	public String consultar(){
+		
+		System.out.println("prop click "+propiedadClick);
+		System.out.println("id inm  "+idPunto);
+		
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("TipoDeCasa", this.propiedadClick);
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IdInmueble", this.idPunto);
+		
+		return "altaMensajes.xhtml";
+		
+	}
+	
+	
 	public int getIdCasa() {
 		return idCasa;
 	}

@@ -31,11 +31,13 @@
    
    
 	<b:panelGrid colSpans="3,9"> 
-	   	 <h:outputLabel value="Asunto: " /> <b:inputText span="8" value="#{mensajeMB.asunto}" ></b:inputText>
+	   	 <h:outputLabel value="Asunto: " /> <b:inputText value="#{mensajeMB.asunto}" ></b:inputText>
+	   	 
+	   	 <h:outputLabel value="Mail de contacto: " /> <b:inputText value="#{mensajeMB.mail}" />
 	   	 
 	   	 <h:outputLabel value="contenido: " /> <h:inputTextarea value="#{mensajeMB.contenido}" />
 	   	 
-	   	 <h:outputLabel value="Mail de contacto: " /> <h:inputTextarea value="#{mensajeMB.mail}" />
+	   	
 
 	</b:panelGrid>
 	<h:commandButton action="#{mensajeMB.altaMensaje}" value="Enviar Mensaje" />

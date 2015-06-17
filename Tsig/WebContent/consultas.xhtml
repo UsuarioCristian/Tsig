@@ -99,7 +99,7 @@
                 {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
                             
             );
-
+	
 
 		            
 		           var styleSuper = new OpenLayers.Style(
@@ -436,10 +436,13 @@
 		                   
 		           map.events.register("zoomend", map, zoomChanged);
  		           map.zoomTo(7);
+
+ 		        
+
  		           
 			}
 	
-	function zoomChanged() {
+	function zoomChanged(event) {
 		//<![CDATA[
 		   zoom = map.getZoom();
 
@@ -452,6 +455,10 @@
 			   supers.setVisibility(false);
 			 //  paradas.setVisibility(false);
 		   }
+
+		   if(zoom <= 5){
+			   map.zoomTo(5);
+			}
 		   //]]>
 		}
 	
