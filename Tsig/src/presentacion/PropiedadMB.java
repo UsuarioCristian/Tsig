@@ -4,25 +4,11 @@ package presentacion;
 import java.io.IOException;
 import java.io.Serializable;
 
-
-
-
-
-
-
-
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
-
-
-
-
 
 import javax.faces.context.FacesContext;
 
@@ -54,6 +40,7 @@ public class PropiedadMB implements Serializable {
 	private String titulo="";
 	private String propiedad="";
 	private String propiedadClick="";
+	private String estado="";
 
 	/* For advanced filters*/
 	private Integer distanciaInteres=0;
@@ -482,6 +469,7 @@ public class PropiedadMB implements Serializable {
 			    this.tamanio=c.getTamanio();
 			    this.tipoNegocio=c.gettipoNegocio();
 			    this.piscina=c.isPiscina();
+			    this.estado=c.getEstado();
 	
 			    return "modificarCasa.xhtml";
 			}	else{
@@ -498,7 +486,8 @@ public class PropiedadMB implements Serializable {
 			    this.precio=c.getPrecio();
 			    this.tamanio=c.getTamanio();
 			    this.tipoNegocio=c.getTipoNegocio();
-	
+			    this.estado=c.getEstado();
+			    
 			    return "modificarApto.xhtml";
 				
 			}
@@ -528,7 +517,7 @@ public class PropiedadMB implements Serializable {
 			System.out.println("Entre modificaraCasa()...: "+idpunto+titulo+ direccion +barrio +tipoProp + tipoNegocio + cantBanios + cantCuartos + piscina + garage + precio + tamanio);
 
 			
-			ipc.modificarCasa(usuario,idpunto,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage, precio, tamanio);			
+			ipc.modificarCasa(usuario,idpunto,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos, piscina, garage, precio, tamanio,estado);			
 			
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			
@@ -555,7 +544,7 @@ public class PropiedadMB implements Serializable {
 				System.out.println("Entre modificarApartamento()...: "+idPunto+titulo+ direccion +barrio +tipoProp + tipoNegocio + cantBanios + cantCuartos + numeroap + garage + precio + tamanio);
 	
 				
-				ipc.modificarApto(usuario,idpunto,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio,numeroap);
+				ipc.modificarApto(usuario,idpunto,titulo, direccion, barrio, tipoProp, tipoNegocio, cantBanios, cantCuartos,  garage, precio, tamanio,numeroap,estado);
 				
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 				
@@ -848,6 +837,18 @@ public class PropiedadMB implements Serializable {
 
 	public void setPropiedadClick(String propiedadClick) {
 		this.propiedadClick = propiedadClick;
+	}
+
+
+
+	public String getEstado() {
+		return estado;
+	}
+
+
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 	

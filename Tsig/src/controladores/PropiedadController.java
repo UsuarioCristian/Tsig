@@ -91,7 +91,7 @@ public class PropiedadController implements IPropiedadController{
 		
 	}
 	
-	public void modificarCasa(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos,boolean piscina, boolean garage, int precio, float tamanio) {
+	public void modificarCasa(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos,boolean piscina, boolean garage, int precio, float tamanio,String estado) {
 		try{
 			
 			Casa c =PropiedadDAO.getCasaFromGeom(IdGeom);			
@@ -101,7 +101,7 @@ public class PropiedadController implements IPropiedadController{
 			c.setCantBanios(cantBanios);
 			c.setCantCuartos(cantCuartos);
 			c.setDireccion(direccion);
-			//c.setEstado(estado);
+			c.setEstado(estado);
 			c.setGarage(garage);
 			c.setPiscina(piscina);
 			c.setPrecio(precio);
@@ -121,7 +121,7 @@ public class PropiedadController implements IPropiedadController{
 	}
 	
 	
-	public void modificarApto(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos, boolean garage, int precio, float tamanio,int numeroap) {
+	public void modificarApto(String usuario,int IdGeom,String titulo,int direccion,String barrio,String tipoProp, String tipoNegocio, int cantBanios, int cantCuartos, boolean garage, int precio, float tamanio,int numeroap,String estado) {
 		try{
 			
 			Apartamento ap = PropiedadDAO.AptoFromGeom(IdGeom);
@@ -131,7 +131,7 @@ public class PropiedadController implements IPropiedadController{
 			ap.setCantBanios(cantBanios);
 			ap.setCantCuartos(cantCuartos);
 			ap.setDireccion(direccion);
-			//c.setEstado(estado);
+			ap.setEstado(estado);
 			ap.setGarage(garage);
 			ap.setTipoProp(tipoProp);
 			ap.setTipoNegocio(tipoNegocio);

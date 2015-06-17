@@ -338,7 +338,9 @@ public boolean guardarApartamento(Apartamento apart) {
 public void modificarCasa(Casa c) {
 	
 	try {
-		em.merge(c);			
+		em.merge(c);	
+		em.createNativeQuery("update casageom g set estado ='"+c.getEstado()+"'  where g.id='"+c.getIdGeom()+"'").executeUpdate();
+		
 
 	} catch (Exception e) {
 
@@ -353,7 +355,7 @@ public void modificarApto(Apartamento apart) {
 	
 	try {
 		em.merge(apart);			
-
+		em.createNativeQuery("update casageom g set estado ='"+apart.getEstado()+"'  where g.id='"+apart.getIdGeom()+"'").executeUpdate();
 	} catch (Exception e) {
 
 		e.printStackTrace();

@@ -1,0 +1,360 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	>
+	
+
+  <h:head>
+      <h:outputStylesheet library="css" name="styles.css" />
+      <h:outputStylesheet library="css" name="remodal.css" />
+      <h:outputStylesheet library="css" name="remodal-default-theme.css" />
+      
+
+
+ <script  src="http://code.jquery.com/jquery-2.1.4.min.js">	 </script>
+	
+ <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
+ 
+ <script type="text/javascript" src="resources/js/remodal.js"></script>
+
+	 
+	 
+    <title>OpenLayers 3 example</title>
+    
+    
+    <script type="text/javascript">
+    
+    
+    var map;
+    var wms;
+
+    var puntos;
+    var aptos;
+    
+    var saveStrategy = new OpenLayers.Strategy.Save();
+   
+
+    var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
+    
+    var map_controls = [
+                         new OpenLayers.Control.PanZoomBar(), 
+                         new OpenLayers.Control.MouseToolbar(),
+                         
+                         ];
+	var mapoptions = 
+		{ 
+			
+			
+			units: 'm',
+			projection: "EPSG:32721",
+			maxExtent:bounds ,
+			center: new OpenLayers.LonLat(574553.537,6141267.75),
+			maxResolution: 1000
+	    };
+	 var defStyle = {strokeColor: "blue", strokeOpacity: "0.7", strokeWidth: 3, cursor: "pointer"};
+
+	 
+	function init() {
+		
+		// 
+
+
+		 
+		 $("#btnEliminar").click(function (){
+			 
+			 
+			 document.getElementById('info:eliminarfeature').click();
+				
+
+			 });
+		 
+
+		 
+		 $("#btnModificar").click(function(){
+
+			  document.getElementById('info:modificar').click();
+
+			 });
+
+
+		 
+		     map = new OpenLayers.Map('map', mapoptions);            
+		            // setup tiled layer
+		           var tiled = new OpenLayers.Layer.WMS(
+		        		   
+                "mapabase", "http://localhost:8080/geoserver/sige/wms",
+                {LAYERS: 'sige:mapabase',projection: new OpenLayers.Projection('EPSG:32721')}
+                            
+            );
+		           tiled.style=OpenLayers.Util.applyDefaults(OpenLayers.Feature.Vector.style["default"]);
+
+		          		           
+		           tiled.style.externalGraphic="resources/Images/bus.gif";
+		           tiled.style.graphicWidth= 20;
+		           tiled.style.graphicHeight= 20;
+		           tiled.style.fillOpacity=1;
+
+
+		           var stylePuntos = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 40,
+		        	            graphicHeight: 32,
+		        	            externalGraphic: "resources/Images/casa.png"
+		        	           
+		        	        }
+		        	        // the second argument will include all rules
+		        	        
+		        	    );
+
+		           var styleAptos = new OpenLayers.Style(
+		        	        // the first argument is a base symbolizer
+		        	        // all other symbolizers in rules will extend this one
+		        	        {
+		        	            graphicWidth: 50,
+		        	            graphicHeight: 38,
+		        	            externalGraphic: "resources/Images/apto.png"
+		        	           
+		        	        }
+		        	        // the second argument will include all rules
+		        	        
+		        	    );
+			          
+		            puntos = new OpenLayers.Layer.Vector(
+		                    "casageom",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "casageom", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+		                            
+		                        }),
+
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(stylePuntos)
+		                    
+		                    });
+
+		            aptos = new OpenLayers.Layer.Vector(
+		                    "aptogeom",
+		                    {
+		                        strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+		                        , projection: new OpenLayers.Projection("EPSG:32721")
+		                         ,protocol: new OpenLayers.Protocol.WFS({
+		                            version: "1.1.0",
+		                            srsName: "EPSG:32721",
+		                            url: "http://localhost:8080/geoserver/wfs",
+		                            featurePrefix: 'sige', //geoserver worspace name
+		                            featureType: "aptogeom", //geoserver Layer Name
+		                            featureNS: "localhost:8080/geoserver/sige", // Edit Workspace Namespace URI
+		                            geometryName: "punto", // field in Feature Type details with type "Geometry"
+		                            
+		                        }),
+
+		                        filter:"",
+		                        styleMap: new OpenLayers.StyleMap(styleAptos)
+		                    
+		                    });
+	
+		           map.addLayers([tiled,puntos,aptos]);
+		           
+		           
+		           var panel = new OpenLayers.Control.Panel(
+		                   {displayClass: 'olControlEditingToolbar'}
+		               );
+	               
+		           var selectFeature = new OpenLayers.Control.SelectFeature([puntos, aptos], {
+		                	   hover: false,
+		                	   onSelect: clickNotice,
+		                       autoActivate: true
+		                   });
+                   map.addControl(selectFeature);
+
+                   panel.addControls([new OpenLayers.Control.Navigation()]);
+                   map.addControl(panel);
+                   map.addControl(new OpenLayers.Control.LayerSwitcher());
+		           
+ 		           map.zoomTo(7);
+		          
+
+ 		         function clickNotice(event) {
+ 		        	
+
+	        	        var id = event.attributes.id;
+						var input = document.getElementById('info:idcasa');
+						input.value=id;
+						
+						if(event.layer.name=="casageom"){
+
+							document.getElementById('info:propiedad').value="Casa";
+							
+							document.getElementById('info:getinfo').click();
+						
+						}else{
+
+							document.getElementById('info:propiedad').value="Apartamento";
+							document.getElementById('info:getinfoApto').click();
+						}
+
+						selectFeature.unselectAll();
+
+ 		        }      
+  		            
+		            
+		}
+	
+		
+		
+		function show(){
+	
+			document.getElementById('este').click();
+	
+		}
+		
+		function handleAjax(data) {
+		    var status = data.status;
+
+		    switch(status) {
+		        case "begin":
+		            // This is invoked right before ajax request is sent.
+		            break;
+
+		        case "complete":
+		            // This is invoked right after ajax response is returned.
+		            break;
+
+		        case "success":
+		           show();
+		            break;
+		    }
+		}
+		
+	
+	 </script>
+  </h:head>
+     
+   <h:body class="fondo" onload="init()"  rendered="#{usuarioMB.log}">
+   
+
+   
+   <div id="cont" class="contenedor">
+
+
+		    <h:form id="eliminar">
+
+					
+			  
+			  <h:panelGroup  id="listcasas">
+			    <ui:repeat value="#{propiedadMB.casas}"  var="id">
+					<h:inputHidden value="#{id}" class="ids" /> 
+				</ui:repeat>
+			</h:panelGroup>
+			
+			<h:panelGroup  id="listaptos">
+			    <ui:repeat value="#{propiedadMB.aptos}"  var="id">
+					<h:inputHidden value="#{id}" class="ids" /> 
+				</ui:repeat>
+			</h:panelGroup>
+		  </h:form>
+		
+		    
+		    
+		     <a id="este" href="#modal" style="visibility: hidden;">Call the modal with data-remodal-id="modal"</a>
+		  	 <div id="mapWrap" class="mapWrap">
+			    <div id="map" class="map"></div>
+			 	 <br/>
+			    
+			    <h:form id="info" style="display:none;">
+			    
+			    
+				    
+				     <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
+				     
+				      <h:inputHidden value="#{propiedadMB.propiedadClick}" id="propiedad" />
+				     
+				    <h:commandButton id="getinfo" actionListener="#{propiedadMB.getInfo}" style="display: none;" >
+				   	 <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
+				    </h:commandButton>
+				    
+				     <h:commandButton id="eliminarfeature" actionListener ="#{propiedadMB.eliminarFeature()}" style="display: none;" ></h:commandButton>
+				     	
+				    
+				     
+				     <h:commandButton id="modificar"  action="#{propiedadMB.modificarInmueble}" value="" style="display: none;">  </h:commandButton>
+				     
+				    
+				     <h:commandButton id="getinfoApto" actionListener="#{propiedadMB.getInfoApto}" style="display: none;" >
+				  		  <f:ajax execute="@form" render="amodal" onevent="handleAjax" />
+				    </h:commandButton>
+			 
+			    </h:form>
+		    </div> 
+		   
+		
+		   
+		   <div  class="remodal" data-remodal-id="modal">
+			  <button data-remodal-action="close" class="remodal-close"></button>
+			  
+			  <h1>INMUEBLES</h1>
+			 
+			  
+			   <b:panelGrid id="amodal" colSpans="4,8" rowClasses="rowform">
+		    
+			    <h:outputLabel value="Titulo de la casa: " />	    
+			    <h:outputLabel value="#{propiedadMB.titulo}" />
+			    
+			    <h:outputLabel value="Barrio de la casa: " />   
+			    <h:outputLabel value="#{propiedadMB.barrio}" />	
+			    
+			    <h:outputLabel value="Tipo de propiedad: " />
+			    <h:outputLabel value="#{propiedadMB.tipoProp}" />	
+		        
+		        <h:outputLabel value="Cantidad de baños: " />
+		        <h:outputLabel value="#{propiedadMB.cantBanios}" />	 
+			   
+			    <h:outputLabel value="Cantidad de cuartos: " />
+		        <h:outputLabel value="#{propiedadMB.cantCuartos}" />	
+		        
+		        <h:outputLabel value="Tamaño de la propiedad : " />
+		        <h:outputLabel value="#{propiedadMB.tamanio}" />
+		        
+		        <h:outputLabel value="Precio : $" />
+		        <h:outputLabel value="#{propiedadMB.precio}" />
+		        
+		        <h:outputLabel value="Piscina:" rendered="#{propiedadMB.piscina} != false" />
+			    <h:outputLabel value="#{propiedadMB.piscina}"  rendered="#{propiedadMB.piscina} != false"/>
+			    
+			    <h:outputLabel value="Garage: " rendered="#{propiedadMB.garage} != false" />
+			    <h:outputLabel value="#{propiedadMB.garage} " rendered="#{propiedadMB.garage} != false" />
+			   
+			  </b:panelGrid> 
+			    
+			  <h:form>
+		
+			  </h:form>
+			  
+			   
+			   
+			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnEliminar">Eliminar</button>
+			  
+			
+			  
+			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnModificar">Modificar</button>
+			  
+		
+		</div>
+
+
+  </div>
+  </h:body>
+
+</html>
