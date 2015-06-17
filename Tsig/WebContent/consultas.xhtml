@@ -77,6 +77,11 @@
 	
 	function init() {
 		
+
+		
+
+		
+		
 			$("#btnDetalles").click(function(){
 
 				  document.getElementById('consultaInmueble:redirect').click();
@@ -304,8 +309,48 @@
                        autoActivate: true
                    });
 		       
-		         
+
+		           
         		   map.addControl(selectFeature);
+
+
+
+            		   var geolocate = new OpenLayers.Control.Geolocate({
+        			    bind: false,
+        			    geolocationOptions: {
+        			        enableHighAccuracy: false,
+        			        maximumAge: 0,
+        			        timeout: 7000
+        			    }
+        			});
+            		geolocate.events.register("locationupdated",geolocate,function(e) {	
+
+                			
+                	 var ds = new OpenLayers.LonLat(e.eposition.coords.longitude, e.position.coords.latitude).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+                	 map.setCenter(ds, 8);
+                			  });
+               			
+        			map.addControl(geolocate);
+        		
+        			 
+        			geolocate.activate();
+        			
+        			
+        		   
+        		 /*  navigator.geolocation.getCurrentPosition(function(position) {       
+        		        lat= position.coords.latitude;
+        		        lon= position.coords.longitude;
+        		        
+        		        var lonlat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"),new OpenLayers.Projection("EPSG:32721"));
+        		        
+        		       // var lonLat = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+        		                                        
+        		    
+        		       
+        		     
+        		        map.setCenter(lonLat, 8);
+        		        map.panTo(lonlat);
+        		    });*/
 
 
         		   function clickNotice(event) {

@@ -39,6 +39,22 @@ public class PropiedadDAO implements IPropiedadDAO {
 		}
 
 	}
+public boolean guardarApartamento(Apartamento apart) {
+		
+		try {
+			
+			em.persist(apart);
+			return true;
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return false;
+		}
+
+		
+
+	}
 
 	@Override
 	public Casa getCasa(Integer id) {
@@ -317,28 +333,15 @@ String comb;
 	}
 
 	
-public boolean guardarApartamento(Apartamento apart) {
-		
-		try {
-			
-			em.persist(apart);
-			return true;
 
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			return false;
-		}
-
-		
-
-	}
 
 
 public void modificarCasa(Casa c) {
 	
 	try {
-		em.merge(c);			
+		em.merge(c);	
+		em.createNativeQuery("update casageom g set estado ='"+c.getEstado()+"'  where g.id='"+c.getIdGeom()+"'").executeUpdate();
+		
 
 	} catch (Exception e) {
 
@@ -353,7 +356,7 @@ public void modificarApto(Apartamento apart) {
 	
 	try {
 		em.merge(apart);			
-
+		em.createNativeQuery("update casageom g set estado ='"+apart.getEstado()+"'  where g.id='"+apart.getIdGeom()+"'").executeUpdate();
 	} catch (Exception e) {
 
 		e.printStackTrace();

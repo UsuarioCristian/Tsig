@@ -70,11 +70,7 @@
 
 			 });
 		 
-		 $("#btnDetalles").click(function(){
 
-			  document.getElementById('info:redirect').click();
-
-			 });
 		 
 		 $("#btnModificar").click(function(){
 
@@ -107,54 +103,11 @@
 		        	        {
 		        	            graphicWidth: 40,
 		        	            graphicHeight: 32,
+		        	            externalGraphic: "resources/Images/casa.png"
 		        	           
-		        	           
-		        	        },
-		        	        // the second argument will include all rules
-		        	        {
-		        	            rules: [
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "privada"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	  
-		        	                        externalGraphic: "resources/Images/casa.png"
-		        	                    }
-		        	                }),
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "reservada"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	     
-		        	                        externalGraphic: "resources/Images/casaReservada.png"
-		        	                    }
-		        	                }),
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "publica"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	      
-		        	                        externalGraphic: "resources/Images/casapublica.png"
-		        	                    }
-		        	                }),
-		    
-		        	            ]
 		        	        }
+		        	        // the second argument will include all rules
+		        	        
 		        	    );
 
 		           var styleAptos = new OpenLayers.Style(
@@ -163,54 +116,11 @@
 		        	        {
 		        	            graphicWidth: 50,
 		        	            graphicHeight: 38,
+		        	            externalGraphic: "resources/Images/apto.png"
 		        	           
-		        	           
-		        	        },
-		        	        // the second argument will include all rules
-		        	        {
-		        	            rules: [
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "privada"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	  
-		        	                        externalGraphic: "resources/Images/aptoprivado.png"
-		        	                    }
-		        	                }),
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "reservada"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	     
-		        	                        externalGraphic: "resources/Images/aptoReservado.png"
-		        	                    }
-		        	                }),
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "publica"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	      
-		        	                        externalGraphic: "resources/Images/aptopublico.png"
-		        	                    }
-		        	                }),
-		    
-		        	            ]
 		        	        }
+		        	        // the second argument will include all rules
+		        	        
 		        	    );
 			          
 		            puntos = new OpenLayers.Layer.Vector(
@@ -274,16 +184,15 @@
                    map.addControl(new OpenLayers.Control.LayerSwitcher());
 		           
  		           map.zoomTo(7);
-		           document.getElementById('eliminar:getuser').click();
+ 		          document.getElementById('eliminar:getuser').click();
 
  		         function clickNotice(event) {
  		        	
 
 	        	        var id = event.attributes.id;
 						var input = document.getElementById('info:idcasa');
-
-						
 						input.value=id;
+						
 						if(event.layer.name=="casageom"){
 
 							document.getElementById('info:propiedad').value="Casa";
@@ -298,12 +207,21 @@
 
 						selectFeature.unselectAll();
 
- 		        }      
+ 		        }   
+  		           
   		            
 		            
 		}
 	
-		function updateFilter() {
+	
+		
+		
+		function show(){
+	
+			document.getElementById('este').click();
+	
+		}
+	function updateFilter() {
 	
 			
 			var inputs = document.getElementById('eliminar:listcasas');
@@ -368,12 +286,6 @@
 			
 		}
 		
-		function show(){
-	
-			document.getElementById('este').click();
-	
-		}
-		
 		function handleAjax(data) {
 		    var status = data.status;
 
@@ -391,7 +303,6 @@
 		            break;
 		    }
 		}
-		
 		function handleAjax2(data) {
 		    var status = data.status;
 
@@ -409,8 +320,8 @@
 		            break;
 		    }
 		}
+		
 	
-
 	 </script>
   </h:head>
   
@@ -418,15 +329,15 @@
    <h:body class="fondo" onload="init()"  rendered="#{usuarioMB.log}">
    
 
-
+   
    <div id="cont" class="contenedor">
 
 
 		    <h:form id="eliminar">
+		    
 			  <h:commandButton id="getuser" actionListener="#{propiedadMB.getUser}" style="display: none;" >
 			  	<f:ajax execute="@form"  onevent="handleAjax2" render="listcasas listaptos" update="listcasas listaptos"/>
 			  </h:commandButton>
-					
 			  
 			  <h:panelGroup  id="listcasas">
 			    <ui:repeat value="#{propiedadMB.casas}"  var="id">
@@ -439,6 +350,7 @@
 					<h:inputHidden value="#{id}" class="ids" /> 
 				</ui:repeat>
 			</h:panelGroup>
+			
 		  </h:form>
 		
 		    
@@ -462,7 +374,7 @@
 				    
 				     <h:commandButton id="eliminarfeature" actionListener ="#{propiedadMB.eliminarFeature()}" style="display: none;" ></h:commandButton>
 				     	
-				     <h:commandButton id="redirect"  action="#{propiedadMB.detalleInmueble}" value="" style="display: none;">  </h:commandButton>
+				    
 				     
 				     <h:commandButton id="modificar"  action="#{propiedadMB.modificarInmueble}" value="" style="display: none;">  </h:commandButton>
 				     
@@ -521,7 +433,7 @@
 			   
 			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnEliminar">Eliminar</button>
 			  
-			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnDetalles">Ver detalles</button>
+			
 			  
 			  <button data-remodal-action="cancel" class="remodal-cancel" id="btnModificar">Modificar</button>
 			  

@@ -225,12 +225,22 @@
 			 	
 			</div>
 		 
-		</div>
+		
 		
 		<b:panel id="datos" styleClass="panel panel-primary outtab" title="Modificar Casa">
 	 
 	      
 	    <b:panelGrid colSpans="2,10" rowClasses="rowform">
+	    
+	    
+	    	<h:outputLabel value="Estado de la propiedad" />	
+	    	<b:selectOneMenu span="8" value="#{propiedadMB.estado}" >
+	            <f:selectItem itemLabel="Privada" itemValue="privada"/>
+	            <f:selectItem itemLabel="Publica" itemValue="publica"/>
+	            <f:selectItem itemLabel="Reservada" itemValue="reservada"/>
+	            <f:selectItem itemLabel="Cerrada" itemValue="cerrada"/>
+	            <f:selectItem itemLabel="Cancelada" itemValue="cancelada"/>
+	        </b:selectOneMenu>
 	    
 		    <h:outputLabel value="Titulo de la casa" />
 		    <b:inputText span="8" value="#{propiedadMB.titulo}"/>
@@ -278,7 +288,7 @@
 	</b:panel>
 	  
 	  <h:commandButton id="save" value="Guardar Inmueble" type="submit" action="#{propiedadMB.modificarCasa}" onclick="save()" ></h:commandButton>	 
-	  
+	  </div>
   </h:form>
   
   <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />

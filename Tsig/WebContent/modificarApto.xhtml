@@ -14,8 +14,7 @@
 
 <script type="text/javascript"   src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
-<link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css"
-	type="text/css"></link>
+<link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css"	type="text/css"></link>
 <style>
 
 .map {
@@ -226,12 +225,21 @@ var mapoptions =
 			 	
 			</div>
 		 
-		</div>
+		
 		
 	<b:panel id="datos" styleClass="panel panel-primary outtab" title="Modificar Apartamento">
  
       
    <b:panelGrid colSpans="2,10" rowClasses="rowform">
+   
+  	    <h:outputLabel value="Estado de la propiedad" />	
+    	<b:selectOneMenu span="8" value="#{propiedadMB.estado}" >
+            <f:selectItem itemLabel="Privada" itemValue="privada"/>
+            <f:selectItem itemLabel="Publica" itemValue="publica"/>
+            <f:selectItem itemLabel="Reservada" itemValue="reservada"/>
+            <f:selectItem itemLabel="Cerrada" itemValue="cerrada"/>
+            <f:selectItem itemLabel="Cancelada" itemValue="cancelada"/>
+        </b:selectOneMenu>
     
 	    <h:outputLabel value="Titulo del apartamento" />
 	    <b:inputText span="8" value="#{propiedadMB.titulo}"/>
@@ -275,7 +283,7 @@ var mapoptions =
 </b:panel>
 	  
 	  <h:commandButton id="save" value="Guardar Inmueble" type="submit" action="#{propiedadMB.modificarApartamento}" onclick="save()" ></h:commandButton>	 
-	  
+	 </div> 
   </h:form>
 	
 <h:inputHidden value="#{propiedadMB.idPunto}" id="idcasa" />
