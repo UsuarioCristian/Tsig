@@ -88,53 +88,8 @@ var mapoptions =
 		        	        {
 		        	            graphicWidth: 50,
 		        	            graphicHeight: 38,
+		        	            externalGraphic: "resources/Images/apto.png"
 		        	           
-		        	           
-		        	        },
-		        	        // the second argument will include all rules
-		        	        {
-		        	            rules: [
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "privada"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	  
-		        	                        externalGraphic: "resources/Images/aptoprivado.png"
-		        	                    }
-		        	                }),
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "reservada"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	     
-		        	                        externalGraphic: "resources/Images/aptoReservado.png"
-		        	                    }
-		        	                }),
-		        	                new OpenLayers.Rule({
-		        	                    // a rule contains an optional filter
-		        	                    filter: new OpenLayers.Filter.Comparison({
-		        	                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-		        	                        property: "estado", // the "foo" feature attribute
-		        	                        value: "publica"
-		        	                    }),
-		        	                    // if a feature matches the above filter, use this symbolizer
-		        	                    symbolizer: {
-		    		        	      
-		        	                        externalGraphic: "resources/Images/aptopublico.png"
-		        	                    }
-		        	                }),
-		    
-		        	            ]
 		        	        }
 		        	    );
 
