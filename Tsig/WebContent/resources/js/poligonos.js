@@ -18,11 +18,11 @@ var map, drawControls,drawPolygon;
 var saveStrategy = new OpenLayers.Strategy.Save();
 saveStrategy.events.on({
     'success': function(event) {
-         alert('Changes saved');
+       //  alert('Changes saved');
          document.getElementById("botonGuardar").style.display = "none";
     },
     'fail': function(event) {
-         alert('Error! Changes not saved');
+        // alert('Error! Changes not saved');
     },
     scope: this
 });
@@ -87,7 +87,7 @@ function init() {
 	drawPolygon.featureAdded = function(feature) {	//drawControls[0] = polygon
 		
 		feature.attributes.nombre="ZonaPolygon";   
-		feature.attributes.Visitas=0; 
+		feature.attributes.visitas=0; 
         feature.state = OpenLayers.State.INSERT;
         feature.layer.drawFeature(feature);
                 

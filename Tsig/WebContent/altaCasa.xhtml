@@ -42,10 +42,10 @@
     
     saveStrategy.events.on({
         'success': function(event) {
-             alert('Changes saved');
+            // alert('Changes saved');
         },
         'fail': function(event) {
-             alert('Error! Changes not saved');
+           //  alert('Error! Changes not saved');
         },
         scope: this
     });
@@ -208,8 +208,7 @@
 	    <h:outputLabel value="Tamaño" />	    
 	    <b:inputText span="8" value="#{propiedadMB.tamanio}"/>
 	    
-	    <h:outputLabel value="Numero de piso" />	    
-	    <b:inputText span="8" value="#{propiedadMB.numeroap}"/>
+	   
 	    
 	    <h:outputLabel value="Piscina: " />
 	    <b:selectBooleanCheckbox value="#{propiedadMB.piscina}" />

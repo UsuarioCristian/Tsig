@@ -41,10 +41,10 @@
     var saveStrategy = new OpenLayers.Strategy.Save();
     saveStrategy.events.on({
         'success': function(event) {
-             alert('Changes saved');
+          //   alert('Changes saved');
         },
         'fail': function(event) {
-             alert('Error! Changes not saved');
+            // alert('Error! Changes not saved');
         },
         scope: this
     });
@@ -211,7 +211,8 @@
 	    <h:outputLabel value="Garage: " />
 	    <b:selectBooleanCheckbox value="#{propiedadMB.garage}" />
 	    
-	    
+	     <h:outputLabel value="Numero de piso" />	    
+	    <b:inputText span="8" value="#{propiedadMB.numeroap}"/>
 	    
 		    
 	</b:panelGrid>

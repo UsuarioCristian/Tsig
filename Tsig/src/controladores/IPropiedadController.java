@@ -42,6 +42,7 @@ public interface IPropiedadController {
 
 	public void actualizarZonas();
 	public void borrarZona(Integer idzona);
+	List<Integer> getBusaDestinoApto(Integer distanciaBus, String calle1,String calle2);
 
 	
 

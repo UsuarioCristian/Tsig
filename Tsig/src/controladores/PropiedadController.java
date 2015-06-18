@@ -331,11 +331,24 @@ public class PropiedadController implements IPropiedadController{
 		}
 		return null;
 	}
-
+	@Override
 	public List<Integer> getBusaDestino(Integer distanciaBus, String calle1,String calle2) {
 		try {
 			
 			return PropiedadDAO.getBusaDestino(distanciaBus,calle1,calle2);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+	}
+	@Override
+	public List<Integer> getBusaDestinoApto(Integer distanciaBus, String calle1,String calle2) {
+		try {
+			
+			return PropiedadDAO.getBusaDestinoApto(distanciaBus,calle1,calle2);
 			
 		}catch(Exception e){
 			e.printStackTrace();

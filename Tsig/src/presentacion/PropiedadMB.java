@@ -286,12 +286,18 @@ public class PropiedadMB implements Serializable {
 			if(distanciaBus!=0){
 	    		
 	    		List<Integer> aux4=	ipc.getBusaDestino(distanciaBus,calle1,calle2);
-	    		
+	    		List<Integer> aux5=ipc.getBusaDestinoApto(distanciaBus, calle1, calle2);
 	    		if (aux4 != null){
 		    		casas.retainAll(aux4);
 		    		aux4.clear();
 		    	}else{
 		    		casas.clear();
+		    	}
+	    		if (aux5 != null){
+		    		aptos.retainAll(aux5);
+		    		aux5.clear();
+		    	}else{
+		    		aptos.clear();
 		    	}
 	    	
 	    	}

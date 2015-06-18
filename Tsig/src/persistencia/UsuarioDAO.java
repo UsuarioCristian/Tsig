@@ -82,7 +82,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 	@Override
 	public List<String> getUsuarios() {
 		try {
-			List<String> result = em.createNativeQuery("select  u.nombre from usuario u ").getResultList();
+			List<String> result = em.createNativeQuery("select  u.nombre from usuario u where u.nombre <> 'admin'").getResultList();
 
 			return result;
 		} catch (Exception e) {
