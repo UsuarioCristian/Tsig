@@ -267,13 +267,17 @@
 		                	   onSelect: clickNotice,
 		                       autoActivate: true
 		                   });
+                   
                    map.addControl(selectFeature);
-
+                   
                    panel.addControls([new OpenLayers.Control.Navigation()]);
+                   
                    map.addControl(panel);
+                   
                    map.addControl(new OpenLayers.Control.LayerSwitcher());
 		           
  		           map.zoomTo(7);
+ 		           
 		           document.getElementById('eliminar:getuser').click();
 
  		         function clickNotice(event) {

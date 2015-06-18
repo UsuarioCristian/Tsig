@@ -46,6 +46,7 @@ public interface IPropiedadDAO {
 
 	List<Integer> getBusaDestino(Integer distance, String calle1, String calle2);
 	public void actualizarZonas();
+	public void borrarZona(Integer idzona);
 
 	
 	

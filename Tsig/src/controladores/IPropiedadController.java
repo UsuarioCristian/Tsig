@@ -41,6 +41,7 @@ public interface IPropiedadController {
 	public List<Integer> getAptoUsuario(String usuario);
 
 	public void actualizarZonas();
+	public void borrarZona(Integer idzona);
 
 	
 
