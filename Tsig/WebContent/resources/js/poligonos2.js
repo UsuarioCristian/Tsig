@@ -186,7 +186,10 @@ function init() {
 
 	});
 
-		
+	
+	
+	
+	
     map.addLayers([ tiled, polygonLayer,casageom,aptos]);    
     map.addControl(new OpenLayers.Control.LayerSwitcher());    
     map.zoomTo(7);

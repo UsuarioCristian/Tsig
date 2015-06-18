@@ -20,7 +20,7 @@
     <h:outputLabel value="Nick: " />
     <h:inputText value="#{usuarioMB.nombre}" />
     <h:outputLabel value="Password: " />
-    <h:inputText value="#{usuarioMB.password}" />
+    <h:inputSecret value="#{usuarioMB.password}" type="password" />
     <h:commandButton type="submit" value="LogIn" action="#{usuarioMB.Login}" />
     </b:panelGrid>
 </b:panel>

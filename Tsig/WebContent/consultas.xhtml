@@ -58,6 +58,8 @@
    
 	var cantidad= 0;
     var bounds = new OpenLayers.Bounds(366582.582,6127927,858252.252,6671738);
+   
+
     
     
     var map_controls = [
@@ -353,7 +355,7 @@
         			});
             		geolocate.events.register("locationupdated",geolocate,function(e) {	
             			
-            		  proj4.defs("EPSG:32721","+proj=utm +zone=21 +south +datum=WGS84 +units=m +no_defs");	
+            		proj4.defs("EPSG:32721","+proj=utm +zone=21 +south +datum=WGS84 +units=m +no_defs");	
 
             		 //var proj =	new OpenLayers.Projection("EPSG:4326");
             		 var ds = proj4("EPSG:32721",[e.position.coords.longitude, e.position.coords.latitude]);
