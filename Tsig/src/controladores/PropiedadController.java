@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
 import persistencia.IPropiedadDAO;
 import persistencia.IUsuarioDAO;
 import controladores.IPropiedadController;
@@ -358,6 +357,14 @@ public class PropiedadController implements IPropiedadController{
 		}
 		
 
+	}
+
+
+	@Override
+	public void borrarZona(Integer idzona) {
+
+		PropiedadDAO.borrarZona(idzona);
+		
 	}
 
 

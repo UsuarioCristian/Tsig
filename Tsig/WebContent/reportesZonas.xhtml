@@ -9,19 +9,28 @@
 <h:head>
  <h:outputStylesheet library="css" name="styles.css" />
 
-<link rel="stylesheet" href="resources/css/ol.css"></link>
+
 
 <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
+
 <script type="text/javascript" src="resources/js/poligonos2.js"></script>
 	<style type="text/css">
 		#controlToggle li {
 			list-style: none;
 		}
 			
-		/* avoid pink tiles */
+
 		.olImageLoadError {
 			background-color: transparent !important;
 		}
+		.olControlEditingToolbar .olControlDeleteItemActive {
+                background-image: "resources/Images/delete_on.png";
+                background-repeat: no-repeat;
+            }
+        .olControlEditingToolbar .olControlDeleteItemInactive {
+                background-image: "resources/Images/delete_off.png";
+                background-repeat: no-repeat;
+                }
 	</style>
 	</h:head>
 	   <ui:include src="/navbar.xhtml" />
@@ -37,7 +46,8 @@
    	 <f:ajax execute="@form" render="@form" onevent="" />
     </h:commandButton>
 
-</h:form>
+
+
  <div id="mapWrap" class="mapWrap">
 	<div id='map' class="map">		
 	
@@ -45,6 +55,15 @@
 	</div>
 	</div>
 	
-</div>	        
+	
+	 <h:commandButton id="borrar" actionListener="#{zonaMB.borrarZona()}" style="display: none;" ></h:commandButton>
+	 
+	 
+ <h:inputHidden value="#{zonaMB.idzona}" id="idzona" />
+	
+	
+</h:form> 	
+</div>	
+       
 </h:body>
 </html>

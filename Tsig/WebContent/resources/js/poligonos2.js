@@ -2,6 +2,7 @@
 
 var bounds = new OpenLayers.Bounds(366582.582, 6127927, 858252.252, 6671738);
 
+var saveStrategy = new OpenLayers.Strategy.Save();
 
 var mapoptions = {
 
@@ -33,6 +34,7 @@ function init() {
 	}
 
 	);
+
     var stylePoli = new OpenLayers.Style(
 	        // the first argument is a base symbolizer
 	        // all other symbolizers in rules will extend this one
@@ -105,6 +107,7 @@ function init() {
 	        }
 	    );
 	
+ 
     var styleAptos = new OpenLayers.Style(
 
 	        {
@@ -164,9 +167,9 @@ function init() {
         
         });
 
-	
+   
 	polygonLayer = new OpenLayers.Layer.Vector("zonageom", {
-		strategies : [ new OpenLayers.Strategy.BBOX() ],
+		strategies : [ new OpenLayers.Strategy.BBOX(),saveStrategy ],
 		projection : new OpenLayers.Projection("EPSG:32721"),
 		protocol : new OpenLayers.Protocol.WFS({
 			version : "1.1.0",
@@ -186,17 +189,58 @@ function init() {
 
 	});
 
-	
-	
-	
-	
-    map.addLayers([ tiled, polygonLayer,casageom,aptos]);    
+
+		
+    map.addLayers([ tiled, polygonLayer,casageom,aptos]);  
+    
+  
+    
+    var deleteFeatureControl = new OpenLayers.Control.SelectFeature(polygonLayer, {
+        clickout: false,
+        toggle: false,
+        title: "Delete",
+        displayClass: "olControlDelete"
+    });
+    
+    deleteFeatureControl.events.register("featurehighlighted", this, function(e) {
+        if (confirm('Are you sure you want to delete this feature?')) {
+        	 
+        		var attr=  document.getElementById('zonas:idzona');
+        		
+        		attr.value = e.feature.attributes.id;
+        	
+        	
+        	 
+        	
+        	polygonLayer.removeFeatures([e.feature]);
+            deleteFeatureControl.deactivate();
+            document.getElementById('zonas:borrar').click();
+          
+        } else {
+            deleteFeatureControl.unselect(e.feature);
+        }
+    });
+   
+    var panel = new OpenLayers.Control.Panel({
+        displayClass: 'olControlEditingToolbar'
+    });
+    
+    panel.addControls([ deleteFeatureControl]);
+    
+    map.addControls([
+        panel
+    ]);
+
+
     map.addControl(new OpenLayers.Control.LayerSwitcher());    
     map.zoomTo(7);
 	
-	
-	
+
 		
 }
 
 
+function save() {
+	saveStrategy.save();
+		
+}

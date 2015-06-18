@@ -494,6 +494,14 @@ public void actualizarZonas() {
 	}
 
 }
+@Override
+public void borrarZona(Integer idzona) {
+	
+	
+	em.createNativeQuery("delete from zonageom g where g.id='"+idzona+"'").executeUpdate();
+	
+	System.out.println("LLEGUE CARdsadasAHE "+idzona);
+}
 
 	
 

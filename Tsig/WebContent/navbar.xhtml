@@ -34,6 +34,7 @@
 	          <b:navLink value="Alta de zonas" href="poligonos.xhtml"  rendered="#{usuarioMB.log}"></b:navLink>
 	          
 	          <b:navLink value="Reportes de zonas" href="reportesZonas.xhtml"  rendered="#{usuarioMB.log}"></b:navLink>
+	          
 	        </b:dropMenu>
 	      
 	        
@@ -45,9 +46,9 @@
 	       
 	         <b:dropMenu value="Sesion" rendered="#{usuarioMB.log}" >
 	        
-	        <h:form>
-	        <b:commandButton value="Logout" action="#{usuarioMB.logOut()}" look="link" style=" color: black !Important;  text-decoration: none Important;" rendered="#{usuarioMB.log}"></b:commandButton>
-	        </h:form>
+		        <h:form>
+		       	 <b:commandButton value="Logout" action="#{usuarioMB.logOut()}" look="link" style=" color: black !Important;  text-decoration: none Important;" rendered="#{usuarioMB.log}"></b:commandButton>
+		        </h:form>
 	        </b:dropMenu>
 	        
 	       
